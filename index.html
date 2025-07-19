@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Typewriter Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.4;
+            background-color: white;
+            color: black;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        .red-line {
+            width: 2px;
+            background-color: red;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            flex: 1;
+        }
+
+        .header {
+            padding: 20px 20px 20px 30px;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .header .divider {
+            color: red;
+            font-weight: bold;
+            margin-left: -10px;
+        }
+
+        .settings-trigger {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+            transition: color 0.2s ease;
+            padding: 8px;
+            border-radius: 3px;
+            user-select: none;
+        }
+
+        .settings-trigger:hover {
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .settings-panel {
+            position: absolute;
+            top: 100%;
+            right: 20px;
+            background: white;
+            border: 0.5pt solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            min-width: 250px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            visibility: hidden;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .settings-panel.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .settings-option {
+            padding: 8px 0;
+            border-bottom: 0.5pt solid #eee;
+            cursor: pointer;
+            font-size: 12px;
+            color: #444;
+            transition: color 0.2s ease;
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        .settings-option:hover {
+            color: #000;
+        }
+
+        .settings-option.danger {
+            color: #dc2626;
+        }
+
+        .settings-option.danger:hover {
+            color: #991b1b;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .header .date-info {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .main {
+            flex: 1;
+            padding: 30px 20px 30px 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .entry {
+            margin-bottom: 25px;
+            line-height: 1.2;
+            position: relative;
+        }
+
+        .entry-delete {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+            background: none;
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1;
+        }
+
+        .entry-delete:hover {
+            opacity: 1;
+        }
+
+        .entry-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .entry-description {
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .entry-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .entry-timestamp {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .entry-editable {
+            border: none;
+            background: transparent;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: inherit;
+            color: inherit;
+            width: 100%;
+            resize: none;
+            outline: none;
+            line-height: inherit;
+        }
+
+        .entry-editable:focus {
+            background-color: #f9f9f9;
+            border: 0.5pt solid #ccc;
+            padding: 2px;
+        }
+
+        .entry-title-edit {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .entry-description-edit {
+            color: #444;
+            margin-bottom: 8px;
+            min-height: 20px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            border: 0.5pt solid;
+            padding: 12px 16px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-color: #22c55e;
+            color: #444;
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+            color: #444;
+        }
+
+        .toast.info {
+            border-color: #3b82f6;
+            color: #444;
+        }
+
+        .add-button {
+            display: inline-block;
+            font-size: 24px;
+            cursor: pointer;
+            margin-top: 20px;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .add-button:hover {
+            color: #000;
+        }
+
+        .footer {
+            background-color: white;
+            border-top: 1px solid #eee;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: auto;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border: 2px solid #333;
+            max-width: 500px;
+            width: 90%;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #666;
+            padding: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #333;
+            background: white;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .btn-primary {
+            background-color: #333;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #555;
+        }
+
+        .plain-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            padding: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 15px 15px 15px 25px;
+            }
+
+            .header .date-info {
+                display: inline-block;
+            }
+
+            .settings-trigger {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                margin-left: 0;
+                font-size: 22px;
+            }
+
+            .settings-panel {
+                right: 15px;
+                left: 15px;
+                min-width: auto;
+            }
+            
+            .main {
+                padding: 20px 15px 20px 25px;
+            }
+
+            .entry {
+                margin-bottom: 20px;
+            }
+
+            .entry-delete {
+                font-size: 16px;
+                padding: 4px 6px;
+            }
+
+            .entry-editable {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+
+            .toast {
+                bottom: 15px;
+                left: 15px;
+                right: 15px;
+                max-width: none;
+                font-size: 11px;
+            }
+
+            .red-line {
+                width: 1.5px; /* Slightly thicker on mobile */
+            }
+        }
+
+        @media (max-width: 400px) {
+            .header .date-info {
+                font-size: 12px;
+            }
+
+            .main {
+                padding: 15px 10px 15px 20px;
+            }
+
+            .entry-timestamp {
+                font-size: 9px;
+            }
+
+            .add-button {
+                font-size: 20px;
+            }
+
+            .settings-panel {
+                font-size: 11px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="divider">|</span>
+            <span class="date-info" id="day-of-year">Day 200 of the year</span>
+            <span class="date-info" id="days-left">165 days left</span>
+            <span class="date-info" id="week-number">Week 29</span>
+            <span class="date-info" id="current-date">7/19/25</span>
+            <div class="settings-trigger" onclick="toggleSettings()">☼</div>
+            
+            <div class="settings-panel" id="settings-panel">
+                <div class="settings-option" onclick="exportToCSV()">Export as CSV</div>
+                <div class="settings-option" onclick="triggerImport()">Import CSV
+                    <input type="file" id="csv-import" class="file-input" accept=".csv" onchange="importFromCSV(event)">
+                </div>
+                <div class="settings-option danger" onclick="clearAllEntries()">Clear All Entries</div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="red-line"></div>
+            <div class="content-area">
+                <div class="main">
+                    <div id="entries-container">
+                        <!-- Sample entries matching your screenshots -->
+                        <div class="entry">
+                            <div class="entry-title">observer is observed tool</div>
+                            <div class="entry-description">basic initial step to get introduced to meta cognition.to start with 🤖</div>
+                            <div class="entry-timestamp">7/19/25, 2:30 PM</div>
+                        </div>
+                        
+                        <div class="entry">
+                            <div class="entry-title">pipeline installed working</div>
+                            <div class="entry-description">farm upgraded after 32 years</div>
+                            <div class="entry-timestamp">7/19/25, 1:45 PM</div>
+                        </div>
+                    </div>
+                    
+                    <div class="add-button" onclick="addNewEntry()">+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            © Vipul Anand <span id="current-year">2025</span>
+        </div>
+    </div>
+
+    <!-- Toast notification container -->
+    <div id="toast-container"></div>
+
+    <script>
+        // Date calculations
+        function updateDateInfo() {
+            const now = new Date();
+            const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+            const isLeapYear = (now.getFullYear() % 4 === 0 && now.getFullYear() % 100 !== 0) || (now.getFullYear() % 400 === 0);
+            const daysInYear = isLeapYear ? 366 : 365;
+            const daysLeft = daysInYear - dayOfYear;
+            
+            // Calculate week number
+            const firstDay = new Date(now.getFullYear(), 0, 1);
+            const days = Math.floor((now - firstDay) / 86400000) + (firstDay.getDay() || 7);
+            const weekNumber = Math.ceil(days / 7);
+            
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            const yearShort = now.getFullYear() % 100;
+            
+            document.getElementById('day-of-year').textContent = `Day ${dayOfYear} of the year`;
+            document.getElementById('days-left').textContent = `${daysLeft} days left`;
+            document.getElementById('week-number').textContent = `Week ${weekNumber}`;
+            document.getElementById('current-date').textContent = `${month}/${day}/${yearShort}`;
+            document.getElementById('current-year').textContent = now.getFullYear();
+        }
+
+        // Entry management with in-place editing
+        let entries = JSON.parse(localStorage.getItem('entries')) || [];
+
+        function renderEntries() {
+            const container = document.getElementById('entries-container');
+            container.innerHTML = '';
+            
+            entries.forEach((entry, index) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry';
+                entryDiv.setAttribute('data-index', index);
+                
+                // Format timestamp
+                const timestamp = entry.timestamp ? new Date(entry.timestamp) : new Date();
+                const timeString = timestamp.toLocaleString('en-US', {
+                    month: 'numeric',
+                    day: 'numeric',
+                    year: '2-digit',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                
+                entryDiv.innerHTML = `
+                    <button class="entry-delete" onclick="deleteEntry(${index})" title="Delete entry">×</button>
+                    <input type="text" class="entry-editable entry-title-edit" value="${escapeHtml(entry.title)}" 
+                           onblur="saveEntry(${index}, 'title', this.value)" placeholder="Enter title...">
+                    <textarea class="entry-editable entry-description-edit" 
+                              onblur="saveEntry(${index}, 'description', this.value)" 
+                              placeholder="Enter description...">${escapeHtml(entry.description)}</textarea>
+                    <div class="entry-timestamp">${timeString}</div>
+                `;
+                container.appendChild(entryDiv);
+            });
+        }
+
+        function saveEntry(index, field, value) {
+            if (value.trim() === '') {
+                showToast('Field cannot be empty', 'error');
+                renderEntries(); // Reset to original value
+                return;
+            }
+            
+            entries[index][field] = value.trim();
+            localStorage.setItem('entries', JSON.stringify(entries));
+            showToast('Entry saved', 'success');
+        }
+
+        function deleteEntry(index) {
+            if (confirm('Are you sure you want to delete this entry?')) {
+                entries.splice(index, 1);
+                localStorage.setItem('entries', JSON.stringify(entries));
+                renderEntries();
+                showToast('Entry deleted', 'info');
+            }
+        }
+
+        function addNewEntry() {
+            const newEntry = {
+                title: '',
+                description: '',
+                timestamp: new Date().toISOString()
+            };
+            
+            entries.unshift(newEntry);
+            localStorage.setItem('entries', JSON.stringify(entries));
+            renderEntries();
+            
+            // Focus on the first title field
+            setTimeout(() => {
+                const firstTitle = document.querySelector('.entry-title-edit');
+                if (firstTitle) {
+                    firstTitle.focus();
+                    firstTitle.select();
+                }
+            }, 100);
+            
+            showToast('New entry added', 'info');
+        }
+
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            toastContainer.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toastContainer.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Settings panel functionality
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            panel.classList.toggle('show');
+        }
+
+        function closeSettings() {
+            const panel = document.getElementById('settings-panel');
+            panel.classList.remove('show');
+        }
+
+        function exportToCSV() {
+            if (entries.length === 0) {
+                showToast('No entries to export', 'error');
+                closeSettings();
+                return;
+            }
+
+            const csvContent = [
+                ['Title', 'Description', 'Timestamp'],
+                ...entries.map(entry => [
+                    entry.title,
+                    entry.description,
+                    entry.timestamp
+                ])
+            ].map(row => row.map(field => `"${field.replace(/"/g, '""')}"`).join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `yearlog-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast(`Exported ${entries.length} entries`, 'success');
+            closeSettings();
+        }
+
+        function triggerImport() {
+            document.getElementById('csv-import').click();
+            closeSettings();
+        }
+
+        function importFromCSV(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const csv = e.target.result;
+                    const lines = csv.split('\n');
+                    const importedEntries = [];
+                    
+                    // Skip header row if it exists
+                    const startIndex = lines[0].toLowerCase().includes('title') ? 1 : 0;
+                    
+                    for (let i = startIndex; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        // Simple CSV parsing (handles quoted fields)
+                        const matches = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+                        if (matches && matches.length >= 2) {
+                            const title = matches[0].replace(/^"|"$/g, '').replace(/""/g, '"');
+                            const description = matches[1].replace(/^"|"$/g, '').replace(/""/g, '"');
+                            
+                            if (title && description) {
+                                importedEntries.push({
+                                    title: title,
+                                    description: description,
+                                    timestamp: new Date().toISOString() // Current time as requested
+                                });
+                            }
+                        }
+                    }
+                    
+                    if (importedEntries.length > 0) {
+                        entries = [...importedEntries, ...entries]; // Add imported entries to top
+                        localStorage.setItem('entries', JSON.stringify(entries));
+                        renderEntries();
+                        showToast(`Imported ${importedEntries.length} entries`, 'success');
+                    } else {
+                        showToast('No valid entries found in CSV', 'error');
+                    }
+                } catch (error) {
+                    showToast('Error reading CSV file', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        function clearAllEntries() {
+            if (entries.length === 0) {
+                showToast('No entries to clear', 'error');
+                closeSettings();
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete all ${entries.length} entries? This cannot be undone.`)) {
+                entries = [];
+                localStorage.setItem('entries', JSON.stringify(entries));
+                renderEntries();
+                showToast('All entries cleared', 'info');
+            }
+            closeSettings();
+        }
+
+        // Auto-resize textareas
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // Add event listeners for auto-resize
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('entry-description-edit')) {
+                autoResizeTextarea(e.target);
+            }
+        });
+
+        // Keyboard shortcuts and event listeners
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Enter to add new entry
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                addNewEntry();
+            }
+            // Escape to close settings
+            if (e.key === 'Escape') {
+                closeSettings();
+            }
+        });
+
+        // Close settings when clicking outside
+        document.addEventListener('click', function(e) {
+            const settingsPanel = document.getElementById('settings-panel');
+            const settingsTrigger = document.querySelector('.settings-trigger');
+            
+            if (!settingsPanel.contains(e.target) && !settingsTrigger.contains(e.target)) {
+                closeSettings();
+            }
+        });
+
+        // Initialize
+        updateDateInfo();
+        renderEntries();
+        
+        // Auto-resize all textareas on load
+        setTimeout(() => {
+            document.querySelectorAll('.entry-description-edit').forEach(autoResizeTextarea);
+        }, 100);
+        
+        // Update date info every minute
+        setInterval(updateDateInfo, 60000);
+    </script>
+</body>
+</html>
