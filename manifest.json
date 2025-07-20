@@ -11,25 +11,7 @@
   "icons": [
     {
       "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "96x96",
+      "sizes": "48x48",
       "type": "image/png",
       "purpose": "any"
     },
@@ -41,9 +23,27 @@
     },
     {
       "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "48x48",
+      "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "categories": ["productivity", "utilities", "lifestyle"],
