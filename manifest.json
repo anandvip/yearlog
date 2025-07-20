@@ -55,7 +55,7 @@
       "name": "Add New Entry",
       "short_name": "New Entry",
       "description": "Quickly add a new memory entry",
-      "url": "/?action=new",
+      "url": "https://yearlog.vipulanand.in/?action=new",
       "icons": [
         {
           "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
