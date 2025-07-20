@@ -3,8 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Typewriter Page</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlllYXJMb2cgLSBQZXJzb25hbCBNZW1vcnkgQ29tcGFuaW9uIiwKICAic2hvcnRfbmFtZSI6ICJZZWFyTG9nIiwKICAiZGVzY3JpcHRpb24iOiAiQSBnZW50bGUsIGVtcGF0aGV0aWMgdG9vbCBmb3IgaW5kaXZpZHVhbHMgd29ya2luZyB0byBzdHJlbmd0aGVuIHRoZWlyIG1lbW9yeSBjb25uZWN0aW9ucy4gQ2FwdHVyZSBhbmQgb3JnYW5pemUgeW91ciBkYWlseSB0aG91Z2h0cyBhbmQgZXhwZXJpZW5jZXMuIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjZGMyNjI2IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lnZG1sbGQwSnZlRDBpTUNBd0lERXlPQ0F4TWpnaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1UQWlJSGs5SWpFd0lpQjNhV1IwYUQwaU1UQTRJR2hsYVdkb2REMGlNVEE0SWlCbWFXeHNQU0lqWkdNeU5qSTJJaUF2UGp4eVpXTjBJSGc5SWpJNElpQjVQU0l5T0NJZ2QybGtkR2c5SXRJZ2FHVnBaMmgwUFNJNE1pSWdabWxzYkQwaUkwWm1SbVptSWlBdlBqeDBaWGgwSUhnOUlqUXdJaUI1UFNJMk1pSWdabTl1ZEMxbVlXMXBiSGs5SW1OdmRYSnBaWElpSUdacGJHdzlJaU0yTmpZaVBsbE1QQzkwWlhoMFBqd3ZjM1puUGc9PSIsCiAgICAgICJzaXplcyI6ICIxMjh4MTI4IiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTlRFeUlpQm9aV2xuYUhROUlqVXhNaUlnZG1sbGQwSnZlRDBpTUNBd0lEVXhNaUExTVRJaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1UQWlJSGs5SWpFd0lpQjNhV1IwYUQwaU5Ea3lJR2hsYVdkb2REMGlORGt5SWlCbWFXeHNQU0lqWkdNeU5qSTJJaUF2UGp4eVpXTjBJSGc5SWpjNElpQjVQU0kzT0NJZ2QybGtkR2c5SWpNMU5pSWdhR1ZwWjJoMFBTSXpOVFlpSUdacGJHdzlJaU5HWmtabVppSWdMejQ4ZEdWNGRDQjRQU0l4TlRBaUlIazlJakV5TkNJZ1ptOXVkQzFtWVcxcGJIazlJbU52ZFhKcFpYSWlJR1pwYkd3OUlpTTJOalppUGxsTVBDOTBaWGgwUGp3dmMzWm5QZz09IiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0sCiAgImNhdGVnb3JpZXMiOiBbInByb2R1Y3Rpdml0eSIsICJ1dGlsaXRpZXMiLCAibGlmZXN0eWxlIl0sCiAgImxhbmciOiAiZW4iCn0=">
+    
+    <!-- SEO Meta Tags -->
+    <title>YearLog - Personal Memory Companion | Digital Diary & Journal App</title>
+    <meta name="description" content="A gentle, empathetic digital diary for strengthening memory connections. Capture daily thoughts, organize experiences, and build your personal memory archive with YearLog - completely private and offline.">
+    <meta name="keywords" content="digital diary, personal journal, memory companion, offline journal app, private diary, memory strengthening, daily thoughts, personal memories, digital notebook">
+    <meta name="author" content="Vipul Anand">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yearlog.vipulanand.in/">
+    <meta property="og:title" content="YearLog - Personal Memory Companion">
+    <meta property="og:description" content="A gentle, empathetic digital diary for strengthening memory connections. Completely private and offline.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+    <meta property="og:site_name" content="YearLog">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yearlog.vipulanand.in/">
+    <meta property="twitter:title" content="YearLog - Personal Memory Companion">
+    <meta property="twitter:description" content="A gentle, empathetic digital diary for strengthening memory connections. Completely private and offline.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#dc2626">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="YearLog">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yearlog.vipulanand.in/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "YearLog - Personal Memory Companion",
+      "description": "A gentle, empathetic digital diary for strengthening memory connections. Capture daily thoughts, organize experiences, and build your personal memory archive.",
+      "url": "https://yearlog.vipulanand.in/",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Any",
+      "permissions": "Storage",
+      "storageRequirements": "Local Storage",
+      "author": {
+        "@type": "Person",
+        "name": "Vipul Anand"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Offline functionality",
+        "In-place editing",
+        "Data export (CSV/HTML)",
+        "Visual timeline",
+        "Auto-save",
+        "Complete privacy"
+      ]
+    }
+    </script>
+
     <style>
+        /* General Resets and Body Styling */
         * {
             margin: 0;
             padding: 0;
@@ -21,6 +93,7 @@
             flex-direction: column;
         }
 
+        /* Layout Structure */
         .container {
             display: flex;
             flex-direction: column;
@@ -40,8 +113,11 @@
 
         .content-area {
             flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* Header */
         .header {
             padding: 20px 20px 20px 30px;
             background-color: white;
@@ -59,10 +135,60 @@
             margin-left: -10px;
         }
 
+        .header .date-info {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .year-name-edit {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #333;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .year-name-edit:hover {
+            background-color: #f5f5f5;
+        }
+
+        .year-name-edit:focus {
+            background-color: #f9f9f9;
+            border: 0.5pt solid #ccc;
+            outline: none;
+        }
+
+        /* PWA Install Button */
+        .install-button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+            display: none;
+        }
+
+        .install-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .install-button.show {
+            display: inline-block;
+        }
+
+        /* Settings Panel */
         .settings-trigger {
             margin-left: auto;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 2rem;
             color: #666;
             transition: color 0.2s ease;
             padding: 8px;
@@ -83,7 +209,7 @@
             border: 0.5pt solid #ccc;
             border-radius: 4px;
             padding: 15px;
-            min-width: 250px;
+            min-width: 280px;
             z-index: 1000;
             opacity: 0;
             transform: translateY(-10px);
@@ -127,11 +253,7 @@
             display: none;
         }
 
-        .header .date-info {
-            font-size: 14px;
-            color: #333;
-        }
-
+        /* Main Content & Entries */
         .main {
             flex: 1;
             padding: 30px 20px 30px 30px;
@@ -145,47 +267,26 @@
             line-height: 1.2;
             position: relative;
         }
-
+        
         .entry-delete {
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: 0px;
+            right: 0px;
             color: #dc2626;
             cursor: pointer;
-            font-size: 12px;
-            padding: 2px;
-            opacity: 0.7;
+            font-size: 14px;
+            padding: 2px 6px; 
+            opacity: 0.6;
             transition: opacity 0.2s ease;
             background: none;
             border: none;
             font-family: 'Courier New', Courier, monospace;
             line-height: 1;
+            z-index: 2; 
         }
 
         .entry-delete:hover {
             opacity: 1;
-        }
-
-        .entry-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .entry-description {
-            color: #444;
-            margin-bottom: 8px;
-        }
-
-        .entry-meta {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .entry-timestamp {
-            font-size: 10px;
-            color: #999;
-            margin-top: 8px;
-            font-style: italic;
         }
 
         .entry-editable {
@@ -206,9 +307,26 @@
             padding: 2px;
         }
 
+        .entry-title-wrapper {
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .entry-title-wrapper::before {
+            content: "|";
+            color: red;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-family: 'Courier New', Courier, monospace;
+            z-index: 1;
+        }
+
         .entry-title-edit {
             font-weight: bold;
-            margin-bottom: 5px;
+            padding-left: 15px;
+            width: 100%;
         }
 
         .entry-description-edit {
@@ -217,6 +335,63 @@
             min-height: 20px;
         }
 
+        .entry-timestamp {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .add-button {
+            display: inline-block;
+            font-size: 24px;
+            cursor: pointer;
+            margin-top: 20px;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .add-button:hover {
+            color: #000;
+        }
+
+        /* Footer with Logo */
+        .footer {
+            background-color: white;
+            border-top: 1px solid #eee;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .footer-logo {
+            height: 60px;
+            opacity: 0.6;
+        }
+
+        /* Online/Offline Status */
+        .status-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #22c55e;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            z-index: 3000;
+            transition: all 0.3s ease;
+        }
+
+        .status-indicator.offline {
+            background: #ef4444;
+        }
+        
+        /* Toast Notifications */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -226,7 +401,7 @@
             padding: 12px 16px;
             font-family: 'Courier New', Courier, monospace;
             font-size: 12px;
-            z-index: 1000;
+            z-index: 2001;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
@@ -253,29 +428,7 @@
             color: #444;
         }
 
-        .add-button {
-            display: inline-block;
-            font-size: 24px;
-            cursor: pointer;
-            margin-top: 20px;
-            color: #666;
-            transition: color 0.2s;
-        }
-
-        .add-button:hover {
-            color: #000;
-        }
-
-        .footer {
-            background-color: white;
-            border-top: 1px solid #eee;
-            padding: 15px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            margin-top: auto;
-        }
-
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -286,85 +439,91 @@
             background: rgba(0,0,0,0.5);
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
+        }
+
+        .modal.show {
+            display: flex;
         }
 
         .modal-content {
             background: white;
             padding: 30px;
             border: 2px solid #333;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-logo {
+            display: block;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px auto;
+            opacity: 0.8;
         }
 
         .modal-content h3 {
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            border: 1px solid #666;
-            padding: 8px;
-            font-family: 'Courier New', Courier, monospace;
+            margin: 20px 0 10px 0;
             font-size: 14px;
+            color: #444;
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
+        .modal-content p {
+            margin-bottom: 15px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #555;
         }
 
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
+        .modal-content ul {
+            margin: 10px 0 15px 20px;
         }
 
-        .btn {
-            padding: 8px 16px;
-            border: 1px solid #333;
-            background: white;
-            cursor: pointer;
-            font-family: 'Courier New', Courier, monospace;
-            transition: background-color 0.2s;
+        .modal-content li {
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #555;
         }
 
-        .btn:hover {
-            background-color: #f0f0f0;
+        .privacy-highlight {
+            background-color: #f0f8ff;
+            border: 1px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
         }
 
-        .btn-primary {
-            background-color: #333;
-            color: white;
+        .privacy-highlight strong {
+            color: #1d4ed8;
         }
 
-        .btn-primary:hover {
-            background-color: #555;
-        }
-
-        .plain-btn {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 18px;
-            padding: 0;
-        }
-
-        /* Responsive adjustments */
+        /* Responsive Adjustments */
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
@@ -373,16 +532,19 @@
                 padding: 15px 15px 15px 25px;
             }
 
-            .header .date-info {
-                display: inline-block;
-            }
-
             .settings-trigger {
                 position: absolute;
                 top: 15px;
                 right: 15px;
                 margin-left: 0;
-                font-size: 22px;
+            }
+
+            .install-button {
+                position: absolute;
+                top: 15px;
+                right: 60px;
+                font-size: 10px;
+                padding: 6px 8px;
             }
 
             .settings-panel {
@@ -394,18 +556,13 @@
             .main {
                 padding: 20px 15px 20px 25px;
             }
-
-            .entry {
-                margin-bottom: 20px;
+            
+            .footer {
+                padding: 10px 15px;
             }
 
-            .entry-delete {
-                font-size: 16px;
-                padding: 4px 6px;
-            }
-
-            .entry-editable {
-                font-size: 16px; /* Prevent zoom on iOS */
+            .footer-logo {
+                height: 18px;
             }
 
             .toast {
@@ -413,378 +570,531 @@
                 left: 15px;
                 right: 15px;
                 max-width: none;
-                font-size: 11px;
             }
 
             .red-line {
-                width: 1.5px; /* Slightly thicker on mobile */
-            }
-        }
-
-        @media (max-width: 400px) {
-            .header .date-info {
-                font-size: 12px;
+                width: 1.5px;
             }
 
-            .main {
-                padding: 15px 10px 15px 20px;
-            }
-
-            .entry-timestamp {
-                font-size: 9px;
-            }
-
-            .add-button {
-                font-size: 20px;
-            }
-
-            .settings-panel {
-                font-size: 11px;
-                padding: 12px;
+            .modal-content {
+                padding: 20px;
+                margin: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Online/Offline Status -->
+    <div class="status-indicator" id="status-indicator">Online</div>
+
     <div class="container">
+        <!-- Header -->
         <div class="header">
             <span class="divider">|</span>
-            <span class="date-info" id="day-of-year">Day 200 of the year</span>
-            <span class="date-info" id="days-left">165 days left</span>
-            <span class="date-info" id="week-number">Week 29</span>
-            <span class="date-info" id="current-date">7/19/25</span>
-            <div class="settings-trigger" onclick="toggleSettings()">☼</div>
+            <span class="date-info" id="day-of-year"></span>
+            <span class="date-info" id="days-left"></span>
+            <span class="date-info" id="week-number"></span>
+            <span class="date-info" id="current-date"></span>
+            <input type="text" class="year-name-edit" id="year-name" 
+                   placeholder="Click to name your year" 
+                   onblur="app.saveYearName(this.value)" title="Click to customize your year">
+            
+            <button class="install-button" id="install-button" onclick="app.installPWA()">Install App</button>
+            <div class="settings-trigger" onclick="app.toggleSettings()">☼</div>
             
             <div class="settings-panel" id="settings-panel">
-                <div class="settings-option" onclick="exportToCSV()">Export as CSV</div>
-                <div class="settings-option" onclick="triggerImport()">Import CSV
-                    <input type="file" id="csv-import" class="file-input" accept=".csv" onchange="importFromCSV(event)">
+                <div class="settings-option" onclick="app.showAboutModal()">About This Tool</div>
+                <div class="settings-option" onclick="app.exportYearArchive()">Export Year Archive (HTML)</div>
+                <div class="settings-option" onclick="app.exportToCSV()">Export as CSV</div>
+                <div class="settings-option" onclick="app.triggerImport()">Import CSV
+                    <input type="file" id="csv-import" class="file-input" accept=".csv" onchange="app.importFromCSV(event)">
                 </div>
-                <div class="settings-option danger" onclick="clearAllEntries()">Clear All Entries</div>
+                <div class="settings-option danger" onclick="app.clearAllEntries()">Clear All Entries</div>
             </div>
         </div>
 
+        <!-- Main Content -->
         <div class="content-wrapper">
             <div class="red-line"></div>
             <div class="content-area">
-                <div class="main">
-                    <div id="entries-container">
-                        <!-- Sample entries matching your screenshots -->
-                        <div class="entry">
-                            <div class="entry-title">observer is observed tool</div>
-                            <div class="entry-description">basic initial step to get introduced to meta cognition.to start with 🤖</div>
-                            <div class="entry-timestamp">7/19/25, 2:30 PM</div>
-                        </div>
-                        
-                        <div class="entry">
-                            <div class="entry-title">pipeline installed working</div>
-                            <div class="entry-description">farm upgraded after 32 years</div>
-                            <div class="entry-timestamp">7/19/25, 1:45 PM</div>
-                        </div>
-                    </div>
-                    
-                    <div class="add-button" onclick="addNewEntry()">+</div>
-                </div>
+                <main class="main">
+                    <div id="entries-container"></div>
+                    <div class="add-button" onclick="app.addNewEntry()" title="Add new entry (Ctrl+Enter)">+</div>
+                </main>
             </div>
         </div>
 
-        <div class="footer">
-            © YearLoG <span id="current-year">2025</span>
+        <!-- Footer -->
+        <footer class="footer">
+            <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="footer-logo">
+            <span>© <span id="current-year"></span></span>
+        </footer>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="app.closeAboutModal()">×</button>
+            <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="modal-logo">
+            <h2>YearLog - Your Personal Memory Companion</h2>
+            
+            <div class="privacy-highlight">
+                <strong>🔒 Complete Privacy & Offline Use</strong>
+                <p>YearLog works entirely offline and stores all your data locally in your browser. Nothing is sent to any servers. Your memories stay private and under your complete control.</p>
+            </div>
+
+            <h3>Philosophy</h3>
+            <p>YearLog is designed as a gentle, empathetic tool for individuals working to strengthen their memory connections. The app emphasizes minimal friction and encouraging progress.</p>
+
+            <h3>Progressive Web App Features</h3>
+            <ul>
+                <li><strong>Install as App:</strong> Click "Install App" to add YearLog to your device home screen.</li>
+                <li><strong>Offline First:</strong> Works completely offline with automatic sync when online.</li>
+                <li><strong>Fast Loading:</strong> Instant startup with cached resources.</li>
+                <li><strong>Cross-Platform:</strong> Works on mobile, tablet, and desktop devices.</li>
+            </ul>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>In-place editing:</strong> Click anywhere to edit - no complex forms.</li>
+                <li><strong>Visual timeline:</strong> Red line shows your memory progression.</li>
+                <li><strong>Auto-save:</strong> Changes save when you click away.</li>
+                <li><strong>Year Archives:</strong> Export complete, self-contained HTML files for each year.</li>
+                <li><strong>Data Portability:</strong> Import/export using standard CSV format.</li>
+                <li><strong>Keyboard Shortcuts:</strong> Use Ctrl+Enter to quickly add new entries.</li>
+            </ul>
+
+            <p style="margin-top: 20px; font-style: italic; color: #666;">Built with love for those working to strengthen their memory connections. You're doing great. 💚</p>
         </div>
     </div>
 
-    <!-- Toast notification container -->
+    <!-- Toast Notification Container -->
     <div id="toast-container"></div>
 
     <script>
-        // Date calculations
-        function updateDateInfo() {
+    const app = {
+        // --- STATE ---
+        entries: [],
+        yearName: '',
+        deferredPrompt: null,
+
+        // --- PWA INITIALIZATION ---
+        async init() {
+            // Load data from localStorage
+            this.entries = JSON.parse(localStorage.getItem('yearLogEntries')) || [];
+            this.yearName = localStorage.getItem('yearLogName') || new Date().getFullYear().toString();
+
+            // Initial UI setup
+            this.updateDateInfo();
+            this.loadYearName();
+            this.renderEntries();
+
+            // Set up recurring tasks
+            setInterval(() => this.updateDateInfo(), 60000); 
+
+            // Set up global event listeners
+            this.addEventListeners();
+            
+            // PWA Setup
+            this.initPWA();
+            this.updateOnlineStatus();
+            
+            if (!localStorage.getItem('yearLogVisited')) {
+                setTimeout(() => this.showAboutModal(), 1000);
+                localStorage.setItem('yearLogVisited', 'true');
+            }
+        },
+
+        initPWA() {
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                this.registerServiceWorker();
+            }
+
+            // Handle install prompt
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                this.deferredPrompt = e;
+                document.getElementById('install-button').classList.add('show');
+            });
+
+            // Handle app installed
+            window.addEventListener('appinstalled', () => {
+                this.deferredPrompt = null;
+                document.getElementById('install-button').classList.remove('show');
+                this.showToast('YearLog installed successfully!', 'success');
+            });
+
+            // Online/offline status
+            window.addEventListener('online', () => this.updateOnlineStatus());
+            window.addEventListener('offline', () => this.updateOnlineStatus());
+        },
+
+        async registerServiceWorker() {
+            try {
+                const registration = await navigator.serviceWorker.register('sw.js');
+                console.log('Service Worker registered:', registration);
+                this.showToast('App ready for offline use!', 'success');
+            } catch (error) {
+                console.log('Service Worker registration failed:', error);
+            }
+        },
+
+        async installPWA() {
+            if (this.deferredPrompt) {
+                this.deferredPrompt.prompt();
+                const { outcome } = await this.deferredPrompt.userChoice;
+                this.deferredPrompt = null;
+                document.getElementById('install-button').classList.remove('show');
+            }
+        },
+
+        updateOnlineStatus() {
+            const indicator = document.getElementById('status-indicator');
+            if (navigator.onLine) {
+                indicator.textContent = 'Online';
+                indicator.classList.remove('offline');
+            } else {
+                indicator.textContent = 'Offline';
+                indicator.classList.add('offline');
+            }
+        },
+
+        addEventListeners() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    this.addNewEntry();
+                }
+                if (e.key === 'Escape') {
+                    this.closeSettings();
+                    this.closeAboutModal();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const settingsPanel = document.getElementById('settings-panel');
+                const settingsTrigger = document.querySelector('.settings-trigger');
+                if (!settingsPanel.contains(e.target) && !settingsTrigger.contains(e.target)) {
+                    this.closeSettings();
+                }
+                if (e.target.id === 'about-modal') {
+                    this.closeAboutModal();
+                }
+            });
+
+            document.addEventListener('input', (e) => {
+                if (e.target.tagName.toLowerCase() === 'textarea' && e.target.classList.contains('entry-description-edit')) {
+                    this.autoResizeTextarea(e.target);
+                }
+            });
+        },
+
+        updateDateInfo() {
             const now = new Date();
-            const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
-            const isLeapYear = (now.getFullYear() % 4 === 0 && now.getFullYear() % 100 !== 0) || (now.getFullYear() % 400 === 0);
-            const daysInYear = isLeapYear ? 366 : 365;
-            const daysLeft = daysInYear - dayOfYear;
-            
-            // Calculate week number
-            const firstDay = new Date(now.getFullYear(), 0, 1);
-            const days = Math.floor((now - firstDay) / 86400000) + (firstDay.getDay() || 7);
-            const weekNumber = Math.ceil(days / 7);
-            
-            const month = now.getMonth() + 1;
-            const day = now.getDate();
-            const yearShort = now.getFullYear() % 100;
-            
-            document.getElementById('day-of-year').textContent = `Day ${dayOfYear} of the year`;
-            document.getElementById('days-left').textContent = `${daysLeft} days left`;
-            document.getElementById('week-number').textContent = `Week ${weekNumber}`;
-            document.getElementById('current-date').textContent = `${month}/${day}/${yearShort}`;
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            const isLeap = new Date(now.getFullYear(), 1, 29).getDate() === 29;
+            const daysInYear = isLeap ? 366 : 365;
+
+            document.getElementById('day-of-year').textContent = `Day ${dayOfYear}`;
+            document.getElementById('days-left').textContent = `${daysInYear - dayOfYear} days left`;
+            document.getElementById('week-number').textContent = `Week ${Math.ceil(dayOfYear / 7)}`;
+            document.getElementById('current-date').textContent = now.toLocaleDateString();
             document.getElementById('current-year').textContent = now.getFullYear();
-        }
+        },
 
-        // Entry management with in-place editing
-        let entries = JSON.parse(localStorage.getItem('entries')) || [];
+        loadYearName() {
+            document.getElementById('year-name').value = this.yearName;
+        },
 
-        function renderEntries() {
+        saveYearName(name) {
+            const newName = name.trim();
+            if (newName) {
+                this.yearName = newName;
+                localStorage.setItem('yearLogName', this.yearName);
+                this.showToast('Year name updated.', 'success');
+            } else {
+                document.getElementById('year-name').value = this.yearName;
+            }
+        },
+        
+        renderEntries() {
             const container = document.getElementById('entries-container');
-            container.innerHTML = '';
+            container.innerHTML = ''; 
             
-            entries.forEach((entry, index) => {
+            this.entries.forEach((entry, index) => {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'entry';
                 entryDiv.setAttribute('data-index', index);
                 
-                // Format timestamp
-                const timestamp = entry.timestamp ? new Date(entry.timestamp) : new Date();
+                const timestamp = new Date(entry.timestamp);
                 const timeString = timestamp.toLocaleString('en-US', {
-                    month: 'numeric',
-                    day: 'numeric',
-                    year: '2-digit',
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: true
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true
                 });
-                
+
                 entryDiv.innerHTML = `
-                    <button class="entry-delete" onclick="deleteEntry(${index})" title="Delete entry">×</button>
-                    <input type="text" class="entry-editable entry-title-edit" value="${escapeHtml(entry.title)}" 
-                           onblur="saveEntry(${index}, 'title', this.value)" placeholder="Enter title...">
+                    <button class="entry-delete" onclick="app.deleteEntry(event, ${index})" title="Delete entry">×</button>
+                    <div class="entry-title-wrapper">
+                        <input type="text" class="entry-editable entry-title-edit" value="${this.escapeHtml(entry.title)}" 
+                               onblur="app.updateEntry(${index}, 'title', this.value)" placeholder="Enter title...">
+                    </div>
                     <textarea class="entry-editable entry-description-edit" 
-                              onblur="saveEntry(${index}, 'description', this.value)" 
-                              placeholder="Enter description...">${escapeHtml(entry.description)}</textarea>
+                              onblur="app.updateEntry(${index}, 'description', this.value)" 
+                              placeholder="Enter description...">${this.escapeHtml(entry.description)}</textarea>
                     <div class="entry-timestamp">${timeString}</div>
                 `;
                 container.appendChild(entryDiv);
             });
-        }
 
-        function saveEntry(index, field, value) {
-            if (value.trim() === '') {
-                showToast('Field cannot be empty', 'error');
-                renderEntries(); // Reset to original value
-                return;
-            }
-            
-            entries[index][field] = value.trim();
-            localStorage.setItem('entries', JSON.stringify(entries));
-            showToast('Entry saved', 'success');
-        }
+            setTimeout(() => {
+                document.querySelectorAll('.entry-description-edit').forEach(this.autoResizeTextarea);
+            }, 0);
+        },
 
-        function deleteEntry(index) {
-            if (confirm('Are you sure you want to delete this entry?')) {
-                entries.splice(index, 1);
-                localStorage.setItem('entries', JSON.stringify(entries));
-                renderEntries();
-                showToast('Entry deleted', 'info');
-            }
-        }
-
-        function addNewEntry() {
+        addNewEntry() {
             const newEntry = {
-                title: '',
+                id: Date.now(),
+                title: 'New Entry',
                 description: '',
                 timestamp: new Date().toISOString()
             };
-            
-            entries.unshift(newEntry);
-            localStorage.setItem('entries', JSON.stringify(entries));
-            renderEntries();
-            
-            // Focus on the first title field
+            this.entries.unshift(newEntry);
+            this.saveEntries();
+            this.renderEntries();
+            this.showToast('New entry added.', 'info');
+
             setTimeout(() => {
-                const firstTitle = document.querySelector('.entry-title-edit');
-                if (firstTitle) {
-                    firstTitle.focus();
-                    firstTitle.select();
+                const firstTitleInput = document.querySelector('.entry-title-edit');
+                if (firstTitleInput) {
+                    firstTitleInput.focus();
+                    firstTitleInput.select();
                 }
             }, 100);
-            
-            showToast('New entry added', 'info');
-        }
+        },
 
-        function showToast(message, type = 'info') {
-            const toastContainer = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            toastContainer.appendChild(toast);
-            
-            // Trigger animation
-            setTimeout(() => toast.classList.add('show'), 100);
-            
-            // Remove after 3 seconds
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toastContainer.removeChild(toast), 300);
-            }, 3000);
-        }
+        updateEntry(index, field, value) {
+            this.entries[index][field] = value;
+            this.saveEntries();
+            this.showToast('Entry saved.', 'success');
+        },
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        deleteEntry(event, index) {
+            event.stopPropagation(); 
+            if (confirm('Are you sure you want to delete this entry?')) {
+                this.entries.splice(index, 1);
+                this.saveEntries();
+                this.renderEntries();
+                this.showToast('Entry deleted.', 'info');
+            }
+        },
 
-        // Settings panel functionality
-        function toggleSettings() {
-            const panel = document.getElementById('settings-panel');
-            panel.classList.toggle('show');
-        }
+        clearAllEntries() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('There are no entries to clear.', 'error');
+                return;
+            }
+            if (confirm(`Are you sure you want to delete all ${this.entries.length} entries? This action cannot be undone.`)) {
+                this.entries = [];
+                this.saveEntries();
+                this.renderEntries();
+                this.showToast('All entries have been cleared.', 'info');
+            }
+        },
 
-        function closeSettings() {
-            const panel = document.getElementById('settings-panel');
-            panel.classList.remove('show');
-        }
+        saveEntries() {
+            localStorage.setItem('yearLogEntries', JSON.stringify(this.entries));
+        },
 
-        function exportToCSV() {
-            if (entries.length === 0) {
-                showToast('No entries to export', 'error');
-                closeSettings();
+        exportYearArchive() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('No entries to export.', 'error');
                 return;
             }
 
-            const csvContent = [
-                ['Title', 'Description', 'Timestamp'],
-                ...entries.map(entry => [
-                    entry.title,
-                    entry.description,
-                    entry.timestamp
-                ])
-            ].map(row => row.map(field => `"${field.replace(/"/g, '""')}"`).join(',')).join('\n');
+            const archiveDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `yearlog-${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const entriesHtml = this.entries.map(entry => {
+                const timeString = new Date(entry.timestamp).toLocaleString('en-US', {
+                    month: 'numeric', day: 'numeric', year: '2-digit', hour: 'numeric', minute: '2-digit', hour12: true
+                });
+                const descriptionHtml = this.escapeHtml(entry.description).replace(/\n/g, '<br>');
+                
+                return `
+                    <div class="entry">
+                        <div class="entry-title-wrapper">
+                            <span style="font-weight: bold; padding-left: 15px;">${this.escapeHtml(entry.title)}</span>
+                        </div>
+                        <div style="color: #444; margin-bottom: 8px; white-space: pre-wrap;">${descriptionHtml}</div>
+                        <div class="entry-timestamp">${timeString}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const htmlTemplate = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YearLog Archive - ${this.escapeHtml(this.yearName)}</title>
+    <style>
+        body { font-family: 'Courier New', Courier, monospace; line-height: 1.4; background: white; color: black; }
+        .container { display: flex; min-height: 100vh; }
+        .red-line { width: 2px; background-color: red; }
+        .content-area { flex: 1; }
+        .header { padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .header .divider { color: red; font-weight: bold; margin-left: -10px; }
+        .header .info { font-size: 14px; color: #333; }
+        .header .year-name { font-size: 14px; color: #333; font-weight: bold; }
+        .main { max-width: 800px; margin: 0 auto; padding: 30px; }
+        .entry { margin-bottom: 25px; position: relative; }
+        .entry-title-wrapper { position: relative; margin-bottom: 5px; }
+        .entry-title-wrapper::before { content: "|"; color: red; font-weight: bold; position: absolute; left: 0; }
+        .entry-timestamp { font-size: 10px; color: #999; margin-top: 8px; font-style: italic; }
+        .footer { border-top: 1px solid #eee; padding: 15px; text-align: center; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="red-line"></div>
+        <div class="content-area">
+            <div class="header">
+                <span class="divider">|</span>
+                <span class="info">YearLog Archive</span>
+                <span class="info">${this.entries.length} Entries</span>
+                <span class="year-name">${this.escapeHtml(this.yearName)}</span>
+            </div>
+            <div class="main">${entriesHtml}</div>
+            <div class="footer">Archive Generated on ${archiveDate}</div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            const blob = new Blob([htmlTemplate], { type: 'text/html;charset=utf-8' });
+            const fileName = `YearLog_Archive_${this.yearName.replace(/[^a-z0-9]/gi, '_')}.html`;
+            this.downloadBlob(blob, fileName);
+            this.showToast(`Exported ${this.entries.length} entries to HTML.`, 'success');
+        },
+
+        exportToCSV() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('No entries to export.', 'error');
+                return;
+            }
+            const header = ['Title', 'Description', 'Timestamp'];
+            const rows = this.entries.map(e => [e.title, e.description, e.timestamp]);
+            const csvContent = [header, ...rows].map(row => 
+                row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')
+            ).join('\n');
             
-            showToast(`Exported ${entries.length} entries`, 'success');
-            closeSettings();
-        }
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            this.downloadBlob(blob, `YearLog_Export_${new Date().toISOString().split('T')[0]}.csv`);
+            this.showToast(`Exported ${this.entries.length} entries to CSV.`, 'success');
+        },
 
-        function triggerImport() {
+        triggerImport() {
+            this.closeSettings();
             document.getElementById('csv-import').click();
-            closeSettings();
-        }
+        },
 
-        function importFromCSV(event) {
+        importFromCSV(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = (e) => {
+                const text = e.target.result;
                 try {
-                    const csv = e.target.result;
-                    const lines = csv.split('\n');
+                    const lines = text.split('\n');
                     const importedEntries = [];
-                    
-                    // Skip header row if it exists
                     const startIndex = lines[0].toLowerCase().includes('title') ? 1 : 0;
-                    
-                    for (let i = startIndex; i < lines.length; i++) {
+
+                    for(let i = startIndex; i < lines.length; i++) {
                         const line = lines[i].trim();
                         if (!line) continue;
-                        
-                        // Simple CSV parsing (handles quoted fields)
-                        const matches = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-                        if (matches && matches.length >= 2) {
-                            const title = matches[0].replace(/^"|"$/g, '').replace(/""/g, '"');
-                            const description = matches[1].replace(/^"|"$/g, '').replace(/""/g, '"');
-                            
-                            if (title && description) {
-                                importedEntries.push({
-                                    title: title,
-                                    description: description,
-                                    timestamp: new Date().toISOString() // Current time as requested
-                                });
-                            }
+                        const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
+                        if (values.length >= 2) {
+                             importedEntries.push({
+                                id: Date.now() + i,
+                                title: values[0],
+                                description: values[1],
+                                timestamp: values[2] && !isNaN(new Date(values[2])) ? new Date(values[2]).toISOString() : new Date().toISOString()
+                            });
                         }
                     }
-                    
+
                     if (importedEntries.length > 0) {
-                        entries = [...importedEntries, ...entries]; // Add imported entries to top
-                        localStorage.setItem('entries', JSON.stringify(entries));
-                        renderEntries();
-                        showToast(`Imported ${importedEntries.length} entries`, 'success');
+                        this.entries = [...importedEntries, ...this.entries];
+                        this.saveEntries();
+                        this.renderEntries();
+                        this.showToast(`Successfully imported ${importedEntries.length} entries.`, 'success');
                     } else {
-                        showToast('No valid entries found in CSV', 'error');
+                        this.showToast('No valid entries found in CSV file.', 'error');
                     }
-                } catch (error) {
-                    showToast('Error reading CSV file', 'error');
+                } catch (err) {
+                    this.showToast('Failed to parse CSV file.', 'error');
+                    console.error("CSV Parse Error:", err);
                 }
             };
             reader.readAsText(file);
-            
-            // Reset file input
-            event.target.value = '';
-        }
+            event.target.value = null; 
+        },
 
-        function clearAllEntries() {
-            if (entries.length === 0) {
-                showToast('No entries to clear', 'error');
-                closeSettings();
-                return;
-            }
-            
-            if (confirm(`Are you sure you want to delete all ${entries.length} entries? This cannot be undone.`)) {
-                entries = [];
-                localStorage.setItem('entries', JSON.stringify(entries));
-                renderEntries();
-                showToast('All entries cleared', 'info');
-            }
-            closeSettings();
-        }
+        toggleSettings() {
+            document.getElementById('settings-panel').classList.toggle('show');
+        },
+        closeSettings() {
+            document.getElementById('settings-panel').classList.remove('show');
+        },
+        showAboutModal() {
+            this.closeSettings();
+            document.getElementById('about-modal').classList.add('show');
+        },
+        closeAboutModal() {
+            document.getElementById('about-modal').classList.remove('show');
+        },
+        showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
 
-        // Auto-resize textareas
-        function autoResizeTextarea(textarea) {
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => container.removeChild(toast), 300);
+            }, 3000);
+        },
+        escapeHtml(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        },
+        autoResizeTextarea(textarea) {
             textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        },
+        downloadBlob(blob, fileName) {
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
+    };
 
-        // Add event listeners for auto-resize
-        document.addEventListener('input', function(e) {
-            if (e.target.classList.contains('entry-description-edit')) {
-                autoResizeTextarea(e.target);
-            }
-        });
-
-        // Keyboard shortcuts and event listeners
-        document.addEventListener('keydown', function(e) {
-            // Ctrl/Cmd + Enter to add new entry
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                addNewEntry();
-            }
-            // Escape to close settings
-            if (e.key === 'Escape') {
-                closeSettings();
-            }
-        });
-
-        // Close settings when clicking outside
-        document.addEventListener('click', function(e) {
-            const settingsPanel = document.getElementById('settings-panel');
-            const settingsTrigger = document.querySelector('.settings-trigger');
-            
-            if (!settingsPanel.contains(e.target) && !settingsTrigger.contains(e.target)) {
-                closeSettings();
-            }
-        });
-
-        // Initialize
-        updateDateInfo();
-        renderEntries();
-        
-        // Auto-resize all textareas on load
-        setTimeout(() => {
-            document.querySelectorAll('.entry-description-edit').forEach(autoResizeTextarea);
-        }, 100);
-        
-        // Update date info every minute
-        setInterval(updateDateInfo, 60000);
+    document.addEventListener('DOMContentLoaded', () => app.init());
     </script>
 </body>
 </html>
