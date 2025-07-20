@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YearLog - Your Personal Memory Companion</title>
+    <style>
+        /* General Resets and Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.4;
+            background-color: white;
+            color: black;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Layout Structure */
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        .red-line {
+            width: 2px;
+            background-color: red;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 20px 20px 30px;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .header .divider {
+            color: red;
+            font-weight: bold;
+            margin-left: -10px;
+        }
+
+        .header .date-info {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .year-name-edit {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #333;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .year-name-edit:hover {
+            background-color: #f5f5f5;
+        }
+
+        .year-name-edit:focus {
+            background-color: #f9f9f9;
+            border: 0.5pt solid #ccc;
+            outline: none;
+        }
+
+        /* Settings Panel */
+        .settings-trigger {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #666;
+            transition: color 0.2s ease;
+            padding: 8px;
+            border-radius: 3px;
+            user-select: none;
+        }
+
+        .settings-trigger:hover {
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .settings-panel {
+            position: absolute;
+            top: 100%;
+            right: 20px;
+            background: white;
+            border: 0.5pt solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            min-width: 280px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            visibility: hidden;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .settings-panel.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .settings-option {
+            padding: 8px 0;
+            border-bottom: 0.5pt solid #eee;
+            cursor: pointer;
+            font-size: 12px;
+            color: #444;
+            transition: color 0.2s ease;
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        .settings-option:hover {
+            color: #000;
+        }
+
+        .settings-option.danger {
+            color: #dc2626;
+        }
+
+        .settings-option.danger:hover {
+            color: #991b1b;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Main Content & Entries */
+        .main {
+            flex: 1;
+            padding: 30px 20px 30px 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .entry {
+            margin-bottom: 25px;
+            line-height: 1.2;
+            position: relative;
+        }
+        
+        .entry-delete {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px; 
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+            background: none;
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1;
+            z-index: 2; 
+        }
+
+        .entry-delete:hover {
+            opacity: 1;
+        }
+
+        .entry-editable {
+            border: none;
+            background: transparent;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: inherit;
+            color: inherit;
+            width: 100%;
+            resize: none;
+            outline: none;
+            line-height: inherit;
+        }
+
+        .entry-editable:focus {
+            background-color: #f9f9f9;
+            border: 0.5pt solid #ccc;
+            padding: 2px;
+        }
+
+        .entry-title-wrapper {
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .entry-title-wrapper::before {
+            content: "|";
+            color: red;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-family: 'Courier New', Courier, monospace;
+            z-index: 1;
+        }
+
+        .entry-title-edit {
+            font-weight: bold;
+            padding-left: 15px;
+            width: 100%;
+        }
+
+        .entry-description-edit {
+            color: #444;
+            margin-bottom: 8px;
+            min-height: 20px;
+        }
+
+        .entry-timestamp {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .add-button {
+            display: inline-block;
+            font-size: 24px;
+            cursor: pointer;
+            margin-top: 20px;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .add-button:hover {
+            color: #000;
+        }
+
+        /* --- FOOTER (WITH LOGO) --- */
+        .footer {
+            background-color: white;
+            border-top: 1px solid #eee;
+            padding: 12px 20px; /* Adjusted padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .footer-logo {
+            height: 60px; /* Controls the height of the logo */
+            opacity: 0.6;
+        }
+        
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            border: 0.5pt solid;
+            padding: 12px 16px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            z-index: 2001;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-color: #22c55e;
+            color: #444;
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+            color: #444;
+        }
+
+        .toast.info {
+            border-color: #3b82f6;
+            color: #444;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border: 2px solid #333;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-content h3 {
+            margin: 20px 0 10px 0;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .modal-content p {
+            margin-bottom: 15px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .modal-content ul {
+            margin: 10px 0 15px 20px;
+        }
+
+        .modal-content li {
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .privacy-highlight {
+            background-color: #f0f8ff;
+            border: 1px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .privacy-highlight strong {
+            color: #1d4ed8;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 15px 15px 15px 25px;
+            }
+
+            .settings-trigger {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                margin-left: 0;
+            }
+
+            .settings-panel {
+                right: 15px;
+                left: 15px;
+                min-width: auto;
+            }
+            
+            .main {
+                padding: 20px 15px 20px 25px;
+            }
+            
+            .footer {
+                padding: 10px 15px;
+            }
+
+            .footer-logo {
+                height: 18px;
+            }
+
+            .toast {
+                bottom: 15px;
+                left: 15px;
+                right: 15px;
+                max-width: none;
+            }
+
+            .red-line {
+                width: 1.5px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="divider">|</span>
+            <span class="date-info" id="day-of-year"></span>
+            <span class="date-info" id="days-left"></span>
+            <span class="date-info" id="week-number"></span>
+            <span class="date-info" id="current-date"></span>
+            <input type="text" class="year-name-edit" id="year-name" 
+                   placeholder="Click to name your year" 
+                   onblur="app.saveYearName(this.value)" title="Click to customize your year">
+            
+            <div class="settings-trigger" onclick="app.toggleSettings()">☼</div>
+            
+            <div class="settings-panel" id="settings-panel">
+                <div class="settings-option" onclick="app.showAboutModal()">About This Tool</div>
+                <div class="settings-option" onclick="app.exportYearArchive()">Export Year Archive (HTML)</div>
+                <div class="settings-option" onclick="app.exportToCSV()">Export as CSV</div>
+                <div class="settings-option" onclick="app.triggerImport()">Import CSV
+                    <input type="file" id="csv-import" class="file-input" accept=".csv" onchange="app.importFromCSV(event)">
+                </div>
+                <div class="settings-option danger" onclick="app.clearAllEntries()">Clear All Entries</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <div class="red-line"></div>
+            <div class="content-area">
+                <main class="main">
+                    <div id="entries-container"></div>
+                    <div class="add-button" onclick="app.addNewEntry()" title="Add new entry (Ctrl+Enter)">+</div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="footer-logo">
+            <span>© <span id="current-year"></span></span>
+        </footer>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="app.closeAboutModal()">×</button>
+            <h2>YearLog - Your Personal Memory Companion</h2>
+            
+            <div class="privacy-highlight">
+                <strong>🔒 Complete Privacy & Offline Use</strong>
+                <p>YearLog works entirely offline and stores all your data locally in your browser. Nothing is sent to any servers. Your memories stay private and under your complete control.</p>
+            </div>
+
+            <h3>Philosophy</h3>
+            <p>YearLog is designed as a gentle, empathetic tool for individuals working to strengthen their memory connections. The app emphasizes minimal friction and encouraging progress.</p>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>In-place editing:</strong> Click anywhere to edit - no complex forms.</li>
+                <li><strong>Visual timeline:</strong> Red line shows your memory progression.</li>
+                <li><strong>Auto-save:</strong> Changes save when you click away.</li>
+                <li><strong>Year Archives:</strong> Export complete, self-contained HTML files for each year.</li>
+                <li><strong>Data Portability:</strong> Import/export using standard CSV format.</li>
+                <li><strong>Keyboard Shortcuts:</strong> Use Ctrl+Enter to quickly add new entries.</li>
+            </ul>
+
+            <p style="margin-top: 20px; font-style: italic; color: #666;">Built with love for those working to strengthen their memory connections. You're doing great. 💚</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <script>
+    const app = {
+        // --- STATE ---
+        entries: [],
+        yearName: '',
+
+        // --- INITIALIZATION ---
+        init() {
+            // Load data from localStorage
+            this.entries = JSON.parse(localStorage.getItem('yearLogEntries')) || [];
+            this.yearName = localStorage.getItem('yearLogName') || new Date().getFullYear().toString();
+
+            // Initial UI setup
+            this.updateDateInfo();
+            this.loadYearName();
+            this.renderEntries();
+
+            // Set up recurring tasks
+            setInterval(() => this.updateDateInfo(), 60000); 
+
+            // Set up global event listeners
+            this.addEventListeners();
+            
+            if (!localStorage.getItem('yearLogVisited')) {
+                setTimeout(() => this.showAboutModal(), 1000);
+                localStorage.setItem('yearLogVisited', 'true');
+            }
+        },
+
+        addEventListeners() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    this.addNewEntry();
+                }
+                if (e.key === 'Escape') {
+                    this.closeSettings();
+                    this.closeAboutModal();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const settingsPanel = document.getElementById('settings-panel');
+                const settingsTrigger = document.querySelector('.settings-trigger');
+                if (!settingsPanel.contains(e.target) && !settingsTrigger.contains(e.target)) {
+                    this.closeSettings();
+                }
+                if (e.target.id === 'about-modal') {
+                    this.closeAboutModal();
+                }
+            });
+
+            document.addEventListener('input', (e) => {
+                if (e.target.tagName.toLowerCase() === 'textarea' && e.target.classList.contains('entry-description-edit')) {
+                    this.autoResizeTextarea(e.target);
+                }
+            });
+        },
+
+        updateDateInfo() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            const isLeap = new Date(now.getFullYear(), 1, 29).getDate() === 29;
+            const daysInYear = isLeap ? 366 : 365;
+
+            document.getElementById('day-of-year').textContent = `Day ${dayOfYear}`;
+            document.getElementById('days-left').textContent = `${daysInYear - dayOfYear} days left`;
+            document.getElementById('week-number').textContent = `Week ${Math.ceil(dayOfYear / 7)}`;
+            document.getElementById('current-date').textContent = now.toLocaleDateString();
+            document.getElementById('current-year').textContent = now.getFullYear();
+        },
+
+        loadYearName() {
+            document.getElementById('year-name').value = this.yearName;
+        },
+
+        saveYearName(name) {
+            const newName = name.trim();
+            if (newName) {
+                this.yearName = newName;
+                localStorage.setItem('yearLogName', this.yearName);
+                this.showToast('Year name updated.', 'success');
+            } else {
+                document.getElementById('year-name').value = this.yearName;
+            }
+        },
+        
+        renderEntries() {
+            const container = document.getElementById('entries-container');
+            container.innerHTML = ''; 
+            
+            this.entries.forEach((entry, index) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry';
+                entryDiv.setAttribute('data-index', index);
+                
+                const timestamp = new Date(entry.timestamp);
+                const timeString = timestamp.toLocaleString('en-US', {
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true
+                });
+
+                entryDiv.innerHTML = `
+                    <button class="entry-delete" onclick="app.deleteEntry(event, ${index})" title="Delete entry">×</button>
+                    <div class="entry-title-wrapper">
+                        <input type="text" class="entry-editable entry-title-edit" value="${this.escapeHtml(entry.title)}" 
+                               onblur="app.updateEntry(${index}, 'title', this.value)" placeholder="Enter title...">
+                    </div>
+                    <textarea class="entry-editable entry-description-edit" 
+                              onblur="app.updateEntry(${index}, 'description', this.value)" 
+                              placeholder="Enter description...">${this.escapeHtml(entry.description)}</textarea>
+                    <div class="entry-timestamp">${timeString}</div>
+                `;
+                container.appendChild(entryDiv);
+            });
+
+            setTimeout(() => {
+                document.querySelectorAll('.entry-description-edit').forEach(this.autoResizeTextarea);
+            }, 0);
+        },
+
+        addNewEntry() {
+            const newEntry = {
+                id: Date.now(),
+                title: 'New Entry',
+                description: '',
+                timestamp: new Date().toISOString()
+            };
+            this.entries.unshift(newEntry);
+            this.saveEntries();
+            this.renderEntries();
+            this.showToast('New entry added.', 'info');
+
+            setTimeout(() => {
+                const firstTitleInput = document.querySelector('.entry-title-edit');
+                if (firstTitleInput) {
+                    firstTitleInput.focus();
+                    firstTitleInput.select();
+                }
+            }, 100);
+        },
+
+        updateEntry(index, field, value) {
+            this.entries[index][field] = value;
+            this.saveEntries();
+            this.showToast('Entry saved.', 'success');
+        },
+
+        deleteEntry(event, index) {
+            event.stopPropagation(); 
+            if (confirm('Are you sure you want to delete this entry?')) {
+                this.entries.splice(index, 1);
+                this.saveEntries();
+                this.renderEntries();
+                this.showToast('Entry deleted.', 'info');
+            }
+        },
+
+        clearAllEntries() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('There are no entries to clear.', 'error');
+                return;
+            }
+            if (confirm(`Are you sure you want to delete all ${this.entries.length} entries? This action cannot be undone.`)) {
+                this.entries = [];
+                this.saveEntries();
+                this.renderEntries();
+                this.showToast('All entries have been cleared.', 'info');
+            }
+        },
+
+        saveEntries() {
+            localStorage.setItem('yearLogEntries', JSON.stringify(this.entries));
+        },
+
+        exportYearArchive() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('No entries to export.', 'error');
+                return;
+            }
+
+            const archiveDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+            const entriesHtml = this.entries.map(entry => {
+                const timeString = new Date(entry.timestamp).toLocaleString('en-US', {
+                    month: 'numeric', day: 'numeric', year: '2-digit', hour: 'numeric', minute: '2-digit', hour12: true
+                });
+                const descriptionHtml = this.escapeHtml(entry.description).replace(/\n/g, '<br>');
+                
+                return `
+                    <div class="entry">
+                        <div class="entry-title-wrapper">
+                            <span style="font-weight: bold; padding-left: 15px;">${this.escapeHtml(entry.title)}</span>
+                        </div>
+                        <div style="color: #444; margin-bottom: 8px; white-space: pre-wrap;">${descriptionHtml}</div>
+                        <div class="entry-timestamp">${timeString}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const htmlTemplate = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YearLog Archive - ${this.escapeHtml(this.yearName)}</title>
+    <style>
+        body { font-family: 'Courier New', Courier, monospace; line-height: 1.4; background: white; color: black; }
+        .container { display: flex; min-height: 100vh; }
+        .red-line { width: 2px; background-color: red; }
+        .content-area { flex: 1; }
+        .header { padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .header .divider { color: red; font-weight: bold; margin-left: -10px; }
+        .header .info { font-size: 14px; color: #333; }
+        .header .year-name { font-size: 14px; color: #333; font-weight: bold; }
+        .main { max-width: 800px; margin: 0 auto; padding: 30px; }
+        .entry { margin-bottom: 25px; position: relative; }
+        .entry-title-wrapper { position: relative; margin-bottom: 5px; }
+        .entry-title-wrapper::before { content: "|"; color: red; font-weight: bold; position: absolute; left: 0; }
+        .entry-timestamp { font-size: 10px; color: #999; margin-top: 8px; font-style: italic; }
+        .footer { border-top: 1px solid #eee; padding: 15px; text-align: center; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="red-line"></div>
+        <div class="content-area">
+            <div class="header">
+                <span class="divider">|</span>
+                <span class="info">YearLog Archive</span>
+                <span class="info">${this.entries.length} Entries</span>
+                <span class="year-name">${this.escapeHtml(this.yearName)}</span>
+            </div>
+            <div class="main">${entriesHtml}</div>
+            <div class="footer">Archive Generated on ${archiveDate}</div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            const blob = new Blob([htmlTemplate], { type: 'text/html;charset=utf-8' });
+            const fileName = `YearLog_Archive_${this.yearName.replace(/[^a-z0-9]/gi, '_')}.html`;
+            this.downloadBlob(blob, fileName);
+            this.showToast(`Exported ${this.entries.length} entries to HTML.`, 'success');
+        },
+
+        exportToCSV() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('No entries to export.', 'error');
+                return;
+            }
+            const header = ['Title', 'Description', 'Timestamp'];
+            const rows = this.entries.map(e => [e.title, e.description, e.timestamp]);
+            const csvContent = [header, ...rows].map(row => 
+                row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')
+            ).join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            this.downloadBlob(blob, `YearLog_Export_${new Date().toISOString().split('T')[0]}.csv`);
+            this.showToast(`Exported ${this.entries.length} entries to CSV.`, 'success');
+        },
+
+        triggerImport() {
+            this.closeSettings();
+            document.getElementById('csv-import').click();
+        },
+
+        importFromCSV(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const text = e.target.result;
+                try {
+                    const lines = text.split('\n');
+                    const importedEntries = [];
+                    const startIndex = lines[0].toLowerCase().includes('title') ? 1 : 0;
+
+                    for(let i = startIndex; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
+                        if (values.length >= 2) {
+                             importedEntries.push({
+                                id: Date.now() + i,
+                                title: values[0],
+                                description: values[1],
+                                timestamp: values[2] && !isNaN(new Date(values[2])) ? new Date(values[2]).toISOString() : new Date().toISOString()
+                            });
+                        }
+                    }
+
+                    if (importedEntries.length > 0) {
+                        this.entries = [...importedEntries, ...this.entries];
+                        this.saveEntries();
+                        this.renderEntries();
+                        this.showToast(`Successfully imported ${importedEntries.length} entries.`, 'success');
+                    } else {
+                        this.showToast('No valid entries found in CSV file.', 'error');
+                    }
+                } catch (err) {
+                    this.showToast('Failed to parse CSV file.', 'error');
+                    console.error("CSV Parse Error:", err);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = null; 
+        },
+
+        toggleSettings() {
+            document.getElementById('settings-panel').classList.toggle('show');
+        },
+        closeSettings() {
+            document.getElementById('settings-panel').classList.remove('show');
+        },
+        showAboutModal() {
+            this.closeSettings();
+            document.getElementById('about-modal').classList.add('show');
+        },
+        closeAboutModal() {
+            document.getElementById('about-modal').classList.remove('show');
+        },
+        showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => container.removeChild(toast), 300);
+            }, 3000);
+        },
+        escapeHtml(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        },
+        autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        },
+        downloadBlob(blob, fileName) {
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
