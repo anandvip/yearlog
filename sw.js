@@ -62,6 +62,13 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
+  // Only handle GET requests for caching (Cache API limitation)
+  if (request.method !== 'GET') {
+    // For non-GET requests, just pass through to network
+    event.respondWith(fetch(request));
+    return;
+  }
+
   // Only handle same-origin requests and essential external resources
   if (url.origin === location.origin || url.href.includes('github.com')) {
     event.respondWith(
@@ -83,11 +90,14 @@ self.addEventListener('fetch', (event) => {
               // Clone the response as it can only be consumed once
               const responseToCache = response.clone();
 
-              // Cache successful responses
+              // Cache successful GET responses only
               caches.open(RUNTIME_CACHE)
                 .then((cache) => {
                   console.log('[SW] Caching new resource:', request.url);
                   cache.put(request, responseToCache);
+                })
+                .catch((error) => {
+                  console.warn('[SW] Failed to cache resource:', request.url, error);
                 });
 
               return response;
@@ -106,6 +116,9 @@ self.addEventListener('fetch', (event) => {
             });
         })
     );
+  } else {
+    // For external requests, just pass through to network
+    event.respondWith(fetch(request));
   }
 });
 
