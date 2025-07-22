@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yearlog-v2';
+const CACHE_NAME = 'yearlog-v3';
 const urlsToCache = [
   '/',
   '/manifest.json',
