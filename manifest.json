@@ -2,76 +2,23 @@
   "name": "YearLog - Personal Memory Companion",
   "short_name": "YearLog",
   "description": "A gentle, empathetic tool for individuals working to strengthen their memory connections. Capture and organize your daily thoughts and experiences.",
-  "version": "1.1",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#dc2626",
-  "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
     {
       "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "48x48",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
+      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png", 
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ],
   "categories": ["productivity", "utilities", "lifestyle"],
-  "lang": "en",
-  "dir": "ltr",
-  "prefer_related_applications": false,
-  "shortcuts": [
-    {
-      "name": "Add New Entry",
-      "short_name": "New Entry",
-      "description": "Quickly add a new memory entry",
-      "url": "https://yearlog.vipulanand.in/?action=new",
-      "icons": [
-        {
-          "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-          "sizes": "96x96"
-        }
-      ]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "platform": "wide",
-      "label": "YearLog main interface showing timeline and entries"
-    }
-  ]
+  "lang": "en"
 }
