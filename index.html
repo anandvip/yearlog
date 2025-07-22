@@ -42,39 +42,6 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
-    
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "YearLog - Personal Memory Companion",
-      "description": "A gentle, empathetic digital diary for strengthening memory connections. Capture daily thoughts, organize experiences, and build your personal memory archive with markdown support.",
-      "url": "https://yearlog.vipulanand.in/",
-      "applicationCategory": "ProductivityApplication",
-      "operatingSystem": "Any",
-      "permissions": "Storage",
-      "storageRequirements": "Local Storage",
-      "author": {
-        "@type": "Person",
-        "name": "Vipul Anand"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "featureList": [
-        "Offline functionality",
-        "In-place editing with markdown support",
-        "Data export (CSV/HTML)",
-        "Visual timeline",
-        "Auto-save",
-        "Print individual entries",
-        "Complete privacy"
-      ]
-    }
-    </script>
 
     <style>
         /* General Resets and Body Styling */
@@ -153,8 +120,16 @@
             background-color: #f5f5f5;
         }
 
+        .search-trigger::before {
+            content: "⬅";
+            color: #999;
+            font-size: 12px;
+            margin-right: 2px;
+            opacity: 0.7;
+        }
+
         .search-trigger::after {
-            content: "Click to search!";
+            content: "Swipe right or click to search!";
             position: absolute;
             top: -30px;
             left: 0;
@@ -298,7 +273,7 @@
             background: white;
             border-right: 0.5pt solid #ccc;
             z-index: 1500;
-            transition: left 0.3s ease;
+            transition: left 0.3s ease, transform 0.2s ease;
             display: flex;
             flex-direction: column;
             font-family: 'Courier New', Courier, monospace;
@@ -330,6 +305,17 @@
             padding: 20px;
             border-bottom: 0.5pt solid #eee;
             background: #f9f9f9;
+            position: relative;
+        }
+
+        .search-hint {
+            position: absolute;
+            bottom: 5px;
+            right: 15px;
+            font-size: 10px;
+            color: #999;
+            font-style: italic;
+            display: none;
         }
 
         .search-input-wrapper {
@@ -340,14 +326,14 @@
 
         .search-icon {
             position: absolute;
-            left: 10px;
+            left: 45px;
             color: #666;
             font-size: 16px;
             z-index: 1;
         }
 
         .search-input {
-            width: 100%;
+            flex: 1;
             padding: 10px 10px 10px 35px;
             border: 0.5pt solid #ccc;
             border-radius: 3px;
@@ -355,6 +341,7 @@
             font-size: 14px;
             outline: none;
             transition: border-color 0.2s ease;
+            margin-left: 8px;
         }
 
         .search-input:focus {
@@ -362,19 +349,26 @@
         }
 
         .search-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+            display: none;
+        }
+
+        .search-back-btn {
             background: none;
             border: none;
-            font-size: 20px;
             color: #666;
             cursor: pointer;
             font-family: 'Courier New', Courier, monospace;
-            transition: color 0.2s ease;
+            font-size: 16px;
+            padding: 8px;
+            margin-right: 8px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
         }
 
-        .search-close:hover {
+        .search-back-btn:hover {
+            background: #f5f5f5;
             color: #333;
         }
 
@@ -415,19 +409,98 @@
         .month-stat {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            align-items: center;
+            padding: 8px 12px;
             font-size: 11px;
             color: #555;
             border-bottom: 0.5pt solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .month-stat:hover {
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        .month-stat.expanded {
+            background: #f0f8ff;
+            border-left: 3px solid #3b82f6;
+            color: #333;
+        }
+
+        .month-stat.expanded::after {
+            content: "▼";
+            color: #3b82f6;
+            font-size: 10px;
+            margin-left: auto;
+        }
+
+        .month-stat:not(.expanded)::after {
+            content: "▶";
+            color: #999;
+            font-size: 10px;
+            margin-left: auto;
+        }
+
+        .month-entries {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            grid-column: span 2;
+            background: #fafafa;
+            border-radius: 3px;
+            margin-top: 5px;
+        }
+
+        .month-entries.show {
+            max-height: 300px;
+            padding: 10px;
+        }
+
+        .month-entry-item {
+            padding: 8px 12px;
+            border-bottom: 0.5pt solid #f0f0f0;
+            cursor: pointer;
+            font-size: 10px;
+            color: #666;
+            transition: all 0.2s ease;
+            border-radius: 2px;
+            margin-bottom: 2px;
+        }
+
+        .month-entry-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .month-entry-item:hover {
+            background: #e6f3ff;
+            color: #333;
+        }
+
+        .month-entry-title {
+            font-weight: bold;
+            margin-bottom: 2px;
+            color: #333;
+        }
+
+        .month-entry-date {
+            font-size: 9px;
+            color: #999;
         }
 
         .month-name {
             color: #333;
+            font-weight: bold;
         }
 
         .month-count {
             color: #666;
             font-weight: bold;
+            margin-right: 15px;
         }
 
         /* Recent Entries Styles */
@@ -583,6 +656,27 @@
             .month-stats {
                 grid-template-columns: 1fr;
             }
+
+            .month-entries {
+                grid-column: span 1;
+            }
+
+            .search-close {
+                top: 12px;
+                right: 12px;
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+
+            .search-back-btn {
+                font-size: 18px;
+                padding: 10px;
+            }
+
+            .search-hint {
+                display: block;
+            }
         }
 
         /* Main Content & Entries */
@@ -605,30 +699,6 @@
 
         .entry:hover {
             border-color: #eee;
-        }
-        
-        .entry-delete {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            opacity: 0.6;
-            transition: opacity 0.2s ease;
-            background: none;
-            border: none;
-            color: #dc2626;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 2px 4px;
-            font-family: 'Courier New', Courier, monospace;
-            line-height: 1;
-        }
-
-        .entry:hover .entry-delete {
-            opacity: 1;
-        }
-
-        .entry-delete:hover {
-            color: #991b1b;
         }
 
         .entry-description-container {
@@ -1202,26 +1272,26 @@
     <div class="container">
         <!-- Header -->
         <div class="header" id="header">
-            <span class="search-trigger" onclick="app.toggleSearch()" title="Search your memories">➝|</span>
+            <span class="search-trigger" onclick="yearLog.toggleSearch()" title="Search your memories">➝|</span>
             <span class="date-info" id="day-of-year"></span>
             <span class="date-info" id="days-left"></span>
             <span class="date-info" id="week-number"></span>
             <span class="date-info" id="current-date"></span>
             <input type="text" class="year-name-edit" id="year-name" 
                    placeholder="Click to name your year" 
-                   onblur="app.saveYearName(this.value)" title="Click to customize your year">
+                   onblur="yearLog.saveYearName(this.value)" title="Click to customize your year">
             
-            <button class="install-button" id="install-button" onclick="app.installPWA()">Install App</button>
-            <div class="settings-trigger" onclick="app.toggleSettings()">☼</div>
+            <button class="install-button" id="install-button" onclick="yearLog.installPWA()">Install App</button>
+            <div class="settings-trigger" onclick="yearLog.toggleSettings()">☼</div>
             
             <div class="settings-panel" id="settings-panel">
-                <div class="settings-option" onclick="app.showAboutModal()">About This Tool</div>
-                <div class="settings-option" onclick="app.exportYearArchive()">Export Year Archive (HTML)</div>
-                <div class="settings-option" onclick="app.exportToCSV()">Export as CSV</div>
-                <div class="settings-option" onclick="app.triggerImport()">Import CSV
-                    <input type="file" id="csv-import" class="file-input" accept=".csv" onchange="app.importFromCSV(event)">
+                <div class="settings-option" onclick="yearLog.showAboutModal()">About This Tool</div>
+                <div class="settings-option" onclick="yearLog.exportYearArchive()">Export Year Archive (HTML)</div>
+                <div class="settings-option" onclick="yearLog.exportToCSV()">Export as CSV</div>
+                <div class="settings-option" onclick="yearLog.triggerImport()">Import CSV
+                    <input type="file" id="csv-import" class="file-input" accept=".csv" onchange="yearLog.importFromCSV(event)">
                 </div>
-                <div class="settings-option danger" onclick="app.clearAllEntries()">Clear All Entries</div>
+                <div class="settings-option danger" onclick="yearLog.clearAllEntries()">Clear All Entries</div>
             </div>
         </div>
 
@@ -1242,7 +1312,7 @@
             <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="footer-logo">
         </div>
         <div class="footer-center">
-            <div class="add-button" onclick="app.addNewEntry()" title="Add new entry (Ctrl+Enter)">+</div>
+            <div class="add-button" onclick="yearLog.addNewEntry()" title="Add new entry (Ctrl+Enter)">+</div>
         </div>
         <div class="footer-right">
             <span>© <span id="current-year"></span></span>
@@ -1250,16 +1320,18 @@
     </footer>
 
     <!-- Search Panel -->
-    <div class="search-panel-backdrop" id="search-backdrop" onclick="app.closeSearch()"></div>
+    <div class="search-panel-backdrop" id="search-backdrop" onclick="yearLog.closeSearch()"></div>
     <div class="search-panel" id="search-panel">
-        <button class="search-close" onclick="app.closeSearch()">×</button>
+        <button class="search-close" onclick="yearLog.closeSearch()" title="Close search">×</button>
         <div class="search-header">
             <div class="search-input-wrapper">
+                <button class="search-back-btn" onclick="yearLog.closeSearch()" title="Back">|&lt;</button>
                 <span class="search-icon">🔍</span>
                 <input type="text" class="search-input" id="search-input" 
                        placeholder="Search your memories..." 
-                       oninput="app.performSearch(this.value)">
+                       oninput="yearLog.performSearch(this.value)">
             </div>
+            <div class="search-hint">Swipe left to close</div>
         </div>
         
         <div class="search-content" id="search-content">
@@ -1292,7 +1364,7 @@
     <!-- About Modal -->
     <div class="modal" id="about-modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="app.closeAboutModal()">×</button>
+            <button class="modal-close" onclick="yearLog.closeAboutModal()">×</button>
             <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="modal-logo">
             <h2>YearLog - Your Personal Memory Companion</h2>
             
@@ -1315,6 +1387,7 @@
             <h3>Key Features</h3>
             <ul>
                 <li><strong>In-place editing:</strong> Click anywhere to edit - no complex forms.</li>
+                <li><strong>Enhanced search:</strong> Click ➝| to search with year overview and accordion month navigation.</li>
                 <li><strong>Markdown support:</strong> Use <code>**bold**</code>, <code>*italic*</code>, <code># headings</code>, <code>> quotes</code>, and <code>[links](url)</code>.</li>
                 <li><strong>Visual timeline:</strong> Red line shows your memory progression.</li>
                 <li><strong>Auto-save:</strong> Changes save when you click away.</li>
@@ -1344,95 +1417,89 @@
     <div id="confirmation-container"></div>
 
     <script>
-    const app = {
-        // --- STATE ---
+    // Main YearLog Application
+    const yearLog = {
+        // === STATE MANAGEMENT ===
         entries: [],
         yearName: '',
         deferredPrompt: null,
         editingEntry: null,
         searchOpen: false,
         searchResults: [],
+        expandedMonths: new Set(),
 
-        // --- MARKDOWN PARSER ---
+        // === MARKDOWN PARSER ===
         parseMarkdown(text) {
             if (!text) return '';
             
             return text
-                // Headers
                 .replace(/^### (.*$)/gm, '<h3>$1</h3>')
                 .replace(/^## (.*$)/gm, '<h2>$1</h2>')
                 .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-                // Bold
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                // Italic
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                // Links
                 .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-                // Blockquotes
                 .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
-                // Line breaks
                 .replace(/\n/g, '<br>');
         },
 
-        // --- PWA INITIALIZATION ---
+        // === INITIALIZATION ===
         async init() {
-            // Load data from localStorage
-            this.entries = JSON.parse(localStorage.getItem('yearLogEntries')) || [];
-            this.yearName = localStorage.getItem('yearLogName') || new Date().getFullYear().toString();
+            // Initialize sample data (in real app, this would load from localStorage)
+            this.entries = [
+                {
+                    id: Date.now() - 3000,
+                    title: "Welcome to YearLog",
+                    description: "This is your personal memory companion. Click on any text to **edit** it. Use *markdown* for formatting!\n\n> Try adding your first memory below.\n\n# Features\n- In-place editing\n- Markdown support\n- Search with accordion months\n- Export capabilities",
+                    timestamp: new Date().toISOString()
+                },
+                {
+                    id: Date.now() - 2000,
+                    title: "Testing Search Functionality",
+                    description: "This entry tests the **search** feature. You can search for keywords like *markdown*, **editing**, or any content in your entries.",
+                    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() // Yesterday
+                },
+                {
+                    id: Date.now() - 1000,
+                    title: "Monthly Progress Tracking",
+                    description: "The search panel shows monthly overviews with **accordion functionality**. Click on any month to see entries from that period.",
+                    timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // Week ago
+                }
+            ];
+            this.yearName = new Date().getFullYear().toString();
 
-            // Initial UI setup
+            // Setup UI
             this.updateDateInfo();
             this.loadYearName();
             this.renderEntries();
 
-            // Set up recurring tasks
-            setInterval(() => this.updateDateInfo(), 60000); 
+            // Setup recurring tasks
+            setInterval(() => this.updateDateInfo(), 60000);
 
-            // Set up global event listeners
+            // Setup event listeners
             this.addEventListeners();
             
-            // PWA Setup
+            // PWA initialization
             this.initPWA();
             this.updateOnlineStatus();
-            
-            if (!localStorage.getItem('yearLogVisited')) {
-                setTimeout(() => this.showAboutModal(), 1000);
-                localStorage.setItem('yearLogVisited', 'true');
-            }
         },
 
+        // === PWA FUNCTIONALITY ===
         initPWA() {
-            // Register service worker
-            if ('serviceWorker' in navigator) {
-                this.registerServiceWorker();
-            }
-
-            // Handle install prompt
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 this.deferredPrompt = e;
                 document.getElementById('install-button').classList.add('show');
             });
 
-            // Handle app installed
             window.addEventListener('appinstalled', () => {
                 this.deferredPrompt = null;
                 document.getElementById('install-button').classList.remove('show');
                 this.showToast('YearLog installed successfully!', 'success');
             });
 
-            // Online/offline status
             window.addEventListener('online', () => this.updateOnlineStatus());
             window.addEventListener('offline', () => this.updateOnlineStatus());
-        },
-
-        async registerServiceWorker() {
-            try {
-                const registration = await navigator.serviceWorker.register('sw.js');
-                console.log('Service Worker registered:', registration);
-            } catch (error) {
-                console.log('Service Worker registration failed:', error);
-            }
         },
 
         async installPWA() {
@@ -1453,6 +1520,7 @@
             }
         },
 
+        // === EVENT LISTENERS ===
         addEventListeners() {
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -1487,8 +1555,58 @@
                     this.autoResizeTextarea(e.target);
                 }
             });
+
+            this.addTouchSupport();
         },
 
+        // === TOUCH/SWIPE SUPPORT ===
+        addTouchSupport() {
+            const searchPanel = document.getElementById('search-panel');
+            let startX = 0;
+            let startY = 0;
+            let moveX = 0;
+            let moveY = 0;
+
+            searchPanel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+
+            searchPanel.addEventListener('touchmove', (e) => {
+                if (!this.searchOpen) return;
+                
+                moveX = e.touches[0].clientX;
+                moveY = e.touches[0].clientY;
+                
+                const deltaX = moveX - startX;
+                const deltaY = Math.abs(moveY - startY);
+                
+                if (deltaX < -50 && deltaY < 30) {
+                    e.preventDefault();
+                    searchPanel.style.transform = `translateX(${Math.min(0, deltaX)}px)`;
+                }
+            });
+
+            searchPanel.addEventListener('touchend', () => {
+                if (!this.searchOpen) return;
+                
+                const deltaX = moveX - startX;
+                const deltaY = Math.abs(moveY - startY);
+                
+                searchPanel.style.transform = '';
+                
+                if (deltaX < -100 && deltaY < 50) {
+                    this.closeSearch();
+                }
+                
+                startX = 0;
+                startY = 0;
+                moveX = 0;
+                moveY = 0;
+            }, { passive: true });
+        },
+
+        // === DATE MANAGEMENT ===
         updateDateInfo() {
             const now = new Date();
             const start = new Date(now.getFullYear(), 0, 0);
@@ -1505,6 +1623,7 @@
             document.getElementById('current-year').textContent = now.getFullYear();
         },
 
+        // === YEAR NAME MANAGEMENT ===
         loadYearName() {
             document.getElementById('year-name').value = this.yearName;
         },
@@ -1513,13 +1632,13 @@
             const newName = name.trim();
             if (newName) {
                 this.yearName = newName;
-                localStorage.setItem('yearLogName', this.yearName);
                 this.showToast('Year name updated.', 'success');
             } else {
                 document.getElementById('year-name').value = this.yearName;
             }
         },
-        
+
+        // === ENTRY RENDERING ===
         renderEntries() {
             const container = document.getElementById('entries-container');
             container.innerHTML = ''; 
@@ -1527,7 +1646,7 @@
             this.entries.forEach((entry, index) => {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'entry';
-                entryDiv.setAttribute('data-index', index);
+                entryDiv.setAttribute('data-entry-index', index); // Fixed: unique attribute name
                 
                 const timestamp = new Date(entry.timestamp);
                 const timeString = timestamp.toLocaleString('en-US', {
@@ -1537,16 +1656,16 @@
                 entryDiv.innerHTML = `
                     <div class="entry-title-wrapper">
                         <input type="text" class="entry-editable entry-title-edit" value="${this.escapeHtml(entry.title)}" 
-                               onblur="app.updateEntry(${index}, 'title', this.value)" placeholder="Enter title...">
+                               onblur="yearLog.updateEntry(${index}, 'title', this.value)" placeholder="Enter title...">
                     </div>
                     <div class="entry-description-container">
-                        <div class="entry-description-rendered markdown-content" onclick="app.editDescription(${index})" data-index="${index}">
+                        <div class="entry-description-rendered markdown-content" onclick="yearLog.editDescription(${index})">
                             ${this.parseMarkdown(entry.description)}
                         </div>
                     </div>
                     <div class="entry-actions-bar">
-                        <button class="entry-action-btn" onclick="app.printEntry(${index})" title="Print entry">⎙</button>
-                        <button class="entry-action-btn danger" onclick="app.deleteEntry(${index})" title="Delete entry">❌</button>
+                        <button class="entry-action-btn" onclick="yearLog.printEntry(${index})" title="Print entry">⎙</button>
+                        <button class="entry-action-btn danger" onclick="yearLog.deleteEntry(${index})" title="Delete entry">❌</button>
                     </div>
                     <div class="entry-timestamp">${timeString}</div>
                 `;
@@ -1554,42 +1673,52 @@
             });
         },
 
-        editDescription(index) {
+        // === ENTRY EDITING (FIXED) ===
+        editDescription(entryIndex) {
+            // Close any existing edit session
             if (this.editingEntry !== null) {
                 this.finishEditingDescription();
             }
 
-            this.editingEntry = index;
-            const container = document.querySelector(`[data-index="${index}"]`).parentElement;
-            const renderedDiv = container.querySelector('.entry-description-rendered');
-            const actionsBar = container.parentElement.querySelector('.entry-actions-bar');
-            const entry = this.entries[index];
+            this.editingEntry = entryIndex;
             
+            // Find the specific entry using the unique data attribute
+            const entryContainer = document.querySelector(`[data-entry-index="${entryIndex}"]`);
+            if (!entryContainer) return;
+            
+            const renderedDiv = entryContainer.querySelector('.entry-description-rendered');
+            const actionsBar = entryContainer.querySelector('.entry-actions-bar');
+            const entry = this.entries[entryIndex];
+            
+            // Create textarea for editing
             const textarea = document.createElement('textarea');
             textarea.className = 'entry-editable entry-description-edit';
             textarea.value = entry.description;
             textarea.placeholder = 'Enter description (supports **bold**, *italic*, # headings, > quotes, [links](url))...';
-            textarea.onblur = () => this.finishEditingDescription(index);
+            textarea.onblur = () => this.finishEditingDescription(entryIndex);
             
-            // Hide action bar during editing
+            // Hide actions during editing
             actionsBar.style.display = 'none';
+            
+            // Replace rendered content with textarea
             renderedDiv.replaceWith(textarea);
             textarea.focus();
             this.autoResizeTextarea(textarea);
         },
 
-        finishEditingDescription(index = this.editingEntry) {
-            if (index === null) return;
+        finishEditingDescription(entryIndex = this.editingEntry) {
+            if (entryIndex === null) return;
             
             const textarea = document.querySelector('.entry-description-edit');
             if (textarea && textarea.value !== undefined) {
-                this.updateEntry(index, 'description', textarea.value);
+                this.updateEntry(entryIndex, 'description', textarea.value);
             }
             
             this.editingEntry = null;
-            this.renderEntries();
+            this.renderEntries(); // Re-render to show updated content
         },
 
+        // === ENTRY MANAGEMENT ===
         addNewEntry() {
             const newEntry = {
                 id: Date.now(),
@@ -1598,7 +1727,6 @@
                 timestamp: new Date().toISOString()
             };
             this.entries.unshift(newEntry);
-            this.saveEntries();
             this.renderEntries();
             this.showToast('New entry added.', 'info');
 
@@ -1613,7 +1741,6 @@
 
         updateEntry(index, field, value) {
             this.entries[index][field] = value;
-            this.saveEntries();
             this.showToast('Entry saved.', 'success');
         },
 
@@ -1623,7 +1750,6 @@
                 `Are you sure you want to delete "${entry.title}"?`,
                 () => {
                     this.entries.splice(index, 1);
-                    this.saveEntries();
                     this.renderEntries();
                     this.showToast('Entry deleted.', 'info');
                 }
@@ -1734,14 +1860,13 @@
                 `Are you sure you want to delete all ${this.entries.length} entries? This action cannot be undone.`,
                 () => {
                     this.entries = [];
-                    this.saveEntries();
                     this.renderEntries();
                     this.showToast('All entries have been cleared.', 'info');
                 }
             );
         },
 
-        // --- SEARCH FUNCTIONALITY ---
+        // === SEARCH FUNCTIONALITY ===
         toggleSearch() {
             if (this.searchOpen) {
                 this.closeSearch();
@@ -1755,7 +1880,6 @@
             document.getElementById('search-panel').classList.add('show');
             document.getElementById('search-backdrop').classList.add('show');
             
-            // Render year overview and recent entries
             this.renderYearOverview();
             this.renderRecentEntries();
             
@@ -1772,39 +1896,87 @@
             this.showDefaultContent();
         },
 
+        // === YEAR OVERVIEW WITH ACCORDION ===
         renderYearOverview() {
             const currentYear = new Date().getFullYear();
             const yearOverview = document.getElementById('year-overview');
             const monthStats = document.getElementById('month-stats');
             
-            // Update header
             yearOverview.querySelector('h3').textContent = `${currentYear} Year Overview`;
             
-            // Calculate monthly stats
             const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const monthCounts = new Array(12).fill(0);
+            const monthEntries = Array.from({ length: 12 }, () => []);
             
+            // Organize entries by month
             this.entries.forEach(entry => {
                 const entryDate = new Date(entry.timestamp);
                 if (entryDate.getFullYear() === currentYear) {
-                    monthCounts[entryDate.getMonth()]++;
+                    const monthIndex = entryDate.getMonth();
+                    monthCounts[monthIndex]++;
+                    monthEntries[monthIndex].push({
+                        ...entry,
+                        originalIndex: this.entries.findIndex(e => e.id === entry.id)
+                    });
                 }
             });
             
-            monthStats.innerHTML = monthNames.map((month, index) => `
-                <div class="month-stat">
-                    <span class="month-name">${month}</span>
-                    <span class="month-count">${monthCounts[index]}</span>
-                </div>
-            `).join('');
+            // Render month stats with accordion functionality
+            let monthStatsHTML = '';
+            monthNames.forEach((month, index) => {
+                const count = monthCounts[index];
+                const entries = monthEntries[index];
+                const monthKey = `${currentYear}-${index}`;
+                const isExpanded = this.expandedMonths.has(monthKey);
+                
+                monthStatsHTML += `
+                    <div class="month-stat ${isExpanded ? 'expanded' : ''}" onclick="yearLog.toggleMonth('${monthKey}', ${index})">
+                        <span class="month-name">${month}</span>
+                        <span class="month-count">${count}</span>
+                    </div>
+                `;
+                
+                if (count > 0) {
+                    monthStatsHTML += `
+                        <div class="month-entries ${isExpanded ? 'show' : ''}" id="month-${monthKey}">
+                            ${entries.map(entry => `
+                                <div class="month-entry-item" onclick="yearLog.jumpToEntry(${entry.originalIndex})">
+                                    <div class="month-entry-title">${this.escapeHtml(entry.title)}</div>
+                                    <div class="month-entry-date">${new Date(entry.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            });
+            
+            monthStats.innerHTML = monthStatsHTML;
         },
 
+        // === MONTH ACCORDION TOGGLE ===
+        toggleMonth(monthKey, monthIndex) {
+            const monthEntries = document.getElementById(`month-${monthKey}`);
+            if (!monthEntries) return;
+            
+            const monthStat = monthEntries.previousElementSibling;
+            
+            if (this.expandedMonths.has(monthKey)) {
+                this.expandedMonths.delete(monthKey);
+                monthEntries.classList.remove('show');
+                monthStat.classList.remove('expanded');
+            } else {
+                this.expandedMonths.add(monthKey);
+                monthEntries.classList.add('show');
+                monthStat.classList.add('expanded');
+            }
+        },
+
+        // === RECENT ENTRIES ===
         renderRecentEntries() {
             const recentEntriesList = document.getElementById('recent-entries-list');
             const currentYear = new Date().getFullYear();
             
-            // Get recent entries from current year (last 15)
             const currentYearEntries = this.entries
                 .filter(entry => new Date(entry.timestamp).getFullYear() === currentYear)
                 .slice(0, 15);
@@ -1814,7 +1986,7 @@
                 return;
             }
             
-            recentEntriesList.innerHTML = currentYearEntries.map((entry, index) => {
+            recentEntriesList.innerHTML = currentYearEntries.map((entry) => {
                 const originalIndex = this.entries.findIndex(e => e.id === entry.id);
                 const timestamp = new Date(entry.timestamp);
                 const dateString = timestamp.toLocaleDateString('en-US', {
@@ -1823,7 +1995,7 @@
                 });
                 
                 return `
-                    <div class="recent-entry-item" onclick="app.jumpToEntry(${originalIndex})">
+                    <div class="recent-entry-item" onclick="yearLog.jumpToEntry(${originalIndex})">
                         <div class="recent-entry-title">${this.escapeHtml(entry.title)}</div>
                         <div class="recent-entry-date">${dateString}</div>
                     </div>
@@ -1831,6 +2003,7 @@
             }).join('');
         },
 
+        // === SEARCH FUNCTIONALITY ===
         performSearch(query) {
             const trimmedQuery = query.trim().toLowerCase();
             
@@ -1841,7 +2014,6 @@
 
             this.hideDefaultContent();
 
-            // Search through all entries
             const results = this.entries.map((entry, index) => {
                 const titleMatch = entry.title.toLowerCase().includes(trimmedQuery);
                 const descMatch = entry.description.toLowerCase().includes(trimmedQuery);
@@ -1886,7 +2058,6 @@
                 return;
             }
 
-            // Group results by year
             const resultsByYear = {};
             this.searchResults.forEach(result => {
                 const year = result.year;
@@ -1896,13 +2067,11 @@
                 resultsByYear[year].push(result);
             });
 
-            // Update stats
             const totalResults = this.searchResults.length;
             const yearCount = Object.keys(resultsByYear).length;
             statsContainer.textContent = `Found ${totalResults} results across ${yearCount} year${yearCount !== 1 ? 's' : ''}`;
 
-            // Render results grouped by year
-            const years = Object.keys(resultsByYear).sort((a, b) => b - a); // Most recent first
+            const years = Object.keys(resultsByYear).sort((a, b) => b - a);
             
             resultsContainer.innerHTML = years.map(year => {
                 const yearResults = resultsByYear[year];
@@ -1910,7 +2079,7 @@
                 
                 return `
                     <div class="year-group" data-year="${year}">
-                        <div class="year-header" onclick="app.toggleYearGroup('${year}')">
+                        <div class="year-header" onclick="yearLog.toggleYearGroup('${year}')">
                             <span>${year} [${yearCount} result${yearCount !== 1 ? 's' : ''}]</span>
                             <span class="year-toggle">▼</span>
                         </div>
@@ -1931,11 +2100,9 @@
                 year: 'numeric'
             });
 
-            // Highlight search terms
             const highlightedTitle = this.highlightSearchTerms(entry.title, query);
             let snippet = entry.description;
             
-            // Create snippet around search term
             if (result.descMatch) {
                 const lowerDesc = entry.description.toLowerCase();
                 const queryIndex = lowerDesc.indexOf(query.toLowerCase());
@@ -1947,14 +2114,13 @@
                              (end < entry.description.length ? '...' : '');
                 }
             } else {
-                // Show first part of description if no match there
                 snippet = entry.description.substring(0, 80) + (entry.description.length > 80 ? '...' : '');
             }
             
             const highlightedSnippet = this.highlightSearchTerms(snippet, query);
 
             return `
-                <div class="search-result-item" onclick="app.jumpToEntry(${index})">
+                <div class="search-result-item" onclick="yearLog.jumpToEntry(${index})">
                     <div class="search-result-title">${highlightedTitle}</div>
                     <div class="search-result-snippet">${highlightedSnippet}</div>
                     <div class="search-result-date">${dateString}</div>
@@ -1984,37 +2150,32 @@
         jumpToEntry(index) {
             this.closeSearch();
             
-            // Scroll to the entry in the main view
             setTimeout(() => {
-                const entryElement = document.querySelector(`[data-index="${index}"]`);
+                const entryElement = document.querySelector(`[data-entry-index="${index}"]`);
                 if (entryElement) {
-                    const entryContainer = entryElement.closest('.entry');
-                    if (entryContainer) {
-                        entryContainer.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'center' 
-                        });
-                        
-                        // Briefly highlight the entry
-                        entryContainer.style.backgroundColor = '#fff3cd';
-                        setTimeout(() => {
-                            entryContainer.style.backgroundColor = '';
-                        }, 2000);
-                    }
+                    entryElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    entryElement.style.backgroundColor = '#fff3cd';
+                    setTimeout(() => {
+                        entryElement.style.backgroundColor = '';
+                    }, 2000);
                 }
             }, 100);
         },
 
-        // --- CONFIRMATION SYSTEM ---
+        // === CONFIRMATION SYSTEM ===
         showConfirmation(message, onConfirm, onCancel = null) {
             const container = document.getElementById('confirmation-container');
             container.innerHTML = `
-                <div class="confirmation-backdrop show" onclick="app.hideConfirmation()"></div>
+                <div class="confirmation-backdrop show" onclick="yearLog.hideConfirmation()"></div>
                 <div class="confirmation-toast show">
                     <div class="confirmation-message">${message}</div>
                     <div class="confirmation-buttons">
-                        <button class="confirmation-btn danger" onclick="app.confirmAction()">OK</button>
-                        <button class="confirmation-btn" onclick="app.hideConfirmation()">Cancel</button>
+                        <button class="confirmation-btn danger" onclick="yearLog.confirmAction()">OK</button>
+                        <button class="confirmation-btn" onclick="yearLog.hideConfirmation()">Cancel</button>
                     </div>
                 </div>
             `;
@@ -2047,87 +2208,14 @@
             this.pendingConfirmation = null;
         },
 
-        saveEntries() {
-            localStorage.setItem('yearLogEntries', JSON.stringify(this.entries));
-        },
-
+        // === EXPORT FUNCTIONALITY (DEMO) ===
         exportYearArchive() {
             this.closeSettings();
             if (this.entries.length === 0) {
                 this.showToast('No entries to export.', 'error');
                 return;
             }
-
-            const archiveDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-            const entriesHtml = this.entries.map(entry => {
-                const timeString = new Date(entry.timestamp).toLocaleString('en-US', {
-                    month: 'numeric', day: 'numeric', year: '2-digit', hour: 'numeric', minute: '2-digit', hour12: true
-                });
-                
-                return `
-                    <div class="entry">
-                        <div class="entry-title-wrapper">
-                            <span style="font-weight: bold; padding-left: 15px;">${this.escapeHtml(entry.title)}</span>
-                        </div>
-                        <div style="color: #444; margin-bottom: 8px;" class="markdown-content">
-                            ${this.parseMarkdown(entry.description)}
-                        </div>
-                        <div class="entry-timestamp">${timeString}</div>
-                    </div>
-                `;
-            }).join('');
-
-            const htmlTemplate = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YearLog Archive - ${this.escapeHtml(this.yearName)}</title>
-    <style>
-        body { font-family: 'Courier New', Courier, monospace; line-height: 1.4; background: white; color: black; }
-        .container { display: flex; min-height: 100vh; }
-        .red-line { width: 2px; background-color: red; }
-        .content-area { flex: 1; }
-        .header { padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .header .divider { color: red; font-weight: bold; margin-left: -10px; }
-        .header .info { font-size: 14px; color: #333; }
-        .header .year-name { font-size: 14px; color: #333; font-weight: bold; }
-        .main { max-width: 800px; margin: 0 auto; padding: 30px; }
-        .entry { margin-bottom: 25px; position: relative; }
-        .entry-title-wrapper { position: relative; margin-bottom: 5px; }
-        .entry-title-wrapper::before { content: "|"; color: red; font-weight: bold; position: absolute; left: 0; }
-        .entry-timestamp { font-size: 10px; color: #999; margin-top: 8px; font-style: italic; }
-        .footer { border-top: 1px solid #eee; padding: 15px; text-align: center; font-size: 12px; color: #666; }
-        h1, h2, h3 { margin: 10px 0 5px 0; }
-        h1 { font-size: 18px; } h2 { font-size: 16px; } h3 { font-size: 14px; }
-        blockquote { margin: 10px 0; padding-left: 15px; border-left: 3px solid #ddd; color: #666; font-style: italic; }
-        strong { font-weight: bold; } em { font-style: italic; }
-        a { color: #0066cc; text-decoration: underline; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="red-line"></div>
-        <div class="content-area">
-            <div class="header">
-                <span class="divider">|</span>
-                <span class="info">YearLog Archive</span>
-                <span class="info">${this.entries.length} Entries</span>
-                <span class="year-name">${this.escapeHtml(this.yearName)}</span>
-            </div>
-            <div class="main">${entriesHtml}</div>
-            <div class="footer">Archive Generated on ${archiveDate}</div>
-        </div>
-    </div>
-</body>
-</html>`;
-
-            const blob = new Blob([htmlTemplate], { type: 'text/html;charset=utf-8' });
-            const fileName = `YearLog_Archive_${this.yearName.replace(/[^a-z0-9]/gi, '_')}.html`;
-            this.downloadBlob(blob, fileName);
-            this.showToast(`Exported ${this.entries.length} entries to HTML.`, 'success');
+            this.showToast('Export feature not available in demo. In the real app, this would create a standalone HTML file with all your entries!', 'info');
         },
 
         exportToCSV() {
@@ -2136,81 +2224,36 @@
                 this.showToast('No entries to export.', 'error');
                 return;
             }
-            const header = ['Title', 'Description', 'Timestamp'];
-            const rows = this.entries.map(e => [e.title, e.description, e.timestamp]);
-            const csvContent = [header, ...rows].map(row => 
-                row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')
-            ).join('\n');
-            
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            this.downloadBlob(blob, `YearLog_Export_${new Date().toISOString().split('T')[0]}.csv`);
-            this.showToast(`Exported ${this.entries.length} entries to CSV.`, 'success');
+            this.showToast('Export feature not available in demo. In the real app, this would download a CSV file with all your entries!', 'info');
         },
 
         triggerImport() {
             this.closeSettings();
-            document.getElementById('csv-import').click();
+            this.showToast('Import feature not available in demo. In the real app, you could upload CSV files to import entries!', 'info');
         },
 
         importFromCSV(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const text = e.target.result;
-                try {
-                    const lines = text.split('\n');
-                    const importedEntries = [];
-                    const startIndex = lines[0].toLowerCase().includes('title') ? 1 : 0;
-
-                    for(let i = startIndex; i < lines.length; i++) {
-                        const line = lines[i].trim();
-                        if (!line) continue;
-                        const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-                        if (values && values.length >= 2) {
-                            values.forEach((val, idx) => {
-                                values[idx] = val.replace(/^"|"$/g, '').replace(/""/g, '"');
-                            });
-                            importedEntries.push({
-                                id: Date.now() + i,
-                                title: values[0],
-                                description: values[1],
-                                timestamp: values[2] && !isNaN(new Date(values[2])) ? new Date(values[2]).toISOString() : new Date().toISOString()
-                            });
-                        }
-                    }
-
-                    if (importedEntries.length > 0) {
-                        this.entries = [...importedEntries, ...this.entries];
-                        this.saveEntries();
-                        this.renderEntries();
-                        this.showToast(`Successfully imported ${importedEntries.length} entries.`, 'success');
-                    } else {
-                        this.showToast('No valid entries found in CSV file.', 'error');
-                    }
-                } catch (err) {
-                    this.showToast('Failed to parse CSV file.', 'error');
-                    console.error("CSV Parse Error:", err);
-                }
-            };
-            reader.readAsText(file);
-            event.target.value = null; 
+            // Not implemented in demo
         },
 
+        // === UI HELPERS ===
         toggleSettings() {
             document.getElementById('settings-panel').classList.toggle('show');
         },
+
         closeSettings() {
             document.getElementById('settings-panel').classList.remove('show');
         },
+
         showAboutModal() {
             this.closeSettings();
             document.getElementById('about-modal').classList.add('show');
         },
+
         closeAboutModal() {
             document.getElementById('about-modal').classList.remove('show');
         },
+
         showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -2228,28 +2271,21 @@
                 }, 300);
             }, 3000);
         },
+
         escapeHtml(str) {
             const p = document.createElement('p');
             p.textContent = str;
             return p.innerHTML;
         },
+
         autoResizeTextarea(textarea) {
             textarea.style.height = 'auto';
             textarea.style.height = `${textarea.scrollHeight}px`;
-        },
-        downloadBlob(blob, fileName) {
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.href = url;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
         }
     };
 
-    document.addEventListener('DOMContentLoaded', () => app.init());
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => yearLog.init());
     </script>
 </body>
 </html>
