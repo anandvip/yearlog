@@ -10,7 +10,7 @@
     <!-- SEO Meta Tags -->
     <title>YearLog - Personal Memory Companion | Digital Diary & Journal App</title>
     <meta name="description" content="A gentle, empathetic digital diary for strengthening memory connections. Capture daily thoughts, organize experiences, and build your personal memory archive with YearLog - completely private and offline.">
-    <meta name="keywords" content="digital diary, personal journal, memory companion, offline journal app, private diary, memory strengthening, daily thoughts, personal memories, digital notebook">
+    <meta name="keywords" content="digital diary, personal journal, memory companion, offline journal app, private diary, memory strengthening, daily thoughts, personal memories, digital notebook, markdown support">
     <meta name="author" content="Vipul Anand">
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
@@ -32,12 +32,10 @@
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#dc2626">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="YearLog">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://yearlog.vipulanand.in/">
@@ -51,7 +49,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "YearLog - Personal Memory Companion",
-      "description": "A gentle, empathetic digital diary for strengthening memory connections. Capture daily thoughts, organize experiences, and build your personal memory archive.",
+      "description": "A gentle, empathetic digital diary for strengthening memory connections. Capture daily thoughts, organize experiences, and build your personal memory archive with markdown support.",
       "url": "https://yearlog.vipulanand.in/",
       "applicationCategory": "ProductivityApplication",
       "operatingSystem": "Any",
@@ -68,10 +66,11 @@
       },
       "featureList": [
         "Offline functionality",
-        "In-place editing",
+        "In-place editing with markdown support",
         "Data export (CSV/HTML)",
         "Visual timeline",
         "Auto-save",
+        "Print individual entries",
         "Complete privacy"
       ]
     }
@@ -93,13 +92,15 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-bottom: 70px; /* Space for fixed footer */
         }
 
         /* Layout Structure */
         .container {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            min-height: calc(100vh - 70px);
+            flex: 1;
         }
 
         .content-wrapper {
@@ -211,7 +212,7 @@
             border: 0.5pt solid #ccc;
             border-radius: 4px;
             padding: 15px;
-            min-width: 280px;
+            min-width: 300px;
             z-index: 1000;
             opacity: 0;
             transform: translateY(-10px);
@@ -255,6 +256,25 @@
             display: none;
         }
 
+        /* Online/Offline Status */
+        .status-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #22c55e;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            z-index: 3000;
+            transition: all 0.3s ease;
+        }
+
+        .status-indicator.offline {
+            background: #ef4444;
+        }
+
         /* Main Content & Entries */
         .main {
             flex: 1;
@@ -268,27 +288,65 @@
             margin-bottom: 25px;
             line-height: 1.2;
             position: relative;
+            border: 0.5pt solid transparent;
+            border-radius: 3px;
+            transition: border-color 0.2s ease;
+        }
+
+        .entry:hover {
+            border-color: #eee;
         }
         
         .entry-delete {
             position: absolute;
-            top: 0px;
-            right: 0px;
-            color: #dc2626;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 2px 6px; 
+            bottom: 2px;
+            right: 2px;
             opacity: 0.6;
             transition: opacity 0.2s ease;
             background: none;
             border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 4px;
             font-family: 'Courier New', Courier, monospace;
             line-height: 1;
-            z-index: 2; 
+        }
+
+        .entry:hover .entry-delete {
+            opacity: 1;
         }
 
         .entry-delete:hover {
+            color: #991b1b;
+        }
+
+        .entry-description-container {
+            position: relative;
+        }
+
+        .entry-print-btn {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 4px;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1;
+            opacity: 0.6;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+
+        .entry:hover .entry-print-btn {
             opacity: 1;
+        }
+
+        .entry-print-btn:hover {
+            color: #333;
         }
 
         .entry-editable {
@@ -337,6 +395,62 @@
             min-height: 20px;
         }
 
+        .entry-description-rendered {
+            color: #444;
+            margin-bottom: 8px;
+            min-height: 20px;
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 2px;
+            transition: background-color 0.2s ease;
+        }
+
+        .entry-description-rendered:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Markdown Styles */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+            margin: 10px 0 5px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .markdown-content h1 { font-size: 18px; }
+        .markdown-content h2 { font-size: 16px; }
+        .markdown-content h3 { font-size: 14px; }
+
+        .markdown-content blockquote {
+            margin: 10px 0;
+            padding-left: 15px;
+            border-left: 3px solid #ddd;
+            color: #666;
+            font-style: italic;
+        }
+
+        .markdown-content strong {
+            font-weight: bold;
+        }
+
+        .markdown-content em {
+            font-style: italic;
+        }
+
+        .markdown-content a {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        .markdown-content a:hover {
+            color: #004499;
+        }
+
+        .markdown-content code {
+            background: #f5f5f5;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
         .entry-timestamp {
             font-size: 10px;
             color: #999;
@@ -344,59 +458,70 @@
             font-style: italic;
         }
 
-        .add-button {
-            display: inline-block;
-            font-size: 24px;
-            cursor: pointer;
-            margin-top: 20px;
-            color: #666;
-            transition: color 0.2s;
-        }
-
-        .add-button:hover {
-            color: #000;
-        }
-
-        /* Footer with Logo */
+        /* Fixed Footer */
         .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background-color: white;
             border-top: 1px solid #eee;
-            padding: 12px 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
             color: #666;
+            z-index: 100;
+            height: 70px;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
         }
 
         .footer-logo {
-            height: 60px;
+            height: 40px;
             opacity: 0.6;
+            transition: opacity 0.2s ease;
         }
 
-        /* Online/Offline Status */
-        .status-indicator {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: #22c55e;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-family: 'Courier New', Courier, monospace;
-            z-index: 3000;
-            transition: all 0.3s ease;
+        .footer-logo:hover {
+            opacity: 1;
         }
 
-        .status-indicator.offline {
-            background: #ef4444;
+        .footer-center {
+            display: flex;
+            justify-content: center;
+            flex: 1;
         }
-        
+
+        .add-button {
+            display: inline-block;
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+            padding: 5px 15px;
+            border-radius: 50%;
+            line-height: 1;
+        }
+
+        .add-button:hover {
+            color: #000;
+            background-color: #f5f5f5;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+        }
+
         /* Toast Notifications */
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 90px;
             left: 20px;
             background: white;
             border: 0.5pt solid;
@@ -428,6 +553,64 @@
         .toast.info {
             border-color: #3b82f6;
             color: #444;
+        }
+
+        /* Confirmation Toast */
+        .confirmation-toast {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            border: 0.5pt solid #ef4444;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            z-index: 2002;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .confirmation-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .confirmation-message {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .confirmation-btn {
+            padding: 6px 12px;
+            border: 0.5pt solid #666;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .confirmation-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .confirmation-btn.danger {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .confirmation-btn.danger:hover {
+            background-color: #fef2f2;
         }
 
         /* Modal Styles */
@@ -513,6 +696,13 @@
             color: #555;
         }
 
+        .modal-content code {
+            background: #f5f5f5;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
         .privacy-highlight {
             background-color: #f0f8ff;
             border: 1px solid #3b82f6;
@@ -525,8 +715,52 @@
             color: #1d4ed8;
         }
 
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            
+            .header, .footer, .status-indicator, .settings-panel, .modal, .toast, .confirmation-toast {
+                display: none !important;
+            }
+            
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .red-line {
+                display: none;
+            }
+            
+            .main {
+                max-width: none;
+                padding: 20px;
+            }
+            
+            .entry {
+                break-inside: avoid;
+                margin-bottom: 30px;
+                border: 1px solid #ccc;
+                padding: 15px;
+            }
+            
+            .entry-delete, .entry-print-btn {
+                display: none !important;
+            }
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 600px) {
+            body {
+                padding-bottom: 80px;
+            }
+
+            .container {
+                min-height: calc(100vh - 80px);
+            }
+
             .header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -560,15 +794,21 @@
             }
             
             .footer {
-                padding: 10px 15px;
+                padding: 12px 15px;
+                height: 80px;
             }
 
             .footer-logo {
-                height: 18px;
+                height: 32px;
             }
 
-            .toast {
-                bottom: 15px;
+            .add-button {
+                font-size: 28px;
+                padding: 8px 12px;
+            }
+
+            .toast, .confirmation-toast {
+                bottom: 95px;
                 left: 15px;
                 right: 15px;
                 max-width: none;
@@ -581,6 +821,16 @@
             .modal-content {
                 padding: 20px;
                 margin: 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .footer-logo {
+                height: 24px;
+            }
+
+            .add-button {
+                font-size: 24px;
             }
         }
     </style>
@@ -621,17 +871,23 @@
             <div class="content-area">
                 <main class="main">
                     <div id="entries-container"></div>
-                    <div class="add-button" onclick="app.addNewEntry()" title="Add new entry (Ctrl+Enter)">+</div>
                 </main>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="footer-logo">
-            <span>© <span id="current-year"></span></span>
-        </footer>
     </div>
+
+    <!-- Fixed Footer -->
+    <footer class="footer">
+        <div class="footer-left">
+            <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="footer-logo">
+        </div>
+        <div class="footer-center">
+            <div class="add-button" onclick="app.addNewEntry()" title="Add new entry (Ctrl+Enter)">+</div>
+        </div>
+        <div class="footer-right">
+            <span>© <span id="current-year"></span></span>
+        </div>
+    </footer>
 
     <!-- About Modal -->
     <div class="modal" id="about-modal">
@@ -659,11 +915,22 @@
             <h3>Key Features</h3>
             <ul>
                 <li><strong>In-place editing:</strong> Click anywhere to edit - no complex forms.</li>
+                <li><strong>Markdown support:</strong> Use <code>**bold**</code>, <code>*italic*</code>, <code># headings</code>, <code>> quotes</code>, and <code>[links](url)</code>.</li>
                 <li><strong>Visual timeline:</strong> Red line shows your memory progression.</li>
                 <li><strong>Auto-save:</strong> Changes save when you click away.</li>
+                <li><strong>Print entries:</strong> Print individual entries with the ⎙ button for your filing system.</li>
                 <li><strong>Year Archives:</strong> Export complete, self-contained HTML files for each year.</li>
                 <li><strong>Data Portability:</strong> Import/export using standard CSV format.</li>
                 <li><strong>Keyboard Shortcuts:</strong> Use Ctrl+Enter to quickly add new entries.</li>
+            </ul>
+
+            <h3>Markdown Examples</h3>
+            <ul>
+                <li><code>**This text is bold**</code> → <strong>This text is bold</strong></li>
+                <li><code>*This text is italic*</code> → <em>This text is italic</em></li>
+                <li><code># Big heading</code> → Large heading</li>
+                <li><code>> This is a quote</code> → Indented quote block</li>
+                <li><code>[Visit Google](https://google.com)</code> → Clickable link</li>
             </ul>
 
             <p style="margin-top: 20px; font-style: italic; color: #666;">Built with love for those working to strengthen their memory connections. You're doing great. 💚</p>
@@ -673,12 +940,37 @@
     <!-- Toast Notification Container -->
     <div id="toast-container"></div>
 
+    <!-- Confirmation Toast Container -->
+    <div id="confirmation-container"></div>
+
     <script>
     const app = {
         // --- STATE ---
         entries: [],
         yearName: '',
         deferredPrompt: null,
+        editingEntry: null,
+
+        // --- MARKDOWN PARSER ---
+        parseMarkdown(text) {
+            if (!text) return '';
+            
+            return text
+                // Headers
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                // Bold
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // Italic
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // Links
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+                // Blockquotes
+                .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+                // Line breaks
+                .replace(/\n/g, '<br>');
+        },
 
         // --- PWA INITIALIZATION ---
         async init() {
@@ -736,7 +1028,6 @@
             try {
                 const registration = await navigator.serviceWorker.register('sw.js');
                 console.log('Service Worker registered:', registration);
-                this.showToast('App ready for offline use!', 'success');
             } catch (error) {
                 console.log('Service Worker registration failed:', error);
             }
@@ -771,6 +1062,7 @@
                 if (e.key === 'Escape') {
                     this.closeSettings();
                     this.closeAboutModal();
+                    this.hideConfirmation();
                 }
             });
 
@@ -838,22 +1130,59 @@
                 });
 
                 entryDiv.innerHTML = `
-                    <button class="entry-delete" onclick="app.deleteEntry(event, ${index})" title="Delete entry">×</button>
                     <div class="entry-title-wrapper">
                         <input type="text" class="entry-editable entry-title-edit" value="${this.escapeHtml(entry.title)}" 
                                onblur="app.updateEntry(${index}, 'title', this.value)" placeholder="Enter title...">
                     </div>
-                    <textarea class="entry-editable entry-description-edit" 
-                              onblur="app.updateEntry(${index}, 'description', this.value)" 
-                              placeholder="Enter description...">${this.escapeHtml(entry.description)}</textarea>
+                    <div class="entry-description-container">
+                        <div class="entry-description-rendered markdown-content" onclick="app.editDescription(${index})" data-index="${index}">
+                            ${this.parseMarkdown(entry.description)}
+                        </div>
+                        <button class="entry-print-btn" onclick="app.printEntry(${index})" title="Print entry">⎙</button>
+                        <button class="entry-delete" onclick="app.deleteEntry(${index})" title="Delete entry">❌</button>
+                    </div>
                     <div class="entry-timestamp">${timeString}</div>
                 `;
                 container.appendChild(entryDiv);
             });
+        },
 
-            setTimeout(() => {
-                document.querySelectorAll('.entry-description-edit').forEach(this.autoResizeTextarea);
-            }, 0);
+        editDescription(index) {
+            if (this.editingEntry !== null) {
+                this.finishEditingDescription();
+            }
+
+            this.editingEntry = index;
+            const container = document.querySelector(`[data-index="${index}"]`).parentElement;
+            const renderedDiv = container.querySelector('.entry-description-rendered');
+            const printBtn = container.querySelector('.entry-print-btn');
+            const deleteBtn = container.querySelector('.entry-delete');
+            const entry = this.entries[index];
+            
+            const textarea = document.createElement('textarea');
+            textarea.className = 'entry-editable entry-description-edit';
+            textarea.value = entry.description;
+            textarea.placeholder = 'Enter description (supports **bold**, *italic*, # headings, > quotes, [links](url))...';
+            textarea.onblur = () => this.finishEditingDescription(index);
+            
+            // Hide both buttons during editing
+            printBtn.style.display = 'none';
+            deleteBtn.style.display = 'none';
+            renderedDiv.replaceWith(textarea);
+            textarea.focus();
+            this.autoResizeTextarea(textarea);
+        },
+
+        finishEditingDescription(index = this.editingEntry) {
+            if (index === null) return;
+            
+            const textarea = document.querySelector('.entry-description-edit');
+            if (textarea && textarea.value !== undefined) {
+                this.updateEntry(index, 'description', textarea.value);
+            }
+            
+            this.editingEntry = null;
+            this.renderEntries();
         },
 
         addNewEntry() {
@@ -883,14 +1212,111 @@
             this.showToast('Entry saved.', 'success');
         },
 
-        deleteEntry(event, index) {
-            event.stopPropagation(); 
-            if (confirm('Are you sure you want to delete this entry?')) {
-                this.entries.splice(index, 1);
-                this.saveEntries();
-                this.renderEntries();
-                this.showToast('Entry deleted.', 'info');
-            }
+        deleteEntry(index) {
+            const entry = this.entries[index];
+            this.showConfirmation(
+                `Are you sure you want to delete "${entry.title}"?`,
+                () => {
+                    this.entries.splice(index, 1);
+                    this.saveEntries();
+                    this.renderEntries();
+                    this.showToast('Entry deleted.', 'info');
+                }
+            );
+        },
+
+        printEntry(index) {
+            const entry = this.entries[index];
+            const timestamp = new Date(entry.timestamp);
+            const timeString = timestamp.toLocaleString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>YearLog Entry - ${this.escapeHtml(entry.title)}</title>
+                    <style>
+                        body {
+                            font-family: 'Courier New', Courier, monospace;
+                            line-height: 1.6;
+                            max-width: 800px;
+                            margin: 40px auto;
+                            padding: 20px;
+                        }
+                        .header {
+                            border-bottom: 2px solid #333;
+                            padding-bottom: 20px;
+                            margin-bottom: 30px;
+                        }
+                        .title {
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        }
+                        .timestamp {
+                            color: #666;
+                            font-size: 14px;
+                        }
+                        .content {
+                            margin: 30px 0;
+                            min-height: 200px;
+                        }
+                        .footer {
+                            margin-top: 50px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #666;
+                            border-top: 1px solid #ccc;
+                            padding-top: 20px;
+                        }
+                        h1, h2, h3 { margin: 20px 0 10px 0; }
+                        h1 { font-size: 20px; }
+                        h2 { font-size: 18px; }
+                        h3 { font-size: 16px; }
+                        blockquote {
+                            margin: 15px 0;
+                            padding-left: 15px;
+                            border-left: 3px solid #ddd;
+                            color: #666;
+                            font-style: italic;
+                        }
+                        strong { font-weight: bold; }
+                        em { font-style: italic; }
+                        a { color: #0066cc; text-decoration: underline; }
+                        @media print {
+                            body { margin: 0; padding: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="title">${this.escapeHtml(entry.title)}</div>
+                        <div class="timestamp">${timeString}</div>
+                    </div>
+                    <div class="content">
+                        ${this.parseMarkdown(entry.description)}
+                    </div>
+                    <div class="footer">
+                        Generated from YearLog - Personal Memory Companion
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
         },
 
         clearAllEntries() {
@@ -899,12 +1325,53 @@
                 this.showToast('There are no entries to clear.', 'error');
                 return;
             }
-            if (confirm(`Are you sure you want to delete all ${this.entries.length} entries? This action cannot be undone.`)) {
-                this.entries = [];
-                this.saveEntries();
-                this.renderEntries();
-                this.showToast('All entries have been cleared.', 'info');
+            this.showConfirmation(
+                `Are you sure you want to delete all ${this.entries.length} entries? This action cannot be undone.`,
+                () => {
+                    this.entries = [];
+                    this.saveEntries();
+                    this.renderEntries();
+                    this.showToast('All entries have been cleared.', 'info');
+                }
+            );
+        },
+
+        // --- CONFIRMATION SYSTEM ---
+        showConfirmation(message, onConfirm, onCancel = null) {
+            const container = document.getElementById('confirmation-container');
+            container.innerHTML = `
+                <div class="confirmation-toast show">
+                    <div class="confirmation-message">${message}</div>
+                    <div class="confirmation-buttons">
+                        <button class="confirmation-btn danger" onclick="app.confirmAction()">OK</button>
+                        <button class="confirmation-btn" onclick="app.hideConfirmation()">Cancel</button>
+                    </div>
+                </div>
+            `;
+
+            this.pendingConfirmation = { onConfirm, onCancel };
+        },
+
+        confirmAction() {
+            if (this.pendingConfirmation && this.pendingConfirmation.onConfirm) {
+                this.pendingConfirmation.onConfirm();
             }
+            this.hideConfirmation();
+        },
+
+        hideConfirmation() {
+            const container = document.getElementById('confirmation-container');
+            const toast = container.querySelector('.confirmation-toast');
+            if (toast) {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 300);
+            }
+            if (this.pendingConfirmation && this.pendingConfirmation.onCancel) {
+                this.pendingConfirmation.onCancel();
+            }
+            this.pendingConfirmation = null;
         },
 
         saveEntries() {
@@ -924,14 +1391,15 @@
                 const timeString = new Date(entry.timestamp).toLocaleString('en-US', {
                     month: 'numeric', day: 'numeric', year: '2-digit', hour: 'numeric', minute: '2-digit', hour12: true
                 });
-                const descriptionHtml = this.escapeHtml(entry.description).replace(/\n/g, '<br>');
                 
                 return `
                     <div class="entry">
                         <div class="entry-title-wrapper">
                             <span style="font-weight: bold; padding-left: 15px;">${this.escapeHtml(entry.title)}</span>
                         </div>
-                        <div style="color: #444; margin-bottom: 8px; white-space: pre-wrap;">${descriptionHtml}</div>
+                        <div style="color: #444; margin-bottom: 8px;" class="markdown-content">
+                            ${this.parseMarkdown(entry.description)}
+                        </div>
                         <div class="entry-timestamp">${timeString}</div>
                     </div>
                 `;
@@ -959,6 +1427,11 @@
         .entry-title-wrapper::before { content: "|"; color: red; font-weight: bold; position: absolute; left: 0; }
         .entry-timestamp { font-size: 10px; color: #999; margin-top: 8px; font-style: italic; }
         .footer { border-top: 1px solid #eee; padding: 15px; text-align: center; font-size: 12px; color: #666; }
+        h1, h2, h3 { margin: 10px 0 5px 0; }
+        h1 { font-size: 18px; } h2 { font-size: 16px; } h3 { font-size: 14px; }
+        blockquote { margin: 10px 0; padding-left: 15px; border-left: 3px solid #ddd; color: #666; font-style: italic; }
+        strong { font-weight: bold; } em { font-style: italic; }
+        a { color: #0066cc; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -1021,9 +1494,12 @@
                     for(let i = startIndex; i < lines.length; i++) {
                         const line = lines[i].trim();
                         if (!line) continue;
-                        const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
-                        if (values.length >= 2) {
-                             importedEntries.push({
+                        const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+                        if (values && values.length >= 2) {
+                            values.forEach((val, idx) => {
+                                values[idx] = val.replace(/^"|"$/g, '').replace(/""/g, '"');
+                            });
+                            importedEntries.push({
                                 id: Date.now() + i,
                                 title: values[0],
                                 description: values[1],
@@ -1072,7 +1548,11 @@
             setTimeout(() => toast.classList.add('show'), 10);
             setTimeout(() => {
                 toast.classList.remove('show');
-                setTimeout(() => container.removeChild(toast), 300);
+                setTimeout(() => {
+                    if (container.contains(toast)) {
+                        container.removeChild(toast);
+                    }
+                }, 300);
             }, 3000);
         },
         escapeHtml(str) {
