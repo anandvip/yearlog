@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlllYXJMb2cgLSBQZXJzb25hbCBNZW1vcnkgQ29tcGFuaW9uIiwKICAic2hvcnRfbmFtZSI6ICJZZWFyTG9nIiwKICAiZGVzY3JpcHRpb24iOiAiQSBnZW50bGUsIGVtcGF0aGV0aWMgdG9vbCBmb3IgaW5kaXZpZHVhbHMgd29ya2luZyB0byBzdHJlbmd0aGVuIHRoZWlyIG1lbW9yeSBjb25uZWN0aW9ucy4gQ2FwdHVyZSBhbmQgb3JnYW5pemUgeW91ciBkYWlseSB0aG91Z2h0cyBhbmQgZXhwZXJpZW5jZXMuIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjZGMyNjI2IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lnZG1sbGQwSnZlRDBpTUNBd0lERXlPQ0F4TWpnaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1UQWlJSGs5SWpFd0lpQjNhV1IwYUQwaU1UQTRJR2hsYVdkb2REMGlNVEE0SWlCbWFXeHNQU0lqWkdNeU5qSTJJaUF2UGp4eVpXTjBJSGc5SWpJNElpQjVQU0l5T0NJZ2QybGtkR2c5SXRJZ2FHVnBaMmgwUFNJNE1pSWdabWxzYkQwaUkwWm1SbVptSWlBdlBqeDBaWGgwSUhnOUlqUXdJaUI1UFNJMk1pSWdabTl1ZEMxbVlXMXBiSGs5SW1OdmRYSnBaWElpSUdacGJHdzlJaU0yTmpZaVBsbE1QQzkwWlhoMFBqd3ZjM1puUGc9PSIsCiAgICAgICJzaXplcyI6ICIxMjh4MTI4IiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTlRFeUlpQm9aV2xuYUhROUlqVXhNaUlnZG1sbGQwSnZlRDBpTUNBd0lEVXhNaUExTVRJaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1UQWlJSGs5SWpFd0lpQjNhV1IwYUQwaU5Ea3lJR2hsYVdkb2REMGlORGt5SWlCbWFXeHNQU0lqWkdNeU5qSTJJaUF2UGp4eVpXTjBJSGc5SWpjNElpQjVQU0kzT0NJZ2QybGtkR2c5SWpNMU5pSWdhR1ZwWjJoMFBTSXpOVllpSUdacGJHdzlJaU5HWmtabVppSWdMejQ4ZEdWNGRDQjRQU0l4TlRBaUlIazlJakV5TkNJZ1ptOXVkQzFtWVcxcGJIazlJbU52ZFhKcFpYSWlJR1pwYkd3OUlpTTJOalppUGxsTVBDOTBaWGgwUGp3dmMzWm5QZz09IiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0sCiAgImNhdGVnb3JpZXMiOiBbInByb2R1Y3Rpdml0eSIsICJ1dGlsaXRpZXMiLCAibGlmZXN0eWxlIl0sCiAgImxhbmciOiAiZW4iCn0=">
+    
+    <!-- SEO Meta Tags -->
+    <title>YearLog - Personal Memory Companion | Digital Diary & Journal App</title>
+    <meta name="description" content="A gentle, empathetic digital diary for strengthening memory connections. Capture daily thoughts, organize experiences, and build your personal memory archive with YearLog - completely private and offline.">
+    <meta name="keywords" content="digital diary, personal journal, memory companion, offline journal app, private diary, memory strengthening, daily thoughts, personal memories, digital notebook, markdown support">
+    <meta name="author" content="Vipul Anand">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yearlog.vipulanand.in/">
+    <meta property="og:title" content="YearLog - Personal Memory Companion">
+    <meta property="og:description" content="A gentle, empathetic digital diary for strengthening memory connections. Completely private and offline.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+    <meta property="og:site_name" content="YearLog">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yearlog.vipulanand.in/">
+    <meta property="twitter:title" content="YearLog - Personal Memory Companion">
+    <meta property="twitter:description" content="A gentle, empathetic digital diary for strengthening memory connections. Completely private and offline.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#dc2626">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="YearLog">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yearlog.vipulanand.in/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png">
+
+    <style>
+        /* General Resets and Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.4;
+            background-color: white;
+            color: black;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 70px; /* Space for fixed footer */
+        }
+
+        /* Layout Structure */
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 70px);
+            flex: 1;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        .red-line {
+            width: 2px;
+            background-color: red;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 20px 20px 30px;
+            background-color: white;
+            border-bottom: 0.5pt solid #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            transition: border-color 0.3s ease;
+        }
+
+        .header.offline {
+            border-bottom-color: #ef4444;
+        }
+
+        .search-trigger {
+            color: red;
+            font-weight: bold;
+            margin-left: -10px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+            user-select: none;
+            position: relative;
+        }
+
+        .search-trigger:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-trigger::before {
+            content: "⬅";
+            color: #999;
+            font-size: 12px;
+            margin-right: 2px;
+            opacity: 0.7;
+        }
+
+        .search-trigger::after {
+            content: "Swipe right or click to search!";
+            position: absolute;
+            top: -30px;
+            left: 0;
+            background: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .search-trigger:hover::after {
+            opacity: 1;
+        }
+
+        .header .date-info {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .year-name-edit {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #333;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .year-name-edit:hover {
+            background-color: #f5f5f5;
+        }
+
+        .year-name-edit:focus {
+            background-color: #f9f9f9;
+            border: 0.5pt solid #ccc;
+            outline: none;
+        }
+
+        /* PWA Install Button */
+        .install-button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+            display: none;
+        }
+
+        .install-button:hover {
+            background-color: #b91c1c;
+        }
+
+        .install-button.show {
+            display: inline-block;
+        }
+
+        /* Settings Panel */
+        .settings-trigger {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #666;
+            transition: color 0.2s ease;
+            padding: 8px;
+            border-radius: 3px;
+            user-select: none;
+        }
+
+        .settings-trigger:hover {
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .settings-panel {
+            position: absolute;
+            top: 100%;
+            right: 20px;
+            background: white;
+            border: 0.5pt solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            min-width: 300px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            visibility: hidden;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .settings-panel.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .settings-option {
+            padding: 8px 0;
+            border-bottom: 0.5pt solid #eee;
+            cursor: pointer;
+            font-size: 12px;
+            color: #444;
+            transition: color 0.2s ease;
+        }
+
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+
+        .settings-option:hover {
+            color: #000;
+        }
+
+        .settings-option.danger {
+            color: #dc2626;
+        }
+
+        .settings-option.danger:hover {
+            color: #991b1b;
+        }
+
+        /* Search Panel */
+        .search-panel {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            border-right: 0.5pt solid #ccc;
+            z-index: 1500;
+            transition: left 0.3s ease, transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .search-panel.show {
+            left: 0;
+        }
+
+        .search-panel-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .search-panel-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-header {
+            padding: 20px;
+            border-bottom: 0.5pt solid #eee;
+            background: #f9f9f9;
+            position: relative;
+        }
+
+        .search-hint {
+            position: absolute;
+            bottom: 5px;
+            right: 15px;
+            font-size: 10px;
+            color: #999;
+            font-style: italic;
+            display: none;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 45px;
+            color: #666;
+            font-size: 16px;
+            z-index: 1;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 10px 10px 35px;
+            border: 0.5pt solid #ccc;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+            margin-left: 8px;
+        }
+
+        .search-input:focus {
+            border-color: #666;
+        }
+
+        .search-close {
+            display: none;
+        }
+
+        .search-back-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            padding: 8px;
+            margin-right: 8px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-back-btn:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .search-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .search-stats {
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #666;
+            border-bottom: 0.5pt solid #eee;
+            background: #f9f9f9;
+        }
+
+        /* Year Overview Styles */
+        .year-overview {
+            padding: 20px;
+            border-bottom: 0.5pt solid #eee;
+        }
+
+        .year-overview h3 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .month-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .month-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            font-size: 11px;
+            color: #555;
+            border-bottom: 0.5pt solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .month-stat:hover {
+            background: #f9f9f9;
+            color: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .month-stat.expanded {
+            background: #f0f8ff;
+            border-left: 3px solid #3b82f6;
+            color: #1d4ed8;
+        }
+
+        .month-stat.expanded::after {
+            content: "▲";
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3b82f6;
+            font-size: 10px;
+        }
+
+        .month-stat:not(.expanded)::after {
+            content: "▼";
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .month-stat:hover:not(.expanded)::after {
+            opacity: 1;
+        }
+
+        .month-entries {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: #f8fafc;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .month-entries.show {
+            max-height: 300px;
+            border-top: 0.5pt solid #e2e8f0;
+        }
+
+        .month-entry-item {
+            padding: 8px 12px;
+            border-bottom: 0.5pt solid #f1f5f9;
+            cursor: pointer;
+            font-size: 10px;
+            color: #666;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .month-entry-item:last-child {
+            border-bottom: none;
+        }
+
+        .month-entry-item:hover {
+            background: #e2e8f0;
+            color: #374151;
+            transform: translateX(4px);
+        }
+
+        .month-entry-title {
+            font-weight: bold;
+            color: #374151;
+            font-size: 11px;
+        }
+
+        .month-entry-date {
+            font-size: 9px;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .month-name {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .month-count {
+            color: #666;
+            font-weight: bold;
+        }
+
+        /* Recent Entries Styles */
+        .recent-entries {
+            padding: 20px;
+        }
+
+        .recent-entries h3 {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .recent-entry-item {
+            padding: 8px 0;
+            border-bottom: 0.5pt solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .recent-entry-item:hover {
+            background: #f9f9f9;
+            margin: 0 -20px;
+            padding: 8px 20px;
+        }
+
+        .recent-entry-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+            font-size: 12px;
+        }
+
+        .recent-entry-date {
+            color: #999;
+            font-size: 10px;
+            font-style: italic;
+        }
+
+        /* Search Results Styles */
+        .year-group {
+            border-bottom: 0.5pt solid #eee;
+        }
+
+        .year-header {
+            padding: 15px 20px;
+            background: #f5f5f5;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: #333;
+            transition: background-color 0.2s ease;
+        }
+
+        .year-header:hover {
+            background: #eeeeee;
+        }
+
+        .year-toggle {
+            color: #666;
+            transition: transform 0.2s ease;
+        }
+
+        .year-group.collapsed .year-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .year-results {
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .year-group.collapsed .year-results {
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            border-bottom: 0.5pt solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background: #f9f9f9;
+        }
+
+        .search-result-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .search-result-snippet {
+            color: #666;
+            font-size: 11px;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+
+        .search-result-date {
+            color: #999;
+            font-size: 10px;
+            font-style: italic;
+        }
+
+        .search-highlight {
+            background: #ffeb3b;
+            color: #333;
+            padding: 1px 2px;
+            border-radius: 2px;
+        }
+
+        .no-results {
+            padding: 40px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Search Panel Responsive */
+        @media (max-width: 600px) {
+            .search-panel {
+                width: 100vw;
+                left: -100vw;
+            }
+
+            .search-panel.show {
+                left: 0;
+            }
+
+            .search-header {
+                padding: 15px;
+            }
+
+            .search-content {
+                padding-bottom: 80px;
+            }
+
+            .year-overview, .recent-entries {
+                padding: 15px;
+            }
+
+            .month-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .search-close {
+                top: 12px;
+                right: 12px;
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+
+            .search-back-btn {
+                font-size: 18px;
+                padding: 10px;
+            }
+
+            .search-hint {
+                display: block;
+            }
+        }
+
+        /* Main Content & Entries */
+        .main {
+            flex: 1;
+            padding: 30px 20px 30px 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .entry {
+            margin-bottom: 25px;
+            line-height: 1.2;
+            position: relative;
+            border: 0.5pt solid transparent;
+            border-radius: 3px;
+            transition: border-color 0.2s ease;
+        }
+
+        .entry:hover {
+            border-color: #eee;
+        }
+
+        .entry-description-container {
+            margin-bottom: 5px;
+        }
+
+        .entry-actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            margin-top: 5px;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .entry:hover .entry-actions-bar {
+            opacity: 1;
+        }
+
+        .entry-action-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1;
+            transition: color 0.2s ease, background-color 0.2s ease;
+            border-radius: 3px;
+        }
+
+        .entry-action-btn:hover {
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .entry-action-btn.danger {
+            color: #dc2626;
+        }
+
+        .entry-action-btn.danger:hover {
+            color: #991b1b;
+            background-color: #fef2f2;
+        }
+
+        .entry-editable {
+            border: none;
+            background: transparent;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: inherit;
+            color: inherit;
+            width: 100%;
+            resize: none;
+            outline: none;
+            line-height: inherit;
+        }
+
+        .entry-editable:focus {
+            background-color: #f9f9f9;
+            border: 0.5pt solid #ccc;
+            padding: 2px;
+        }
+
+        .entry-title-wrapper {
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .entry-title-wrapper::before {
+            content: "|";
+            color: red;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-family: 'Courier New', Courier, monospace;
+            z-index: 1;
+        }
+
+        .entry-title-edit {
+            font-weight: bold;
+            padding-left: 15px;
+            width: 100%;
+        }
+
+        .entry-description-edit {
+            color: #444;
+            margin-bottom: 8px;
+            min-height: 20px;
+        }
+
+        .entry-description-rendered {
+            color: #444;
+            margin-bottom: 8px;
+            min-height: 20px;
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 2px;
+            transition: background-color 0.2s ease;
+        }
+
+        .entry-description-rendered:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Markdown Styles */
+        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+            margin: 10px 0 5px 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .markdown-content h1 { font-size: 18px; }
+        .markdown-content h2 { font-size: 16px; }
+        .markdown-content h3 { font-size: 14px; }
+
+        .markdown-content blockquote {
+            margin: 10px 0;
+            padding-left: 15px;
+            border-left: 3px solid #ddd;
+            color: #666;
+            font-style: italic;
+        }
+
+        .markdown-content strong {
+            font-weight: bold;
+        }
+
+        .markdown-content em {
+            font-style: italic;
+        }
+
+        .markdown-content a {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        .markdown-content a:hover {
+            color: #004499;
+        }
+
+        .markdown-content code {
+            background: #f5f5f5;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .entry-timestamp {
+            font-size: 10px;
+            color: #999;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Fixed Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-top: 1px solid #eee;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            z-index: 100;
+            height: 70px;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-logo {
+            height: 40px;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer-logo:hover {
+            opacity: 1;
+        }
+
+        .footer-center {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .add-button {
+            display: inline-block;
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+            padding: 5px 15px;
+            border-radius: 50%;
+            line-height: 1;
+        }
+
+        .add-button:hover {
+            color: #000;
+            background-color: #f5f5f5;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            background: white;
+            border: 0.5pt solid;
+            padding: 12px 16px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            z-index: 2001;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-color: #22c55e;
+            color: #444;
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+            color: #444;
+        }
+
+        .toast.info {
+            border-color: #3b82f6;
+            color: #444;
+        }
+
+        /* Confirmation Backdrop */
+        .confirmation-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirmation-backdrop.show {
+            opacity: 1;
+        }
+
+        /* Confirmation Toast */
+        .confirmation-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 0.5pt solid #ef4444;
+            border-radius: 4px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            z-index: 2002;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: all 0.3s ease;
+            max-width: 400px;
+            min-width: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .confirmation-toast.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .confirmation-message {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .confirmation-btn {
+            padding: 6px 12px;
+            border: 0.5pt solid #666;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .confirmation-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .confirmation-btn.danger {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .confirmation-btn.danger:hover {
+            background-color: #fef2f2;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border: 2px solid #333;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-logo {
+            display: block;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px auto;
+            opacity: 0.8;
+        }
+
+        .modal-content h3 {
+            margin: 20px 0 10px 0;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .modal-content p {
+            margin-bottom: 15px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .modal-content ul {
+            margin: 10px 0 15px 20px;
+        }
+
+        .modal-content li {
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .modal-content code {
+            background: #f5f5f5;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .privacy-highlight {
+            background-color: #f0f8ff;
+            border: 1px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .privacy-highlight strong {
+            color: #1d4ed8;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            
+            .header, .footer, .settings-panel, .modal, .toast, .confirmation-toast {
+                display: none !important;
+            }
+            
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .red-line {
+                display: none;
+            }
+            
+            .main {
+                max-width: none;
+                padding: 20px;
+            }
+            
+            .entry {
+                break-inside: avoid;
+                margin-bottom: 30px;
+                border: 1px solid #ccc;
+                padding: 15px;
+            }
+            
+            .entry-actions-bar {
+                display: none !important;
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding-bottom: 80px;
+            }
+
+            .container {
+                min-height: calc(100vh - 80px);
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 15px 15px 15px 25px;
+            }
+
+            .settings-trigger {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                margin-left: 0;
+            }
+
+            .install-button {
+                position: absolute;
+                top: 15px;
+                right: 60px;
+                font-size: 10px;
+                padding: 6px 8px;
+            }
+
+            .settings-panel {
+                right: 15px;
+                left: 15px;
+                min-width: auto;
+            }
+            
+            .main {
+                padding: 20px 15px 20px 25px;
+            }
+            
+            .footer {
+                padding: 12px 15px;
+                height: 80px;
+            }
+
+            .footer-logo {
+                height: 32px;
+            }
+
+            .add-button {
+                font-size: 28px;
+                padding: 8px 12px;
+            }
+
+            .toast {
+                bottom: 95px;
+                left: 15px;
+                right: 15px;
+                max-width: none;
+            }
+
+            .confirmation-toast {
+                max-width: 90%;
+                min-width: 280px;
+                margin: 20px;
+                font-size: 13px;
+                padding: 18px;
+            }
+
+            .confirmation-buttons {
+                gap: 8px;
+            }
+
+            .confirmation-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .red-line {
+                width: 1.5px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .footer-logo {
+                height: 24px;
+            }
+
+            .add-button {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header" id="header">
+            <span class="search-trigger" onclick="app.toggleSearch()" title="Search your memories">➝|</span>
+            <span class="date-info" id="day-of-year"></span>
+            <span class="date-info" id="days-left"></span>
+            <span class="date-info" id="week-number"></span>
+            <span class="date-info" id="current-date"></span>
+            <input type="text" class="year-name-edit" id="year-name" 
+                   placeholder="Click to name your year" 
+                   onblur="app.saveYearName(this.value)" title="Click to customize your year">
+            
+            <button class="install-button" id="install-button" onclick="app.installPWA()">Install App</button>
+            <div class="settings-trigger" onclick="app.toggleSettings()">☼</div>
+            
+            <div class="settings-panel" id="settings-panel">
+                <div class="settings-option" onclick="app.showAboutModal()">About This Tool</div>
+                <div class="settings-option" onclick="app.exportYearArchive()">Export Year Archive (HTML)</div>
+                <div class="settings-option" onclick="app.exportToCSV()">Export as CSV</div>
+                <div class="settings-option" onclick="app.triggerImport()">Import CSV
+                    <input type="file" id="csv-import" class="file-input" accept=".csv" onchange="app.importFromCSV(event)">
+                </div>
+                <div class="settings-option danger" onclick="app.clearAllEntries()">Clear All Entries</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <div class="red-line"></div>
+            <div class="content-area">
+                <main class="main">
+                    <div id="entries-container"></div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fixed Footer -->
+    <footer class="footer">
+        <div class="footer-left">
+            <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="footer-logo">
+        </div>
+        <div class="footer-center">
+            <div class="add-button" onclick="app.addNewEntry()" title="Add new entry (Ctrl+Enter)">+</div>
+        </div>
+        <div class="footer-right">
+            <span>© <span id="current-year"></span></span>
+        </div>
+    </footer>
+
+    <!-- Search Panel -->
+    <div class="search-panel-backdrop" id="search-backdrop" onclick="app.closeSearch()"></div>
+    <div class="search-panel" id="search-panel">
+        <button class="search-close" onclick="app.closeSearch()" title="Close search">×</button>
+        <div class="search-header">
+            <div class="search-input-wrapper">
+                <button class="search-back-btn" onclick="app.closeSearch()" title="Back">|&lt;</button>
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="search-input" 
+                       placeholder="Search your memories..." 
+                       oninput="app.performSearch(this.value)">
+            </div>
+            <div class="search-hint">Swipe left to close</div>
+        </div>
+        
+        <div class="search-content" id="search-content">
+            <!-- Year Overview (shown when no search) -->
+            <div class="year-overview" id="year-overview">
+                <h3>2025 Year Overview</h3>
+                <div class="month-stats" id="month-stats">
+                    <!-- Monthly stats will be populated here -->
+                </div>
+            </div>
+
+            <!-- Recent Entries (shown when no search) -->
+            <div class="recent-entries" id="recent-entries">
+                <h3>Recent Entries (Last 15)</h3>
+                <div id="recent-entries-list">
+                    <!-- Recent entries will be populated here -->
+                </div>
+            </div>
+
+            <!-- Search Results (shown when searching) -->
+            <div class="search-stats" id="search-stats" style="display: none;">
+                <!-- Search stats will appear here -->
+            </div>
+            <div class="search-results" id="search-results" style="display: none;">
+                <!-- Search results will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="app.closeAboutModal()">×</button>
+            <img src="https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png" alt="YearLog Logo" class="modal-logo">
+            <h2>YearLog - Your Personal Memory Companion</h2>
+            
+            <div class="privacy-highlight">
+                <strong>🔒 Complete Privacy & Offline Use</strong>
+                <p>YearLog works entirely offline and stores all your data locally in your browser. Nothing is sent to any servers. Your memories stay private and under your complete control.</p>
+            </div>
+
+            <h3>Philosophy</h3>
+            <p>YearLog is designed as a gentle, empathetic tool for individuals working to strengthen their memory connections. The app emphasizes minimal friction and encouraging progress.</p>
+
+            <h3>Progressive Web App Features</h3>
+            <ul>
+                <li><strong>Install as App:</strong> Click "Install App" to add YearLog to your device home screen.</li>
+                <li><strong>Offline First:</strong> Works completely offline with automatic sync when online.</li>
+                <li><strong>Fast Loading:</strong> Instant startup with cached resources.</li>
+                <li><strong>Cross-Platform:</strong> Works on mobile, tablet, and desktop devices.</li>
+            </ul>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>In-place editing:</strong> Click anywhere to edit - no complex forms.</li>
+                <li><strong>Enhanced search:</strong> Click ➝| to search with year overview and expandable month entries. Close with X, back arrow, or swipe left on mobile.</li>
+                <li><strong>Month Navigation:</strong> Tap any month in the search panel to see all entries for that month, then tap an entry to jump to it.</li>
+                <li><strong>Markdown support:</strong> Use <code>**bold**</code>, <code>*italic*</code>, <code># headings</code>, <code>> quotes</code>, and <code>[links](url)</code>.</li>
+                <li><strong>Visual timeline:</strong> Red line shows your memory progression.</li>
+                <li><strong>Auto-save:</strong> Changes save when you click away.</li>
+                <li><strong>Print entries:</strong> Print individual entries with the ⎙ button for your filing system.</li>
+                <li><strong>Year Archives:</strong> Export complete, self-contained HTML files for each year.</li>
+                <li><strong>Data Portability:</strong> Import/export using standard CSV format.</li>
+                <li><strong>Keyboard Shortcuts:</strong> Use Ctrl+Enter to quickly add new entries, Ctrl+F to search.</li>
+            </ul>
+
+            <h3>Markdown Examples</h3>
+            <ul>
+                <li><code>**This text is bold**</code> → <strong>This text is bold</strong></li>
+                <li><code>*This text is italic*</code> → <em>This text is italic</em></li>
+                <li><code># Big heading</code> → Large heading</li>
+                <li><code>> This is a quote</code> → Indented quote block</li>
+                <li><code>[Visit Google](https://google.com)</code> → Clickable link</li>
+            </ul>
+
+            <p style="margin-top: 20px; font-style: italic; color: #666;">Built with love for those working to strengthen their memory connections. You're doing great. 💚</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Confirmation Toast Container -->
+    <div id="confirmation-container"></div>
+
+    <script>
+    const app = {
+        // --- STATE ---
+        entries: [],
+        yearName: '',
+        deferredPrompt: null,
+        editingEntry: null,
+        searchOpen: false,
+        searchResults: [],
+        monthExpanded: {},
+
+        // --- MARKDOWN PARSER ---
+        parseMarkdown(text) {
+            if (!text) return '';
+            
+            return text
+                // Headers
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                // Bold
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // Italic
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // Links
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+                // Blockquotes
+                .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+                // Line breaks
+                .replace(/\n/g, '<br>');
+        },
+
+        // --- PWA INITIALIZATION ---
+        async init() {
+            // Load data from in-memory storage (no localStorage in artifacts)
+            this.entries = [
+                {
+                    id: Date.now() - 3000,
+                    title: "Welcome to YearLog",
+                    description: "This is your personal memory companion. Click on any text to **edit** it. Use *markdown* for formatting!\n\n> Try adding your first memory below.",
+                    timestamp: new Date().toISOString()
+                },
+                {
+                    id: Date.now() - 2000,
+                    title: "Markdown Example",
+                    description: "You can use **bold text**, *italic text*, and even [links](https://example.com)!\n\n# This is a heading\n> This is a quote\n\nClick on this text to edit it and see how it works!",
+                    timestamp: new Date(Date.now() - 86400000).toISOString() // Yesterday
+                },
+                {
+                    id: Date.now() - 1000,
+                    title: "Search Features",
+                    description: "Click the ➝| button to open the search panel. You can:\n\n- View your year overview\n- **Click on months** to expand entries\n- Search through all your memories\n- Navigate easily with touch gestures",
+                    timestamp: new Date(Date.now() - 2 * 86400000).toISOString() // 2 days ago
+                }
+            ];
+            this.yearName = new Date().getFullYear().toString();
+            this.monthExpanded = {};
+
+            // Initial UI setup
+            this.updateDateInfo();
+            this.loadYearName();
+            this.renderEntries();
+
+            // Set up recurring tasks
+            setInterval(() => this.updateDateInfo(), 60000); 
+
+            // Set up global event listeners
+            this.addEventListeners();
+            
+            // PWA Setup
+            this.initPWA();
+            this.updateOnlineStatus();
+        },
+
+        initPWA() {
+            // Handle install prompt
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                this.deferredPrompt = e;
+                document.getElementById('install-button').classList.add('show');
+            });
+
+            // Handle app installed
+            window.addEventListener('appinstalled', () => {
+                this.deferredPrompt = null;
+                document.getElementById('install-button').classList.remove('show');
+                this.showToast('YearLog installed successfully!', 'success');
+            });
+
+            // Online/offline status
+            window.addEventListener('online', () => this.updateOnlineStatus());
+            window.addEventListener('offline', () => this.updateOnlineStatus());
+        },
+
+        async installPWA() {
+            if (this.deferredPrompt) {
+                this.deferredPrompt.prompt();
+                const { outcome } = await this.deferredPrompt.userChoice;
+                this.deferredPrompt = null;
+                document.getElementById('install-button').classList.remove('show');
+            }
+        },
+
+        updateOnlineStatus() {
+            const header = document.getElementById('header');
+            if (navigator.onLine) {
+                header.classList.remove('offline');
+            } else {
+                header.classList.add('offline');
+            }
+        },
+
+        addEventListeners() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    this.addNewEntry();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    this.openSearch();
+                }
+                if (e.key === 'Escape') {
+                    this.closeSettings();
+                    this.closeAboutModal();
+                    this.hideConfirmation();
+                    this.closeSearch();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const settingsPanel = document.getElementById('settings-panel');
+                const settingsTrigger = document.querySelector('.settings-trigger');
+                if (!settingsPanel.contains(e.target) && !settingsTrigger.contains(e.target)) {
+                    this.closeSettings();
+                }
+                if (e.target.id === 'about-modal') {
+                    this.closeAboutModal();
+                }
+            });
+
+            document.addEventListener('input', (e) => {
+                if (e.target.tagName.toLowerCase() === 'textarea' && e.target.classList.contains('entry-description-edit')) {
+                    this.autoResizeTextarea(e.target);
+                }
+            });
+
+            // Add touch/swipe support for search panel
+            this.addTouchSupport();
+        },
+
+        addTouchSupport() {
+            const searchPanel = document.getElementById('search-panel');
+            let startX = 0;
+            let startY = 0;
+            let moveX = 0;
+            let moveY = 0;
+
+            searchPanel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+
+            searchPanel.addEventListener('touchmove', (e) => {
+                if (!this.searchOpen) return;
+                
+                moveX = e.touches[0].clientX;
+                moveY = e.touches[0].clientY;
+                
+                const deltaX = moveX - startX;
+                const deltaY = Math.abs(moveY - startY);
+                
+                // If swiping left and vertical movement is small (to avoid interfering with scrolling)
+                if (deltaX < -50 && deltaY < 30) {
+                    e.preventDefault(); // Prevent default scrolling
+                    // Apply transform to show the swipe animation
+                    searchPanel.style.transform = `translateX(${Math.min(0, deltaX)}px)`;
+                }
+            });
+
+            searchPanel.addEventListener('touchend', (e) => {
+                if (!this.searchOpen) return;
+                
+                const deltaX = moveX - startX;
+                const deltaY = Math.abs(moveY - startY);
+                
+                // Reset transform
+                searchPanel.style.transform = '';
+                
+                // If swiped left more than 100px and vertical movement is small
+                if (deltaX < -100 && deltaY < 50) {
+                    this.closeSearch();
+                }
+                
+                // Reset values
+                startX = 0;
+                startY = 0;
+                moveX = 0;
+                moveY = 0;
+            }, { passive: true });
+        },
+
+        updateDateInfo() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            const isLeap = new Date(now.getFullYear(), 1, 29).getDate() === 29;
+            const daysInYear = isLeap ? 366 : 365;
+
+            document.getElementById('day-of-year').textContent = `Day ${dayOfYear}`;
+            document.getElementById('days-left').textContent = `${daysInYear - dayOfYear} days left`;
+            document.getElementById('week-number').textContent = `Week ${Math.ceil(dayOfYear / 7)}`;
+            document.getElementById('current-date').textContent = now.toLocaleDateString();
+            document.getElementById('current-year').textContent = now.getFullYear();
+        },
+
+        loadYearName() {
+            document.getElementById('year-name').value = this.yearName;
+        },
+
+        saveYearName(name) {
+            const newName = name.trim();
+            if (newName) {
+                this.yearName = newName;
+                this.showToast('Year name updated.', 'success');
+            } else {
+                document.getElementById('year-name').value = this.yearName;
+            }
+        },
+        
+        renderEntries() {
+            const container = document.getElementById('entries-container');
+            container.innerHTML = ''; 
+            
+            this.entries.forEach((entry, index) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry';
+                entryDiv.setAttribute('data-entry-index', index); // FIXED: Clear naming
+                
+                const timestamp = new Date(entry.timestamp);
+                const timeString = timestamp.toLocaleString('en-US', {
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true
+                });
+
+                entryDiv.innerHTML = `
+                    <div class="entry-title-wrapper">
+                        <input type="text" class="entry-editable entry-title-edit" value="${this.escapeHtml(entry.title)}" 
+                               onblur="app.updateEntry(${index}, 'title', this.value)" placeholder="Enter title...">
+                    </div>
+                    <div class="entry-description-container">
+                        <div class="entry-description-rendered markdown-content" onclick="app.editDescription(${index})">
+                            ${this.parseMarkdown(entry.description)}
+                        </div>
+                    </div>
+                    <div class="entry-actions-bar">
+                        <button class="entry-action-btn" onclick="app.printEntry(${index})" title="Print entry">⎙</button>
+                        <button class="entry-action-btn danger" onclick="app.deleteEntry(${index})" title="Delete entry">❌</button>
+                    </div>
+                    <div class="entry-timestamp">${timeString}</div>
+                `;
+                container.appendChild(entryDiv);
+            });
+        },
+
+        // FIXED: Completely rewritten editDescription function
+        editDescription(entryIndex) {
+            // Clean up any existing editing
+            if (this.editingEntry !== null) {
+                this.finishEditingDescription();
+            }
+
+            this.editingEntry = entryIndex;
+            
+            // Find the specific entry using our clear data attribute
+            const entryElement = document.querySelector(`[data-entry-index="${entryIndex}"]`);
+            if (!entryElement) {
+                console.error('Could not find entry element for index:', entryIndex);
+                return;
+            }
+            
+            // Get the specific elements within this entry
+            const renderedDiv = entryElement.querySelector('.entry-description-rendered');
+            const actionsBar = entryElement.querySelector('.entry-actions-bar');
+            const entry = this.entries[entryIndex];
+            
+            if (!renderedDiv || !entry) {
+                console.error('Could not find required elements for editing');
+                return;
+            }
+            
+            // Create textarea for editing
+            const textarea = document.createElement('textarea');
+            textarea.className = 'entry-editable entry-description-edit';
+            textarea.value = entry.description;
+            textarea.placeholder = 'Enter description (supports **bold**, *italic*, # headings, > quotes, [links](url))...';
+            
+            // Set up event handlers
+            textarea.onblur = () => this.finishEditingDescription(entryIndex);
+            textarea.onkeydown = (e) => {
+                if (e.key === 'Escape') {
+                    this.finishEditingDescription(entryIndex);
+                }
+            };
+            
+            // Hide action bar during editing
+            if (actionsBar) {
+                actionsBar.style.display = 'none';
+            }
+            
+            // Replace rendered content with textarea
+            renderedDiv.replaceWith(textarea);
+            textarea.focus();
+            this.autoResizeTextarea(textarea);
+        },
+
+        // FIXED: Improved finishEditingDescription function
+        finishEditingDescription(entryIndex = this.editingEntry) {
+            if (entryIndex === null || entryIndex === undefined) return;
+            
+            // Find the textarea that's currently being edited
+            const textarea = document.querySelector('.entry-description-edit');
+            if (textarea && textarea.value !== undefined) {
+                this.updateEntry(entryIndex, 'description', textarea.value);
+            }
+            
+            this.editingEntry = null;
+            this.renderEntries(); // Re-render to restore proper state
+        },
+
+        addNewEntry() {
+            const newEntry = {
+                id: Date.now(),
+                title: 'New Entry',
+                description: '',
+                timestamp: new Date().toISOString()
+            };
+            this.entries.unshift(newEntry);
+            this.renderEntries();
+            this.showToast('New entry added.', 'info');
+
+            setTimeout(() => {
+                const firstTitleInput = document.querySelector('.entry-title-edit');
+                if (firstTitleInput) {
+                    firstTitleInput.focus();
+                    firstTitleInput.select();
+                }
+            }, 100);
+        },
+
+        updateEntry(index, field, value) {
+            if (this.entries[index]) {
+                this.entries[index][field] = value;
+                this.showToast('Entry saved.', 'success');
+            }
+        },
+
+        deleteEntry(index) {
+            const entry = this.entries[index];
+            this.showConfirmation(
+                `Are you sure you want to delete "${entry.title}"?`,
+                () => {
+                    this.entries.splice(index, 1);
+                    this.renderEntries();
+                    this.showToast('Entry deleted.', 'info');
+                }
+            );
+        },
+
+        printEntry(index) {
+            const entry = this.entries[index];
+            const timestamp = new Date(entry.timestamp);
+            const timeString = timestamp.toLocaleString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>YearLog Entry - ${this.escapeHtml(entry.title)}</title>
+                    <style>
+                        body {
+                            font-family: 'Courier New', Courier, monospace;
+                            line-height: 1.6;
+                            max-width: 800px;
+                            margin: 40px auto;
+                            padding: 20px;
+                        }
+                        .header {
+                            border-bottom: 2px solid #333;
+                            padding-bottom: 20px;
+                            margin-bottom: 30px;
+                        }
+                        .title {
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        }
+                        .timestamp {
+                            color: #666;
+                            font-size: 14px;
+                        }
+                        .content {
+                            margin: 30px 0;
+                            min-height: 200px;
+                        }
+                        .footer {
+                            margin-top: 50px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #666;
+                            border-top: 1px solid #ccc;
+                            padding-top: 20px;
+                        }
+                        h1, h2, h3 { margin: 20px 0 10px 0; }
+                        h1 { font-size: 20px; }
+                        h2 { font-size: 18px; }
+                        h3 { font-size: 16px; }
+                        blockquote {
+                            margin: 15px 0;
+                            padding-left: 15px;
+                            border-left: 3px solid #ddd;
+                            color: #666;
+                            font-style: italic;
+                        }
+                        strong { font-weight: bold; }
+                        em { font-style: italic; }
+                        a { color: #0066cc; text-decoration: underline; }
+                        @media print {
+                            body { margin: 0; padding: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="title">${this.escapeHtml(entry.title)}</div>
+                        <div class="timestamp">${timeString}</div>
+                    </div>
+                    <div class="content">
+                        ${this.parseMarkdown(entry.description)}
+                    </div>
+                    <div class="footer">
+                        Generated from YearLog - Personal Memory Companion
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        },
+
+        clearAllEntries() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('There are no entries to clear.', 'error');
+                return;
+            }
+            this.showConfirmation(
+                `Are you sure you want to delete all ${this.entries.length} entries? This action cannot be undone.`,
+                () => {
+                    this.entries = [];
+                    this.renderEntries();
+                    this.showToast('All entries have been cleared.', 'info');
+                }
+            );
+        },
+
+        // --- SEARCH FUNCTIONALITY ---
+        toggleSearch() {
+            if (this.searchOpen) {
+                this.closeSearch();
+            } else {
+                this.openSearch();
+            }
+        },
+
+        openSearch() {
+            this.searchOpen = true;
+            document.getElementById('search-panel').classList.add('show');
+            document.getElementById('search-backdrop').classList.add('show');
+            
+            // Render year overview and recent entries
+            this.renderYearOverview();
+            this.renderRecentEntries();
+            
+            setTimeout(() => {
+                document.getElementById('search-input').focus();
+            }, 300);
+        },
+
+        closeSearch() {
+            this.searchOpen = false;
+            document.getElementById('search-panel').classList.remove('show');
+            document.getElementById('search-backdrop').classList.remove('show');
+            document.getElementById('search-input').value = '';
+            this.showDefaultContent();
+        },
+
+        // ENHANCED: renderYearOverview with month accordion functionality
+        renderYearOverview() {
+            const currentYear = new Date().getFullYear();
+            const yearOverview = document.getElementById('year-overview');
+            const monthStats = document.getElementById('month-stats');
+            
+            // Update header
+            yearOverview.querySelector('h3').textContent = `${currentYear} Year Overview`;
+            
+            // Calculate monthly stats
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const monthCounts = new Array(12).fill(0);
+            const monthEntries = Array.from({ length: 12 }, () => []);
+            
+            this.entries.forEach((entry, index) => {
+                const entryDate = new Date(entry.timestamp);
+                if (entryDate.getFullYear() === currentYear) {
+                    const month = entryDate.getMonth();
+                    monthCounts[month]++;
+                    monthEntries[month].push({ entry, index });
+                }
+            });
+            
+            monthStats.innerHTML = monthNames.map((month, monthIndex) => {
+                const count = monthCounts[monthIndex];
+                const entries = monthEntries[monthIndex];
+                const isExpanded = this.monthExpanded[monthIndex] || false;
+                
+                return `
+                    <div class="month-stat-container">
+                        <div class="month-stat ${isExpanded ? 'expanded' : ''}" 
+                             onclick="app.toggleMonth(${monthIndex})" 
+                             data-month="${monthIndex}">
+                            <span class="month-name">${month}</span>
+                            <span class="month-count">${count}</span>
+                        </div>
+                        <div class="month-entries ${isExpanded ? 'show' : ''}" id="month-entries-${monthIndex}">
+                            ${entries.map(({ entry, index }) => {
+                                const entryDate = new Date(entry.timestamp);
+                                const dateString = entryDate.toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric'
+                                });
+                                return `
+                                    <div class="month-entry-item" onclick="app.jumpToEntry(${index})">
+                                        <div class="month-entry-title">${this.escapeHtml(entry.title)}</div>
+                                        <div class="month-entry-date">${dateString}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        },
+
+        // NEW: Toggle month accordion
+        toggleMonth(monthIndex) {
+            this.monthExpanded[monthIndex] = !this.monthExpanded[monthIndex];
+            
+            const monthStat = document.querySelector(`[data-month="${monthIndex}"]`);
+            const monthEntries = document.getElementById(`month-entries-${monthIndex}`);
+            
+            if (this.monthExpanded[monthIndex]) {
+                monthStat.classList.add('expanded');
+                monthEntries.classList.add('show');
+            } else {
+                monthStat.classList.remove('expanded');
+                monthEntries.classList.remove('show');
+            }
+        },
+
+        renderRecentEntries() {
+            const recentEntriesList = document.getElementById('recent-entries-list');
+            const currentYear = new Date().getFullYear();
+            
+            // Get recent entries from current year (last 15)
+            const currentYearEntries = this.entries
+                .filter(entry => new Date(entry.timestamp).getFullYear() === currentYear)
+                .slice(0, 15);
+            
+            if (currentYearEntries.length === 0) {
+                recentEntriesList.innerHTML = '<div class="no-results">No entries yet this year. Start adding memories!</div>';
+                return;
+            }
+            
+            recentEntriesList.innerHTML = currentYearEntries.map((entry, index) => {
+                const originalIndex = this.entries.findIndex(e => e.id === entry.id);
+                const timestamp = new Date(entry.timestamp);
+                const dateString = timestamp.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                return `
+                    <div class="recent-entry-item" onclick="app.jumpToEntry(${originalIndex})">
+                        <div class="recent-entry-title">${this.escapeHtml(entry.title)}</div>
+                        <div class="recent-entry-date">${dateString}</div>
+                    </div>
+                `;
+            }).join('');
+        },
+
+        performSearch(query) {
+            const trimmedQuery = query.trim().toLowerCase();
+            
+            if (!trimmedQuery) {
+                this.showDefaultContent();
+                return;
+            }
+
+            this.hideDefaultContent();
+
+            // Search through all entries
+            const results = this.entries.map((entry, index) => {
+                const titleMatch = entry.title.toLowerCase().includes(trimmedQuery);
+                const descMatch = entry.description.toLowerCase().includes(trimmedQuery);
+                
+                if (titleMatch || descMatch) {
+                    return {
+                        entry,
+                        index,
+                        titleMatch,
+                        descMatch,
+                        year: new Date(entry.timestamp).getFullYear()
+                    };
+                }
+                return null;
+            }).filter(result => result !== null);
+
+            this.searchResults = results;
+            this.renderSearchResults(trimmedQuery);
+        },
+
+        showDefaultContent() {
+            document.getElementById('year-overview').style.display = 'block';
+            document.getElementById('recent-entries').style.display = 'block';
+            document.getElementById('search-stats').style.display = 'none';
+            document.getElementById('search-results').style.display = 'none';
+        },
+
+        hideDefaultContent() {
+            document.getElementById('year-overview').style.display = 'none';
+            document.getElementById('recent-entries').style.display = 'none';
+            document.getElementById('search-stats').style.display = 'block';
+            document.getElementById('search-results').style.display = 'block';
+        },
+
+        renderSearchResults(query) {
+            const resultsContainer = document.getElementById('search-results');
+            const statsContainer = document.getElementById('search-stats');
+
+            if (this.searchResults.length === 0) {
+                statsContainer.textContent = `No results found for "${query}"`;
+                resultsContainer.innerHTML = '<div class="no-results">No memories found matching your search.</div>';
+                return;
+            }
+
+            // Group results by year
+            const resultsByYear = {};
+            this.searchResults.forEach(result => {
+                const year = result.year;
+                if (!resultsByYear[year]) {
+                    resultsByYear[year] = [];
+                }
+                resultsByYear[year].push(result);
+            });
+
+            // Update stats
+            const totalResults = this.searchResults.length;
+            const yearCount = Object.keys(resultsByYear).length;
+            statsContainer.textContent = `Found ${totalResults} results across ${yearCount} year${yearCount !== 1 ? 's' : ''}`;
+
+            // Render results grouped by year
+            const years = Object.keys(resultsByYear).sort((a, b) => b - a); // Most recent first
+            
+            resultsContainer.innerHTML = years.map(year => {
+                const yearResults = resultsByYear[year];
+                const yearCount = yearResults.length;
+                
+                return `
+                    <div class="year-group" data-year="${year}">
+                        <div class="year-header" onclick="app.toggleYearGroup('${year}')">
+                            <span>${year} [${yearCount} result${yearCount !== 1 ? 's' : ''}]</span>
+                            <span class="year-toggle">▼</span>
+                        </div>
+                        <div class="year-results">
+                            ${yearResults.map(result => this.renderSearchResultItem(result, query)).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        },
+
+        renderSearchResultItem(result, query) {
+            const { entry, index } = result;
+            const timestamp = new Date(entry.timestamp);
+            const dateString = timestamp.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            // Highlight search terms
+            const highlightedTitle = this.highlightSearchTerms(entry.title, query);
+            let snippet = entry.description;
+            
+            // Create snippet around search term
+            if (result.descMatch) {
+                const lowerDesc = entry.description.toLowerCase();
+                const queryIndex = lowerDesc.indexOf(query.toLowerCase());
+                if (queryIndex !== -1) {
+                    const start = Math.max(0, queryIndex - 30);
+                    const end = Math.min(entry.description.length, queryIndex + query.length + 30);
+                    snippet = (start > 0 ? '...' : '') + 
+                             entry.description.substring(start, end) + 
+                             (end < entry.description.length ? '...' : '');
+                }
+            } else {
+                // Show first part of description if no match there
+                snippet = entry.description.substring(0, 80) + (entry.description.length > 80 ? '...' : '');
+            }
+            
+            const highlightedSnippet = this.highlightSearchTerms(snippet, query);
+
+            return `
+                <div class="search-result-item" onclick="app.jumpToEntry(${index})">
+                    <div class="search-result-title">${highlightedTitle}</div>
+                    <div class="search-result-snippet">${highlightedSnippet}</div>
+                    <div class="search-result-date">${dateString}</div>
+                </div>
+            `;
+        },
+
+        highlightSearchTerms(text, query) {
+            if (!query || !text) return this.escapeHtml(text);
+            
+            const escapedText = this.escapeHtml(text);
+            const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
+            return escapedText.replace(regex, '<span class="search-highlight">$1</span>');
+        },
+
+        escapeRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        },
+
+        toggleYearGroup(year) {
+            const yearGroup = document.querySelector(`[data-year="${year}"]`);
+            if (yearGroup) {
+                yearGroup.classList.toggle('collapsed');
+            }
+        },
+
+        jumpToEntry(index) {
+            this.closeSearch();
+            
+            // Scroll to the entry in the main view
+            setTimeout(() => {
+                const entryElement = document.querySelector(`[data-entry-index="${index}"]`);
+                if (entryElement) {
+                    entryElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    // Briefly highlight the entry
+                    entryElement.style.backgroundColor = '#fff3cd';
+                    setTimeout(() => {
+                        entryElement.style.backgroundColor = '';
+                    }, 2000);
+                }
+            }, 100);
+        },
+
+        // --- CONFIRMATION SYSTEM ---
+        showConfirmation(message, onConfirm, onCancel = null) {
+            const container = document.getElementById('confirmation-container');
+            container.innerHTML = `
+                <div class="confirmation-backdrop show" onclick="app.hideConfirmation()"></div>
+                <div class="confirmation-toast show">
+                    <div class="confirmation-message">${message}</div>
+                    <div class="confirmation-buttons">
+                        <button class="confirmation-btn danger" onclick="app.confirmAction()">OK</button>
+                        <button class="confirmation-btn" onclick="app.hideConfirmation()">Cancel</button>
+                    </div>
+                </div>
+            `;
+
+            this.pendingConfirmation = { onConfirm, onCancel };
+        },
+
+        confirmAction() {
+            if (this.pendingConfirmation && this.pendingConfirmation.onConfirm) {
+                this.pendingConfirmation.onConfirm();
+            }
+            this.hideConfirmation();
+        },
+
+        hideConfirmation() {
+            const container = document.getElementById('confirmation-container');
+            const backdrop = container.querySelector('.confirmation-backdrop');
+            const toast = container.querySelector('.confirmation-toast');
+            
+            if (backdrop) backdrop.classList.remove('show');
+            if (toast) toast.classList.remove('show');
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 300);
+            
+            if (this.pendingConfirmation && this.pendingConfirmation.onCancel) {
+                this.pendingConfirmation.onCancel();
+            }
+            this.pendingConfirmation = null;
+        },
+
+        exportYearArchive() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('No entries to export.', 'error');
+                return;
+            }
+
+            this.showToast('Export feature not available in demo. In the real app, this would create a standalone HTML file with all your entries!', 'info');
+        },
+
+        exportToCSV() {
+            this.closeSettings();
+            if (this.entries.length === 0) {
+                this.showToast('No entries to export.', 'error');
+                return;
+            }
+            
+            this.showToast('Export feature not available in demo. In the real app, this would download a CSV file with all your entries!', 'info');
+        },
+
+        triggerImport() {
+            this.closeSettings();
+            this.showToast('Import feature not available in demo. In the real app, you could upload CSV files to import entries!', 'info');
+        },
+
+        importFromCSV(event) {
+            // Not implemented in demo
+        },
+
+        toggleSettings() {
+            document.getElementById('settings-panel').classList.toggle('show');
+        },
+        closeSettings() {
+            document.getElementById('settings-panel').classList.remove('show');
+        },
+        showAboutModal() {
+            this.closeSettings();
+            document.getElementById('about-modal').classList.add('show');
+        },
+        closeAboutModal() {
+            document.getElementById('about-modal').classList.remove('show');
+        },
+        showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (container.contains(toast)) {
+                        container.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        },
+        escapeHtml(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        },
+        autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
