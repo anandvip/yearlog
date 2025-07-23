@@ -2468,19 +2468,35 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                this.showToast('Please select a CSV file.', 'error');
+                event.target.value = '';
+                return;
+            }
+
             try {
-                // Read the file
-                const fileContent = await window.fs.readFile(file.name, { encoding: 'utf8' });
+                // Read file using FileReader API (proper browser method)
+                const fileContent = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = () => reject(new Error('Failed to read file'));
+                    reader.readAsText(file, 'utf-8');
+                });
                 
                 // Parse CSV manually (simple parser)
                 const lines = fileContent.split('\n').filter(line => line.trim());
                 if (lines.length < 2) {
                     this.showToast('CSV file appears to be empty or invalid.', 'error');
+                    event.target.value = '';
                     return;
                 }
 
-                // Skip header row
-                const dataLines = lines.slice(1);
+                // Check if first line looks like a header
+                const firstLine = lines[0].toLowerCase();
+                const hasHeader = firstLine.includes('title') || firstLine.includes('description') || firstLine.includes('timestamp');
+                
+                // Skip header row if present
+                const dataLines = hasHeader ? lines.slice(1) : lines;
                 let importedCount = 0;
                 let skippedCount = 0;
 
@@ -2492,24 +2508,46 @@
                         if (fields.length >= 3) {
                             const [title, description, timestamp] = fields;
                             
-                            // Validate timestamp
-                            const date = new Date(timestamp);
+                            // Clean up fields
+                            const cleanTitle = title.trim();
+                            const cleanDescription = description.trim();
+                            const cleanTimestamp = timestamp.trim();
+                            
+                            if (!cleanTitle || !cleanTimestamp) {
+                                skippedCount++;
+                                continue;
+                            }
+                            
+                            // Validate timestamp - try multiple formats
+                            let date;
+                            if (cleanTimestamp.includes('T') || cleanTimestamp.includes('Z')) {
+                                // ISO format
+                                date = new Date(cleanTimestamp);
+                            } else if (cleanTimestamp.includes('/') || cleanTimestamp.includes('-')) {
+                                // Date format
+                                date = new Date(cleanTimestamp);
+                            } else {
+                                // Assume it's a timestamp
+                                date = new Date(parseInt(cleanTimestamp) || cleanTimestamp);
+                            }
+                            
                             if (isNaN(date.getTime())) {
+                                console.warn('Invalid timestamp:', cleanTimestamp);
                                 skippedCount++;
                                 continue;
                             }
 
                             // Create new entry
                             const newEntry = {
-                                id: Date.now() + Math.random(), // Ensure unique ID
-                                title: title.trim(),
-                                description: description.trim(),
+                                id: Date.now() + Math.random() * 1000, // Ensure unique ID
+                                title: cleanTitle,
+                                description: cleanDescription,
                                 timestamp: date.toISOString()
                             };
 
-                            // Check for duplicates (same title and timestamp)
+                            // Check for duplicates (same title and similar timestamp)
                             const duplicate = this.entries.find(entry => 
-                                entry.title === newEntry.title && 
+                                entry.title.toLowerCase() === newEntry.title.toLowerCase() && 
                                 Math.abs(new Date(entry.timestamp) - date) < 60000 // Within 1 minute
                             );
 
@@ -2523,6 +2561,7 @@
                             skippedCount++;
                         }
                     } catch (lineError) {
+                        console.warn('Error parsing line:', line, lineError);
                         skippedCount++;
                     }
                 }
@@ -2535,14 +2574,14 @@
                 
                 // Show results
                 if (importedCount > 0) {
-                    this.showToast(`Successfully imported ${importedCount} entries! ${skippedCount > 0 ? `Skipped ${skippedCount} entries.` : ''}`, 'success');
+                    this.showToast(`Successfully imported ${importedCount} entries!${skippedCount > 0 ? ` Skipped ${skippedCount} entries (duplicates or invalid).` : ''}`, 'success');
                 } else {
-                    this.showToast(`No new entries imported. ${skippedCount > 0 ? `${skippedCount} entries were skipped (duplicates or invalid).` : ''}`, 'info');
+                    this.showToast(`No new entries imported.${skippedCount > 0 ? ` ${skippedCount} entries were skipped (duplicates or invalid format).` : ''}`, 'info');
                 }
 
             } catch (error) {
                 console.error('Import error:', error);
-                this.showToast('Failed to import CSV file. Please check the file format.', 'error');
+                this.showToast('Failed to import CSV file. Please ensure it has columns: Title, Description, Timestamp.', 'error');
             }
 
             // Reset file input
