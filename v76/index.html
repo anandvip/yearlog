@@ -1579,16 +1579,23 @@
 
         addTouchSupport() {
             const searchPanel = document.getElementById('search-panel');
+            const searchContent = document.getElementById('search-content');
             let startX = 0;
             let startY = 0;
             let moveX = 0;
             let moveY = 0;
+            let isSwipeGesture = false;
 
+            // Touch start - record initial position
             searchPanel.addEventListener('touchstart', (e) => {
                 startX = e.touches[0].clientX;
                 startY = e.touches[0].clientY;
+                moveX = startX;
+                moveY = startY;
+                isSwipeGesture = false;
             }, { passive: true });
 
+            // Touch move - track movement and apply visual feedback
             searchPanel.addEventListener('touchmove', (e) => {
                 if (!this.searchOpen) return;
                 
@@ -1598,33 +1605,66 @@
                 const deltaX = moveX - startX;
                 const deltaY = Math.abs(moveY - startY);
                 
-                // If swiping left and vertical movement is small (to avoid interfering with scrolling)
-                if (deltaX < -50 && deltaY < 30) {
-                    e.preventDefault(); // Prevent default scrolling
-                    // Apply transform to show the swipe animation
-                    searchPanel.style.transform = `translateX(${Math.min(0, deltaX)}px)`;
+                // Determine if this is a horizontal swipe gesture
+                if (Math.abs(deltaX) > 10 && deltaY < 50) {
+                    isSwipeGesture = true;
                 }
-            });
+                
+                // If swiping left (negative deltaX) and it's a horizontal gesture
+                if (deltaX < -20 && isSwipeGesture) {
+                    // Prevent default scrolling during swipe
+                    e.preventDefault();
+                    
+                    // Apply visual feedback - panel follows finger
+                    const translateX = Math.max(-400, deltaX); // Limit how far it can go
+                    searchPanel.style.transform = `translateX(${translateX}px)`;
+                    searchPanel.style.transition = 'none'; // Remove transition during drag
+                    
+                    // Dim backdrop based on swipe progress
+                    const progress = Math.abs(deltaX) / 200;
+                    const backdrop = document.getElementById('search-backdrop');
+                    backdrop.style.opacity = Math.max(0.1, 1 - progress);
+                }
+            }, { passive: false }); // NOT passive so we can preventDefault
 
+            // Touch end - decide whether to close or snap back
             searchPanel.addEventListener('touchend', (e) => {
                 if (!this.searchOpen) return;
                 
                 const deltaX = moveX - startX;
                 const deltaY = Math.abs(moveY - startY);
                 
-                // Reset transform
+                // Reset visual feedback
+                searchPanel.style.transition = '';
                 searchPanel.style.transform = '';
                 
-                // If swiped left more than 100px and vertical movement is small
-                if (deltaX < -100 && deltaY < 50) {
+                const backdrop = document.getElementById('search-backdrop');
+                backdrop.style.opacity = '';
+                
+                // If it was a horizontal swipe gesture and moved far enough left
+                if (isSwipeGesture && deltaX < -80 && deltaY < 100) {
+                    // Close the search panel
                     this.closeSearch();
+                } else if (Math.abs(deltaX) > 10) {
+                    // If there was movement but not enough to close, add a bounce-back animation
+                    searchPanel.style.transition = 'transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                    setTimeout(() => {
+                        searchPanel.style.transition = '';
+                    }, 200);
                 }
                 
-                // Reset values
+                // Reset tracking variables
                 startX = 0;
                 startY = 0;
                 moveX = 0;
                 moveY = 0;
+                isSwipeGesture = false;
+            }, { passive: true });
+
+            // Prevent touch events from bubbling up from search content when scrolling
+            searchContent.addEventListener('touchstart', (e) => {
+                // Allow normal scrolling within content area
+                e.stopPropagation();
             }, { passive: true });
         },
 
