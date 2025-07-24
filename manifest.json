@@ -2,13 +2,13 @@
   "name": "YearLog - Personal Memory Companion",
   "short_name": "YearLog",
   "description": "A gentle, empathetic tool for individuals working to strengthen their memory connections. Capture and organize your daily thoughts and experiences.",
-  "start_url": "/v75/",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#dc2626",
   "background_color": "#ffffff",
   "lang": "en-US",
-  "scope": "/v75/",
+  "scope": "/",
   "categories": ["productivity", "utilities", "lifestyle"],
   "icons": [
     {
