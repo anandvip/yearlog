@@ -2,7 +2,7 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js', {
-      scope: '/' // Match your manifest scope
+      scope: '/' // Root scope to match your manifest
     })
     .then(registration => {
       console.log('SW registered: ', registration);
