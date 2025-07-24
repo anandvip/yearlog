@@ -1436,6 +1436,8 @@
         searchOpen: false,
         searchResults: [],
         monthExpanded: {},
+        storageKey: 'yearlog_entries',
+        yearNameKey: 'yearlog_year_name',
 
         // --- MARKDOWN PARSER ---
         parseMarkdown(text) {
@@ -1458,30 +1460,67 @@
                 .replace(/\n/g, '<br>');
         },
 
+        // --- DATA PERSISTENCE ---
+        loadFromStorage() {
+            try {
+                // Load entries
+                const entriesData = localStorage.getItem(this.storageKey);
+                if (entriesData) {
+                    this.entries = JSON.parse(entriesData);
+                } else {
+                    // Initialize with welcome entries only if no data exists
+                    this.entries = [
+                        {
+                            id: Date.now() - 3000,
+                            title: "Welcome to YearLog",
+                            description: "This is your personal memory companion. Click on any text to **edit** it. Use *markdown* for formatting!\n\n> Try adding your first memory below.",
+                            timestamp: new Date().toISOString()
+                        },
+                        {
+                            id: Date.now() - 2000,
+                            title: "Markdown Example",
+                            description: "You can use **bold text**, *italic text*, and even [links](https://example.com)!\n\n# This is a heading\n> This is a quote\n\nClick on this text to edit it and see how it works!",
+                            timestamp: new Date(Date.now() - 86400000).toISOString()
+                        },
+                        {
+                            id: Date.now() - 1000,
+                            title: "Search Features",
+                            description: "Click the ➝| button to open the search panel. You can:\n\n- View your year overview\n- **Click on months** to expand entries\n- Search through all your memories\n- Navigate easily with touch gestures",
+                            timestamp: new Date(Date.now() - 2 * 86400000).toISOString()
+                        }
+                    ];
+                    this.saveToStorage();
+                }
+
+                // Load year name
+                const yearNameData = localStorage.getItem(this.yearNameKey);
+                if (yearNameData) {
+                    this.yearName = yearNameData;
+                } else {
+                    this.yearName = new Date().getFullYear().toString();
+                }
+            } catch (error) {
+                console.error('Error loading from storage:', error);
+                this.showToast('Error loading saved data. Starting fresh.', 'error');
+                this.entries = [];
+                this.yearName = new Date().getFullYear().toString();
+            }
+        },
+
+        saveToStorage() {
+            try {
+                localStorage.setItem(this.storageKey, JSON.stringify(this.entries));
+                localStorage.setItem(this.yearNameKey, this.yearName);
+            } catch (error) {
+                console.error('Error saving to storage:', error);
+                this.showToast('Error saving data. Changes may be lost.', 'error');
+            }
+        },
+
         // --- PWA INITIALIZATION ---
         async init() {
-            // Load data from in-memory storage (no localStorage in artifacts)
-            this.entries = [
-                {
-                    id: Date.now() - 3000,
-                    title: "Welcome to YearLog",
-                    description: "This is your personal memory companion. Click on any text to **edit** it. Use *markdown* for formatting!\n\n> Try adding your first memory below.",
-                    timestamp: new Date().toISOString()
-                },
-                {
-                    id: Date.now() - 2000,
-                    title: "Markdown Example",
-                    description: "You can use **bold text**, *italic text*, and even [links](https://example.com)!\n\n# This is a heading\n> This is a quote\n\nClick on this text to edit it and see how it works!",
-                    timestamp: new Date(Date.now() - 86400000).toISOString() // Yesterday
-                },
-                {
-                    id: Date.now() - 1000,
-                    title: "Search Features",
-                    description: "Click the ➝| button to open the search panel. You can:\n\n- View your year overview\n- **Click on months** to expand entries\n- Search through all your memories\n- Navigate easily with touch gestures",
-                    timestamp: new Date(Date.now() - 2 * 86400000).toISOString() // 2 days ago
-                }
-            ];
-            this.yearName = new Date().getFullYear().toString();
+            // Load data from localStorage
+            this.loadFromStorage();
             this.monthExpanded = {};
 
             // Initial UI setup
@@ -1652,6 +1691,7 @@
             const newName = name.trim();
             if (newName) {
                 this.yearName = newName;
+                this.saveToStorage();
                 this.showToast('Year name updated.', 'success');
             } else {
                 document.getElementById('year-name').value = this.yearName;
@@ -1665,7 +1705,7 @@
             this.entries.forEach((entry, index) => {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'entry';
-                entryDiv.setAttribute('data-entry-index', index); // FIXED: Clear naming
+                entryDiv.setAttribute('data-entry-index', index);
                 
                 const timestamp = new Date(entry.timestamp);
                 const timeString = timestamp.toLocaleString('en-US', {
@@ -1692,7 +1732,6 @@
             });
         },
 
-        // FIXED: Completely rewritten editDescription function
         editDescription(entryIndex) {
             // Clean up any existing editing
             if (this.editingEntry !== null) {
@@ -1743,7 +1782,6 @@
             this.autoResizeTextarea(textarea);
         },
 
-        // FIXED: Improved finishEditingDescription function
         finishEditingDescription(entryIndex = this.editingEntry) {
             if (entryIndex === null || entryIndex === undefined) return;
             
@@ -1765,6 +1803,7 @@
                 timestamp: new Date().toISOString()
             };
             this.entries.unshift(newEntry);
+            this.saveToStorage();
             this.renderEntries();
             this.showToast('New entry added.', 'info');
 
@@ -1780,6 +1819,7 @@
         updateEntry(index, field, value) {
             if (this.entries[index]) {
                 this.entries[index][field] = value;
+                this.saveToStorage();
                 this.showToast('Entry saved.', 'success');
             }
         },
@@ -1790,6 +1830,7 @@
                 `Are you sure you want to delete "${entry.title}"?`,
                 () => {
                     this.entries.splice(index, 1);
+                    this.saveToStorage();
                     this.renderEntries();
                     this.showToast('Entry deleted.', 'info');
                 }
@@ -1900,6 +1941,7 @@
                 `Are you sure you want to delete all ${this.entries.length} entries? This action cannot be undone.`,
                 () => {
                     this.entries = [];
+                    this.saveToStorage();
                     this.renderEntries();
                     this.showToast('All entries have been cleared.', 'info');
                 }
@@ -1937,7 +1979,6 @@
             this.showDefaultContent();
         },
 
-        // ENHANCED: renderYearOverview with month accordion functionality
         renderYearOverview() {
             const currentYear = new Date().getFullYear();
             const yearOverview = document.getElementById('year-overview');
@@ -1994,7 +2035,6 @@
             }).join('');
         },
 
-        // NEW: Toggle month accordion
         toggleMonth(monthIndex) {
             this.monthExpanded[monthIndex] = !this.monthExpanded[monthIndex];
             
@@ -2254,6 +2294,7 @@
             this.pendingConfirmation = null;
         },
 
+        // --- EXPORT & IMPORT FUNCTIONALITY ---
         exportYearArchive() {
             this.closeSettings();
             if (this.entries.length === 0) {
@@ -2261,7 +2302,157 @@
                 return;
             }
 
-            this.showToast('Export feature not available in demo. In the real app, this would create a standalone HTML file with all your entries!', 'info');
+            try {
+                // Create complete HTML archive
+                const currentYear = new Date().getFullYear();
+                const yearEntries = this.entries.filter(entry => 
+                    new Date(entry.timestamp).getFullYear() === currentYear
+                );
+
+                if (yearEntries.length === 0) {
+                    this.showToast('No entries found for current year.', 'error');
+                    return;
+                }
+
+                const archiveHTML = this.generateYearArchiveHTML(yearEntries, currentYear);
+                const blob = new Blob([archiveHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `YearLog_${this.yearName || currentYear}_Archive.html`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                this.showToast(`Archive exported: ${yearEntries.length} entries`, 'success');
+            } catch (error) {
+                console.error('Export error:', error);
+                this.showToast('Error creating archive. Please try again.', 'error');
+            }
+        },
+
+        generateYearArchiveHTML(entries, year) {
+            const entriesHTML = entries.map(entry => {
+                const timestamp = new Date(entry.timestamp);
+                const timeString = timestamp.toLocaleString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+
+                return `
+                    <div class="entry">
+                        <div class="entry-title">${this.escapeHtml(entry.title)}</div>
+                        <div class="entry-content">${this.parseMarkdown(entry.description)}</div>
+                        <div class="entry-timestamp">${timeString}</div>
+                    </div>
+                `;
+            }).join('');
+
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${this.escapeHtml(this.yearName || year)} - YearLog Archive</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #dc2626;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #dc2626;
+        }
+        .header .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+        .entry {
+            margin-bottom: 40px;
+            border-left: 3px solid #dc2626;
+            padding-left: 20px;
+            break-inside: avoid;
+        }
+        .entry-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .entry-content {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        .entry-content h1, .entry-content h2, .entry-content h3 {
+            margin: 15px 0 8px 0;
+            color: #444;
+        }
+        .entry-content h1 { font-size: 20px; }
+        .entry-content h2 { font-size: 18px; }
+        .entry-content h3 { font-size: 16px; }
+        .entry-content blockquote {
+            margin: 15px 0;
+            padding-left: 15px;
+            border-left: 3px solid #ddd;
+            color: #666;
+            font-style: italic;
+        }
+        .entry-content strong { font-weight: bold; }
+        .entry-content em { font-style: italic; }
+        .entry-content a { color: #0066cc; text-decoration: underline; }
+        .entry-content a:hover { color: #004499; }
+        .entry-timestamp {
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
+        }
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        @media print {
+            body { margin: 0; padding: 20px; }
+            .entry { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>${this.escapeHtml(this.yearName || year)}</h1>
+        <div class="subtitle">Personal Memory Archive • ${entries.length} Entries</div>
+        <div class="subtitle">Generated on ${new Date().toLocaleDateString()}</div>
+    </div>
+    
+    ${entriesHTML}
+    
+    <div class="footer">
+        Generated by YearLog - Personal Memory Companion<br>
+        <a href="https://yearlog.vipulanand.in">https://yearlog.vipulanand.in</a>
+    </div>
+</body>
+</html>`;
         },
 
         exportToCSV() {
@@ -2271,16 +2462,220 @@
                 return;
             }
             
-            this.showToast('Export feature not available in demo. In the real app, this would download a CSV file with all your entries!', 'info');
+            try {
+                // Create CSV content
+                const headers = ['ID', 'Title', 'Description', 'Timestamp', 'Date', 'Year'];
+                const csvRows = [headers.join(',')];
+                
+                this.entries.forEach(entry => {
+                    const timestamp = new Date(entry.timestamp);
+                    const dateString = timestamp.toLocaleDateString();
+                    const year = timestamp.getFullYear();
+                    
+                    const row = [
+                        entry.id,
+                        `"${entry.title.replace(/"/g, '""')}"`, // Escape quotes
+                        `"${entry.description.replace(/"/g, '""')}"`, // Escape quotes
+                        entry.timestamp,
+                        `"${dateString}"`,
+                        year
+                    ];
+                    csvRows.push(row.join(','));
+                });
+                
+                const csvContent = csvRows.join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                const currentYear = new Date().getFullYear();
+                link.download = `YearLog_${this.yearName || currentYear}_${currentYear}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                this.showToast(`CSV exported: ${this.entries.length} entries`, 'success');
+            } catch (error) {
+                console.error('CSV export error:', error);
+                this.showToast('Error creating CSV. Please try again.', 'error');
+            }
         },
 
         triggerImport() {
             this.closeSettings();
-            this.showToast('Import feature not available in demo. In the real app, you could upload CSV files to import entries!', 'info');
+            const fileInput = document.getElementById('csv-import');
+            fileInput.click();
         },
 
         importFromCSV(event) {
-            // Not implemented in demo
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                this.showToast('Please select a valid CSV file.', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const csvContent = e.target.result;
+                    this.parseAndImportCSV(csvContent);
+                } catch (error) {
+                    console.error('Import error:', error);
+                    this.showToast('Error reading file. Please try again.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        },
+
+        parseAndImportCSV(csvContent) {
+            try {
+                const lines = csvContent.split('\n');
+                if (lines.length < 2) {
+                    this.showToast('CSV file appears to be empty.', 'error');
+                    return;
+                }
+                
+                const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                const importedEntries = [];
+                
+                console.log('CSV Headers found:', headers); // Debug log
+                
+                // More flexible header detection
+                const findHeaderIndex = (searchTerms) => {
+                    return headers.findIndex(h => 
+                        searchTerms.some(term => 
+                            h.toLowerCase().includes(term.toLowerCase())
+                        )
+                    );
+                };
+                
+                // Find header indices with multiple possible names
+                const idIndex = findHeaderIndex(['id', 'ID']);
+                const titleIndex = findHeaderIndex(['title', 'Title', 'name', 'Name', 'subject', 'Subject']);
+                const descIndex = findHeaderIndex(['description', 'Description', 'content', 'Content', 'body', 'Body', 'text', 'Text']);
+                const timestampIndex = findHeaderIndex(['timestamp', 'Timestamp', 'date', 'Date', 'time', 'Time', 'created', 'Created']);
+                
+                console.log('Header indices:', { idIndex, titleIndex, descIndex, timestampIndex }); // Debug log
+                
+                // Check if we found at least title and timestamp (minimum required)
+                if (titleIndex === -1) {
+                    this.showToast(`No title column found. Available columns: ${headers.join(', ')}`, 'error');
+                    return;
+                }
+                
+                if (timestampIndex === -1) {
+                    this.showToast(`No timestamp/date column found. Available columns: ${headers.join(', ')}`, 'error');
+                    return;
+                }
+                
+                // Parse data rows
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const values = this.parseCSVLine(line);
+                    if (values.length < Math.max(titleIndex, timestampIndex) + 1) continue;
+                    
+                    try {
+                        const entry = {
+                            id: (idIndex !== -1 && values[idIndex]) ? 
+                                parseInt(values[idIndex]) || Date.now() + i : 
+                                Date.now() + i,
+                            title: this.cleanCSVValue(values[titleIndex]) || `Imported Entry ${i}`,
+                            description: (descIndex !== -1 && values[descIndex]) ? 
+                                this.cleanCSVValue(values[descIndex]) : 
+                                '',
+                            timestamp: this.cleanCSVValue(values[timestampIndex]) || new Date().toISOString()
+                        };
+                        
+                        // Try to parse the timestamp - be flexible with formats
+                        let parsedDate = new Date(entry.timestamp);
+                        if (isNaN(parsedDate.getTime())) {
+                            // Try different date formats
+                            const dateFormats = [
+                                entry.timestamp,
+                                entry.timestamp.replace(/(\d{1,2})\/(\d{1,2})\/(\d{4})/, '$3-$1-$2'), // MM/DD/YYYY to YYYY-MM-DD
+                                entry.timestamp.replace(/(\d{1,2})\/(\d{1,2})\/(\d{2})/, '20$3-$1-$2'), // MM/DD/YY to YYYY-MM-DD
+                            ];
+                            
+                            for (const format of dateFormats) {
+                                parsedDate = new Date(format);
+                                if (!isNaN(parsedDate.getTime())) {
+                                    entry.timestamp = parsedDate.toISOString();
+                                    break;
+                                }
+                            }
+                            
+                            // If still invalid, use current date
+                            if (isNaN(parsedDate.getTime())) {
+                                entry.timestamp = new Date().toISOString();
+                            }
+                        }
+                        
+                        importedEntries.push(entry);
+                    } catch (error) {
+                        console.warn(`Skipping row ${i}: ${error.message}`);
+                    }
+                }
+                
+                if (importedEntries.length === 0) {
+                    this.showToast('No valid entries found in CSV file.', 'error');
+                    return;
+                }
+                
+                // Merge with existing entries (avoid duplicates by ID)
+                const existingIds = new Set(this.entries.map(e => e.id));
+                const newEntries = importedEntries.filter(e => !existingIds.has(e.id));
+                
+                this.entries = [...newEntries, ...this.entries];
+                this.saveToStorage();
+                this.renderEntries();
+                
+                this.showToast(`Successfully imported ${newEntries.length} entries (${importedEntries.length - newEntries.length} duplicates skipped)`, 'success');
+                
+            } catch (error) {
+                console.error('CSV parsing error:', error);
+                this.showToast('Error parsing CSV file. Please check the format.', 'error');
+            }
+        },
+
+        parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                        current += '"';
+                        i++; // Skip next quote
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current); // Add the last field
+            return result;
+        },
+
+        cleanCSVValue(value) {
+            if (!value) return '';
+            return value.trim().replace(/^"(.*)"$/, '$1').replace(/""/g, '"');
         },
 
         toggleSettings() {
