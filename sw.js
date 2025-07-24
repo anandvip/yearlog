@@ -1,8 +1,8 @@
 // Add this to your main HTML file, in a <script> tag
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/v75/sw.js', {
-      scope: '/v75/' // Match your manifest scope
+    navigator.serviceWorker.register('/sw.js', {
+      scope: '/' // Match your manifest scope
     })
     .then(registration => {
       console.log('SW registered: ', registration);
