@@ -2191,6 +2191,7 @@
             // Create snippet around search term
             if (result.descMatch) {
                 const lowerDesc = entry.description.toLowerCase();
+                
                 const queryIndex = lowerDesc.indexOf(query.toLowerCase());
                 if (queryIndex !== -1) {
                     const start = Math.max(0, queryIndex - 30);
