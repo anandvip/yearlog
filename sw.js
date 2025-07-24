@@ -1,21 +1,30 @@
-const CACHE_NAME = 'yearlog-v3';
-const urlsToCache = [
-  '/',
-  '/manifest.json',
-  '/favicon.ico',
-  'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-  );
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
-  );
-});
+// Add this to your main HTML file, in a <script> tag
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/v75/sw.js', {
+      scope: '/v75/' // Match your manifest scope
+    })
+    .then(registration => {
+      console.log('SW registered: ', registration);
+      
+      // Check for updates
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed') {
+            if (navigator.serviceWorker.controller) {
+              // New update available
+              console.log('New content is available; please refresh.');
+            } else {
+              // Content is cached for the first time
+              console.log('Content is cached for offline use.');
+            }
+          }
+        });
+      });
+    })
+    .catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
+}
