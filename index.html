@@ -1536,49 +1536,9 @@
         },
 
         initPWA() {
-            // Register Service Worker
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    // Create service worker as blob to keep everything in single file
-                    const swCode = `
-                        const CACHE_NAME = 'yearlog-v1';
-                        const urlsToCache = [
-                            '/',
-                            'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png'
-                        ];
-
-                        self.addEventListener('install', (event) => {
-                            event.waitUntil(
-                                caches.open(CACHE_NAME)
-                                    .then((cache) => cache.addAll(urlsToCache))
-                            );
-                        });
-
-                        self.addEventListener('fetch', (event) => {
-                            event.respondWith(
-                                caches.match(event.request)
-                                    .then((response) => {
-                                        // Return cached version or fetch from network
-                                        return response || fetch(event.request);
-                                    })
-                            );
-                        });
-                    `;
-                    
-                    const blob = new Blob([swCode], { type: 'application/javascript' });
-                    const swUrl = URL.createObjectURL(blob);
-                    
-                    navigator.serviceWorker.register(swUrl)
-                        .then((registration) => {
-                            console.log('ServiceWorker registration successful:', registration.scope);
-                            this.showToast('App ready for offline use!', 'success');
-                        })
-                        .catch((error) => {
-                            console.log('ServiceWorker registration failed:', error);
-                        });
-                });
-            }
-
+            // PWA functionality without service worker
+            // YearLog already works offline via localStorage!
+            
             // Handle install prompt
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
@@ -1596,6 +1556,13 @@
             // Online/offline status
             window.addEventListener('online', () => this.updateOnlineStatus());
             window.addEventListener('offline', () => this.updateOnlineStatus());
+            
+            // Show ready message
+            if (navigator.onLine) {
+                setTimeout(() => {
+                    this.showToast('YearLog ready! All data stays local.', 'success');
+                }, 1000);
+            }
         },
 
         async installPWA() {
