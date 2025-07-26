@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YearLog Notification Test</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f9f9f9;
+            border: 2px solid #dc2626;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 3px;
+        }
+        button:hover {
+            background: #b91c1c;
+        }
+        .status {
+            background: #e5f3ff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .code-block {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            border-left: 4px solid #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔔 YearLog Notification System Test</h1>
+    
+    <div class="test-section">
+        <h2>✅ Your Code Already Has Notifications!</h2>
+        <p>The notification system is fully implemented in your YearLog application. Here's how to test it:</p>
+        
+        <div class="status" id="permission-status">
+            Checking notification permission...
+        </div>
+        
+        <button onclick="requestPermission()">1. Request Notification Permission</button>
+        <button onclick="testNotification()">2. Test Notification</button>
+        <button onclick="testMorningReminder()">3. Test Morning Reminder</button>
+        <button onclick="testEveningReminder()">4. Test Evening Reminder</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📍 Where to Find It in Your App</h2>
+        <p>In your YearLog application:</p>
+        <ol>
+            <li>Click the <strong>☼</strong> (settings) icon in the top-right</li>
+            <li>Look for <strong>"Daily Reminders"</strong> toggle</li>
+            <li>Toggle it ON to enable notifications</li>
+            <li>Set your preferred morning and evening times</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Code Locations in Your File</h2>
+        <div class="code-block">
+            HTML Settings Panel: Lines ~200-240<br>
+            JavaScript Functions: Lines ~800-950<br>
+            - toggleNotifications()<br>
+            - scheduleNotifications()<br>
+            - showNotification()<br>
+            - updateNotificationTime()
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 How It Works</h2>
+        <p><strong>Smart Scheduling:</strong> When you enable daily reminders, the app calculates when to show the next morning/evening notification and sets browser timers.</p>
+        
+        <p><strong>Interactive:</strong> Clicking a notification opens YearLog and automatically creates a new entry.</p>
+        
+        <p><strong>Persistent:</strong> Your notification preferences are saved to localStorage.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>💡 Pro Tips</h2>
+        <ul>
+            <li>Notifications work best when YearLog is pinned as a PWA</li>
+            <li>Make sure your browser allows notifications for this site</li>
+            <li>Test with the browser dev tools console open to see debug messages</li>
+            <li>The app includes test functions: <code>testMorningReminder()</code> and <code>testEveningReminder()</code></li>
+        </ul>
+    </div>
+
+    <script>
+        function updatePermissionStatus() {
+            const statusEl = document.getElementById('permission-status');
+            if ('Notification' in window) {
+                const permission = Notification.permission;
+                statusEl.innerHTML = `
+                    <strong>Browser Support:</strong> ✅ Yes<br>
+                    <strong>Permission Status:</strong> ${permission}<br>
+                    ${permission === 'granted' ? '🎉 Ready for notifications!' : 
+                      permission === 'denied' ? '❌ Notifications blocked - check browser settings' :
+                      '⏳ Permission not yet requested'}
+                `;
+            } else {
+                statusEl.innerHTML = '❌ Browser does not support notifications';
+            }
+        }
+
+        async function requestPermission() {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                updatePermissionStatus();
+                if (permission === 'granted') {
+                    alert('✅ Permission granted! Notifications are now enabled.');
+                } else {
+                    alert('❌ Permission denied. Please enable notifications in your browser settings.');
+                }
+            }
+        }
+
+        function testNotification() {
+            if (Notification.permission === 'granted') {
+                const notification = new Notification('YearLog Test', {
+                    body: 'This is a test notification from YearLog!',
+                    icon: 'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png',
+                    tag: 'yearlog-test'
+                });
+                
+                notification.onclick = () => {
+                    alert('Notification clicked! 🎯');
+                    notification.close();
+                };
+                
+                setTimeout(() => notification.close(), 5000);
+            } else {
+                alert('Please request permission first!');
+            }
+        }
+
+        function testMorningReminder() {
+            if (Notification.permission === 'granted') {
+                new Notification('Good morning! 🌅', {
+                    body: 'Time to capture your thoughts and start your day with YearLog!',
+                    icon: 'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png',
+                    tag: 'yearlog-morning'
+                });
+            } else {
+                alert('Please request permission first!');
+            }
+        }
+
+        function testEveningReminder() {
+            if (Notification.permission === 'granted') {
+                new Notification('Evening reflection 🌙', {
+                    body: 'How was your day? Add your memories and thoughts to YearLog.',
+                    icon: 'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png',
+                    tag: 'yearlog-evening'
+                });
+            } else {
+                alert('Please request permission first!');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', updatePermissionStatus);
+    </script>
+</body>
+</html>
