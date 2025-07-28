@@ -2,13 +2,13 @@
   "name": "YearLog - Personal Memory Companion",
   "short_name": "YearLog",
   "description": "A gentle, emphatic tool for individuals working to Capture and organize their daily thoughts and experiences[personal journaling, gratitude log round the year].",
-  "start_url": "https://yearlog.vipulanand.in",
+  "start_url": "https://yearlog.vipulanand.in/v7/",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#dc2626",
   "background_color": "#ffffff",
   "lang": "en-US",
-  "scope": "https://yearlog.vipulanand.in",
+  "scope": "https://yearlog.vipulanand.in/v7/",
   "categories": ["productivity", "utilities", "lifestyle"],
   "icons": [
     {
