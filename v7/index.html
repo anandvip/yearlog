@@ -618,6 +618,37 @@
             font-weight: bold;
         }
 
+        /* Previous Years Styles */
+        .prev-year-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            background: #f7f7f7;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .prev-year-header:hover { background: #eff6ff; color: #1d4ed8; }
+
+        .prev-year-header.expanded { background: #eff6ff; color: #1d4ed8; border-left: 3px solid #3b82f6; }
+
+        .prev-year-toggle { font-size: 11px; color: #999; transition: transform 0.25s ease; }
+
+        .prev-year-header.expanded .prev-year-toggle { transform: rotate(180deg); color: #3b82f6; }
+
+        .prev-year-months { display: none; }
+
+        .prev-year-months.show { display: block; }
+
+        .prev-year-entry-count { font-size: 11px; font-weight: 400; color: #9ca3af; margin-left: 6px; }
+
         /* Recent Entries Styles */
         .recent-entries {
             padding: 20px;
@@ -1560,6 +1591,9 @@
                 </div>
             </div>
 
+            <!-- Previous Years (shown when no search) -->
+            <div id="prev-years-section"></div>
+
             <!-- Recent Entries (shown when no search) -->
             <div class="recent-entries" id="recent-entries">
                 <h3>Recent Entries (Last 15)</h3>
@@ -1645,6 +1679,8 @@
         searchOpen: false,
         searchResults: [],
         monthExpanded: {},
+        prevYearExpanded: {},
+        prevMonthExpanded: {},
         storageKey: 'yearlog_entries',
         yearNameKey: 'yearlog_year_name',
         notificationsEnabled: false,
@@ -2430,6 +2466,78 @@
                     </div>
                 `;
             }).join('');
+
+            // ── Previous years ──
+            const allPrevYears = [...new Set(
+                this.entries.map(e => new Date(e.timestamp).getFullYear())
+            )].filter(y => y !== currentYear).sort((a, b) => b - a);
+
+            const prevSection = document.getElementById('prev-years-section');
+            if (!prevSection) return;
+
+            if (!allPrevYears.length) {
+                prevSection.innerHTML = '';
+                return;
+            }
+
+            prevSection.innerHTML = allPrevYears.map(year => {
+                const isYearExpanded = this.prevYearExpanded[year] || false;
+
+                const yearMonthCounts = new Array(12).fill(0);
+                const yearMonthEntries = Array.from({ length: 12 }, () => []);
+                this.entries.forEach(entry => {
+                    const d = new Date(entry.timestamp);
+                    if (d.getFullYear() === year) {
+                        const m = d.getMonth();
+                        yearMonthCounts[m]++;
+                        yearMonthEntries[m].push(entry);
+                    }
+                });
+                const totalEntries = yearMonthCounts.reduce((a, b) => a + b, 0);
+
+                return `
+                    <div class="prev-year-block" id="prev-year-block-${year}">
+                        <div class="prev-year-header ${isYearExpanded ? 'expanded' : ''}"
+                             onclick="app.togglePrevYear(${year})">
+                            <span>${year}<span class="prev-year-entry-count">(${totalEntries} entries)</span></span>
+                            <span class="prev-year-toggle">▼</span>
+                        </div>
+                        <div class="prev-year-months ${isYearExpanded ? 'show' : ''}"
+                             id="prev-year-months-${year}">
+                            <div class="month-stats" style="padding:12px 20px 4px;">
+                                ${monthNames.map((monthName, monthIndex) => {
+                                    const count = yearMonthCounts[monthIndex];
+                                    const entries = yearMonthEntries[monthIndex];
+                                    const isMonthExpanded = this.prevMonthExpanded[year + '-' + monthIndex] || false;
+                                    return \`
+                                        <div class="month-stat-container">
+                                            <div class="month-stat ${isMonthExpanded ? 'expanded' : ''}"
+                                                 onclick="app.togglePrevMonth(${year}, \${monthIndex})"
+                                                 data-prev-month="${year}-\${monthIndex}">
+                                                <span class="month-name">\${monthName}</span>
+                                                <span class="month-count">\${count}</span>
+                                            </div>
+                                            <div class="month-entries \${isMonthExpanded ? 'show' : ''}"
+                                                 id="prev-month-entries-${year}-\${monthIndex}">
+                                                \${entries.map(entry => {
+                                                    const origIdx = this.entries.findIndex(e => e.id === entry.id);
+                                                    const dateStr = new Date(entry.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                                                    return \`
+                                                        <div class="month-entry-item" onclick="app.jumpToEntry(\${origIdx})">
+                                                            <div class="month-entry-title">\${this.escapeHtml(entry.title)}</div>
+                                                            <div class="month-entry-date">\${dateStr}</div>
+                                                        </div>
+                                                    \`;
+                                                }).join('')}
+                                            </div>
+                                        </div>
+                                    \`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         },
 
         toggleMonth(monthIndex) {
@@ -2439,6 +2547,35 @@
             const monthEntries = document.getElementById(`month-entries-${monthIndex}`);
             
             if (this.monthExpanded[monthIndex]) {
+                monthStat.classList.add('expanded');
+                monthEntries.classList.add('show');
+            } else {
+                monthStat.classList.remove('expanded');
+                monthEntries.classList.remove('show');
+            }
+        },
+
+        togglePrevYear(year) {
+            this.prevYearExpanded[year] = !this.prevYearExpanded[year];
+            const header = document.querySelector('#prev-year-block-' + year + ' .prev-year-header');
+            const months = document.getElementById('prev-year-months-' + year);
+            if (!header || !months) return;
+            if (this.prevYearExpanded[year]) {
+                header.classList.add('expanded');
+                months.classList.add('show');
+            } else {
+                header.classList.remove('expanded');
+                months.classList.remove('show');
+            }
+        },
+
+        togglePrevMonth(year, monthIndex) {
+            const key = year + '-' + monthIndex;
+            this.prevMonthExpanded[key] = !this.prevMonthExpanded[key];
+            const monthStat = document.querySelector('[data-prev-month="' + key + '"]');
+            const monthEntries = document.getElementById('prev-month-entries-' + key);
+            if (!monthStat || !monthEntries) return;
+            if (this.prevMonthExpanded[key]) {
                 monthStat.classList.add('expanded');
                 monthEntries.classList.add('show');
             } else {
