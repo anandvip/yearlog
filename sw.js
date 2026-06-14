@@ -9,8 +9,7 @@ const RUNTIME_CACHE = 'yearlog-runtime-v1.0';
 const PRECACHE_URLS = [
   '/',
   '/index.html',
-  '/manifest.json',
-  'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png'
+  '/manifest.json'
 ];
 
 // Install event - precache essential files

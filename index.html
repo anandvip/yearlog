@@ -1536,115 +1536,17 @@
         },
 
         initPWA() {
-            // Simplified service worker that actually works
             if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
                 window.addEventListener('load', () => {
-                    // Create a minimal working service worker
-                    const swCode = `
-console.log('[SW] YearLog Service Worker loading...');
-
-const CACHE_NAME = 'yearlog-v1';
-const urlsToCache = [
-  '${window.location.href}',
-  'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png'
-];
-
-self.addEventListener('install', (event) => {
-  console.log('[SW] Installing...');
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[SW] Caching resources');
-        return cache.addAll(urlsToCache);
-      })
-      .then(() => self.skipWaiting())
-      .catch((error) => console.error('[SW] Cache failed:', error))
-  );
-});
-
-self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating...');
-  event.waitUntil(self.clients.claim());
-});
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.method === 'GET') {
-    event.respondWith(
-      caches.match(event.request)
-        .then((response) => {
-          return response || fetch(event.request);
-        })
-        .catch(() => {
-          if (event.request.destination === 'document') {
-            return caches.match('${window.location.href}');
-          }
-          return new Response('Offline', { status: 503 });
-        })
-    );
-  }
-});
-
-// Push notification handler
-self.addEventListener('push', (event) => {
-  console.log('[SW] Push received');
-  const options = {
-    body: 'Time to add a new memory to YearLog!',
-    icon: 'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png',
-    badge: 'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png',
-    vibrate: [100, 50, 100],
-    data: { url: '${window.location.href}' },
-    actions: [
-      { action: 'open', title: 'Open YearLog' },
-      { action: 'close', title: 'Close' }
-    ]
-  };
-  
-  event.waitUntil(
-    self.registration.showNotification('YearLog Memory Reminder', options)
-  );
-});
-
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  if (event.action === 'open' || !event.action) {
-    event.waitUntil(
-      clients.openWindow('${window.location.href}')
-    );
-  }
-});
-
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'TEST_PUSH') {
-    const options = {
-      body: 'Test notification from DevTools!',
-      icon: 'https://raw.githubusercontent.com/anandvip/yearlog/refs/heads/main/ylg.png',
-      tag: 'test'
-    };
-    self.registration.showNotification('YearLog Test', options);
-  }
-});
-
-console.log('[SW] Service Worker ready');
-                    `;
-                    
-                    try {
-                        const blob = new Blob([swCode], { type: 'application/javascript' });
-                        const swUrl = URL.createObjectURL(blob);
-                        
-                        navigator.serviceWorker.register(swUrl)
-                            .then((registration) => {
-                                console.log('[App] ServiceWorker registered successfully:', registration.scope);
-                                this.showToast('Offline functionality enabled!', 'success');
-                                URL.revokeObjectURL(swUrl);
-                            })
-                            .catch((error) => {
-                                console.error('[App] ServiceWorker registration failed:', error);
-                                this.showToast('App loaded (limited offline features)', 'info');
-                            });
-                    } catch (error) {
-                        console.error('[App] ServiceWorker creation failed:', error);
-                        this.showToast('App loaded (no offline features)', 'info');
-                    }
+                    navigator.serviceWorker.register('/sw.js')
+                        .then((registration) => {
+                            console.log('[App] ServiceWorker registered:', registration.scope);
+                            this.showToast('YearLog ready! Fully offline-capable.', 'success');
+                        })
+                        .catch((error) => {
+                            console.error('[App] ServiceWorker registration failed:', error);
+                            this.showToast('App loaded (limited offline features)', 'info');
+                        });
                 });
             } else {
                 console.log('[App] ServiceWorker not supported or not HTTPS');
