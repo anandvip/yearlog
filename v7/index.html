@@ -2,6 +2,1756 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    
-    <!-- PWA Manifest -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YearLog v7</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-card: #141414;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --border-color: #1e293b;
+            --border-subtle: #0f172a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5558e8;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        .btn-danger:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .app-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ===== LEFT PANEL ===== */
+        .left-panel {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .panel-section {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        /* Search */
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px 8px 32px;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Year Overview */
+        .year-overview {
+            padding: 16px;
+            flex-shrink: 0;
+        }
+
+        .year-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+
+        .month-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .month-cell.has-entries {
+            background: var(--bg-tertiary);
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .month-cell.has-entries:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .month-cell.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .month-cell.empty {
+            background: transparent;
+            color: var(--text-muted);
+            opacity: 0.4;
+        }
+
+        .month-count {
+            font-size: 8px;
+            opacity: 0.7;
+            margin-top: 1px;
+        }
+
+        /* Expanded month entries in year overview */
+        .month-expanded {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border-left: 2px solid var(--accent-primary);
+            margin: 0 16px 8px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .month-expanded-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .month-entry-item {
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .month-entry-item:last-child {
+            border-bottom: none;
+        }
+
+        .month-entry-item:hover {
+            color: var(--accent-primary);
+        }
+
+        .entry-date-small {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 1px;
+        }
+
+        .entry-title-small {
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ===== PREVIOUS YEARS SECTION ===== */
+        .prev-years-section {
+            padding: 0 16px 8px;
+        }
+
+        .prev-year-block {
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .prev-year-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .prev-year-header:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .prev-year-toggle {
+            font-size: 10px;
+            transition: transform 0.2s;
+            color: var(--text-muted);
+        }
+
+        .prev-year-toggle.expanded {
+            transform: rotate(90deg);
+        }
+
+        .prev-year-months {
+            display: none;
+            padding: 8px;
+            background: var(--bg-card);
+        }
+
+        .prev-year-months.open {
+            display: block;
+        }
+
+        /* ===== LEFT PANEL SCROLL ===== */
+        .left-panel-scroll {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        /* Navigation */
+        .nav-list {
+            list-style: none;
+            padding: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .nav-icon {
+            width: 16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* Tags */
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .tag-pill {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: all 0.15s;
+        }
+
+        .tag-pill:hover, .tag-pill.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .content-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .content-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .entry-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 24px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        /* Entry Cards */
+        .entry-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .entry-card:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .entry-card.selected {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .entry-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .entry-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+            margin-right: 12px;
+        }
+
+        .entry-card-date {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .entry-card-preview {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .entry-card-tags {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .entry-tag {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .entry-mood {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 16px;
+        }
+
+        /* ===== RIGHT PANEL ===== */
+        .right-panel {
+            width: 400px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: width 0.2s;
+        }
+
+        .right-panel.collapsed {
+            width: 0;
+            overflow: hidden;
+        }
+
+        .right-panel-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .right-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .right-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        /* Entry Detail */
+        .detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .detail-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .detail-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .detail-mood {
+            font-size: 20px;
+        }
+
+        .detail-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .detail-body {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* ===== EDITOR ===== */
+        .editor-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .editor-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 680px;
+            max-width: 95vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .editor-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .editor-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .editor-body {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        textarea.form-input {
+            min-height: 200px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .mood-picker {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mood-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-tertiary);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .mood-btn:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .mood-btn.selected {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .editor-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 8px 24px;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .stat-value {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            gap: 12px;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            font-size: 14px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: var(--text-primary);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.success { border-left: 3px solid var(--accent-green); }
+        .toast.error { border-left: 3px solid var(--accent-red); }
+        .toast.info { border-left: 3px solid var(--accent-primary); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ===== IMPORT/EXPORT ===== */
+        .import-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .import-area:hover {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        /* ===== CONFIRMATION DIALOG ===== */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .confirm-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            width: 360px;
+            max-width: 95vw;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .confirm-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .confirm-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* ===== SEARCH HIGHLIGHT ===== */
+        .highlight {
+            background: rgba(245, 158, 11, 0.3);
+            color: var(--accent-amber);
+            border-radius: 2px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .left-panel {
+                display: none;
+            }
+            .right-panel {
+                display: none;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo">Year<span>Log</span> <span style="font-size:11px;color:var(--text-muted)">v7</span></div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-ghost" onclick="app.exportData()" title="Export JSON">
+                <span>&#8595;</span> Export
+            </button>
+            <button class="btn btn-ghost" onclick="app.triggerImport()" title="Import JSON">
+                <span>&#8593;</span> Import
+            </button>
+            <button class="btn btn-primary" onclick="app.openEditor()">
+                <span>+</span> New Entry
+            </button>
+        </div>
+    </header>
+
+    <!-- BODY -->
+    <div class="app-body">
+
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <!-- Search -->
+            <div class="panel-section">
+                <div class="search-box">
+                    <span class="search-icon">&#9906;</span>
+                    <input type="text" id="search-input" placeholder="Search entries..." oninput="app.handleSearch(this.value)">
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="app.setView('all')" id="nav-all">
+                    <span class="nav-icon">&#9782;</span> All Entries
+                </li>
+                <li class="nav-item" onclick="app.setView('today')" id="nav-today">
+                    <span class="nav-icon">&#9788;</span> Today
+                </li>
+                <li class="nav-item" onclick="app.setView('week')" id="nav-week">
+                    <span class="nav-icon">&#9783;</span> This Week
+                </li>
+                <li class="nav-item" onclick="app.setView('favorites')" id="nav-favorites">
+                    <span class="nav-icon">&#9733;</span> Favorites
+                </li>
+            </ul>
+
+            <!-- Scrollable panel content -->
+            <div class="left-panel-scroll">
+                <!-- Year overview for current year -->
+                <div class="year-overview" id="year-overview">
+                    <!-- rendered by JS -->
+                </div>
+
+                <!-- Previous years section -->
+                <div id="prev-years-section" class="prev-years-section">
+                    <!-- rendered by JS -->
+                </div>
+
+                <!-- Tags -->
+                <div class="panel-section">
+                    <div class="panel-label">Tags</div>
+                    <div class="tag-list" id="tag-list">
+                        <!-- rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="content-header">
+                <div>
+                    <div class="content-title" id="content-title">All Entries</div>
+                    <div class="content-subtitle" id="content-subtitle">Loading...</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn btn-ghost" onclick="app.sortBy('date')" id="sort-date">Date &#8595;</button>
+                    <button class="btn btn-ghost" onclick="app.sortBy('title')">Title</button>
+                </div>
+            </div>
+            <div class="entry-list" id="entry-list">
+                <!-- rendered by JS -->
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel collapsed" id="right-panel">
+            <div class="right-panel-header">
+                <span class="right-panel-title" id="right-panel-title">Entry Detail</span>
+                <button class="btn btn-ghost" onclick="app.closeDetail()" style="padding:4px 8px;">&#10005;</button>
+            </div>
+            <div class="right-panel-body" id="right-panel-body">
+                <!-- rendered by JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span>Entries:</span>
+            <span class="stat-value" id="stat-total">0</span>
+        </div>
+        <div class="stat-item">
+            <span>This year:</span>
+            <span class="stat-value" id="stat-year">0</span>
+        </div>
+        <div class="stat-item">
+            <span>Streak:</span>
+            <span class="stat-value" id="stat-streak">0 days</span>
+        </div>
+        <div class="stat-item" style="margin-left:auto;">
+            <span>Last updated:</span>
+            <span class="stat-value" id="stat-updated">—</span>
+        </div>
+    </div>
+
+    <!-- EDITOR MODAL -->
+    <div class="editor-overlay" id="editor-overlay" style="display:none;">
+        <div class="editor-modal">
+            <div class="editor-header">
+                <span class="editor-title" id="editor-modal-title">New Entry</span>
+                <button class="btn btn-ghost" onclick="app.closeEditor()" style="padding:4px 8px;">&#10005;</button>
+            </div>
+            <div class="editor-body">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="editor-title" placeholder="Entry title...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Content</label>
+                    <textarea class="form-input" id="editor-content" placeholder="Write your thoughts..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="editor-date">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tags (comma separated)</label>
+                        <input type="text" class="form-input" id="editor-tags" placeholder="work, personal, ideas">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mood</label>
+                    <div class="mood-picker" id="mood-picker">
+                        <!-- rendered by JS -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" id="editor-favorite"> Mark as favorite
+                    </label>
+                </div>
+            </div>
+            <div class="editor-footer">
+                <button class="btn btn-ghost" onclick="app.closeEditor()">Cancel</button>
+                <button class="btn btn-primary" onclick="app.saveEntry()">Save Entry</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRM DIALOG -->
+    <div class="confirm-overlay" id="confirm-overlay" style="display:none;">
+        <div class="confirm-modal">
+            <div class="confirm-title" id="confirm-title">Confirm</div>
+            <div class="confirm-message" id="confirm-message"></div>
+            <div class="confirm-actions">
+                <button class="btn btn-ghost" onclick="app.confirmCancel()">Cancel</button>
+                <button class="btn btn-danger" onclick="app.confirmOk()" id="confirm-ok-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMPORT INPUT -->
+    <input type="file" id="import-input" accept=".json" style="display:none;" onchange="app.handleImport(event)">
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+    // ============================================================
+    // YEARLOG v7 — Main Application
+    // ============================================================
+
+    const STORAGE_KEY = 'yearlog_v7_data';
+    const MOODS = ['😊','😐','😔','😤','🥰','😴','🤔','🎉','😰','💪'];
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const MONTH_NAMES = ['January','February','March','April','May','June',
+                         'July','August','September','October','November','December'];
+
+    const app = {
+
+        // ── State ──────────────────────────────────────────────
+        state: {
+            entries: [],
+            view: 'all',
+            searchQuery: '',
+            selectedEntry: null,
+            sortField: 'date',
+            sortDir: 'desc',
+            selectedTag: null,
+            expandedMonth: null,          // current-year month expanded in panel
+            prevYearExpanded: {},         // { year: bool }
+            prevMonthExpanded: {},        // { 'year-monthIndex': bool }
+            editingId: null,
+            selectedMood: null,
+            confirmCallback: null,
+        },
+
+        // ── Boot ───────────────────────────────────────────────
+        init() {
+            this.loadData();
+            this.render();
+            this.renderMoodPicker();
+            this.setDefaultDate();
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    this.closeEditor();
+                    this.closeDetail();
+                }
+            });
+        },
+
+        // ── Persistence ────────────────────────────────────────
+        loadData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                this.state.entries = raw ? JSON.parse(raw) : this.sampleData();
+            } catch(e) {
+                this.state.entries = this.sampleData();
+            }
+        },
+
+        saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.entries));
+        },
+
+        // ── Sample data (first run) ────────────────────────────
+        sampleData() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2,'0');
+            return [
+                {
+                    id: 'sample-1',
+                    title: 'Welcome to YearLog v7',
+                    content: 'This is your new journal. Create entries, tag them, track your mood, and review your year at a glance.\n\nUse the left panel to navigate by month, filter by tag, or search for specific entries.',
+                    date: `${y}-${m}-01`,
+                    tags: ['welcome','getting-started'],
+                    mood: '🎉',
+                    favorite: true,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now()
+                },
+                {
+                    id: 'sample-2',
+                    title: 'First Steps',
+                    content: 'Click "New Entry" to add your own entries. You can set a date, mood, and tags for each entry.',
+                    date: `${y}-${m}-02`,
+                    tags: ['tips'],
+                    mood: '💪',
+                    favorite: false,
+                    createdAt: Date.now() - 86400000,
+                    updatedAt: Date.now() - 86400000
+                }
+            ];
+        },
+
+        // ── Render ─────────────────────────────────────────────
+        render() {
+            this.renderYearOverview();
+            this.renderTagList();
+            this.renderEntryList();
+            this.updateStats();
+        },
+
+        renderYearOverview() {
+            const container = document.getElementById('year-overview');
+            const prevContainer = document.getElementById('prev-years-section');
+            const now = new Date();
+            const currentYear = now.getFullYear();
+
+            // ── Current year ──────────────────────────────────
+            const yearEntries = this.state.entries.filter(e => {
+                return e.date && e.date.startsWith(String(currentYear));
+            });
+
+            const monthlyCounts = new Array(12).fill(0);
+            yearEntries.forEach(e => {
+                const m = parseInt(e.date.split('-')[1]) - 1;
+                if (m >= 0 && m < 12) monthlyCounts[m]++;
+            });
+
+            let html = `<div class="year-title">${currentYear} <span style="color:var(--text-muted);font-weight:400">${yearEntries.length} entries</span></div>`;
+            html += '<div class="month-grid">';
+            for (let i = 0; i < 12; i++) {
+                const count = monthlyCounts[i];
+                const isActive = this.state.expandedMonth === i;
+                const cls = count > 0 ? (isActive ? 'active' : 'has-entries') : 'empty';
+                html += `<div class="month-cell ${cls}" onclick="app.toggleMonth(${i})">
+                    ${MONTHS[i]}
+                    ${count > 0 ? `<span class="month-count">${count}</span>` : ''}
+                </div>`;
+            }
+            html += '</div>';
+            container.innerHTML = html;
+
+            // Expanded month entries (current year)
+            const expContainer = document.getElementById('month-expanded-container');
+            if (expContainer) expContainer.remove();
+
+            if (this.state.expandedMonth !== null) {
+                const mi = this.state.expandedMonth;
+                const monthEntries = yearEntries
+                    .filter(e => parseInt(e.date.split('-')[1]) - 1 === mi)
+                    .sort((a, b) => a.date < b.date ? 1 : -1);
+
+                if (monthEntries.length > 0) {
+                    const div = document.createElement('div');
+                    div.id = 'month-expanded-container';
+                    div.className = 'month-expanded';
+                    div.innerHTML = `<div class="month-expanded-title">${MONTH_NAMES[mi]}</div>` +
+                        monthEntries.map(e => `
+                            <div class="month-entry-item" onclick="app.selectEntry('${e.id}')">
+                                <div class="entry-date-small">${this.formatDate(e.date)}</div>
+                                <div class="entry-title-small">${this.escHtml(e.title)}</div>
+                            </div>`).join('');
+                    container.after(div);
+                }
+            }
+
+            // ── Previous years ────────────────────────────────
+            // Collect all unique years from entries, excluding current
+            const prevYears = [...new Set(
+                this.state.entries
+                    .map(e => e.date ? parseInt(e.date.split('-')[0]) : null)
+                    .filter(y => y !== null && y < currentYear)
+            )].sort((a, b) => b - a);   // most-recent first
+
+            if (prevYears.length === 0) {
+                prevContainer.innerHTML = '';
+                return;
+            }
+
+            let prevHtml = '';
+            prevYears.forEach(year => {
+                const yEntries = this.state.entries.filter(e => e.date && e.date.startsWith(String(year)));
+                const yCounts = new Array(12).fill(0);
+                yEntries.forEach(e => {
+                    const m = parseInt(e.date.split('-')[1]) - 1;
+                    if (m >= 0 && m < 12) yCounts[m]++;
+                });
+
+                const isYearOpen = !!this.state.prevYearExpanded[year];
+
+                prevHtml += `
+                <div class="prev-year-block">
+                    <div class="prev-year-header" onclick="app.togglePrevYear(${year})">
+                        <span>${year} <span style="color:var(--text-muted);font-weight:400;font-size:10px">${yEntries.length} entries</span></span>
+                        <span class="prev-year-toggle ${isYearOpen ? 'expanded' : ''}">&#9658;</span>
+                    </div>
+                    <div class="prev-year-months ${isYearOpen ? 'open' : ''}">
+                        <div class="month-grid">`;
+
+                for (let i = 0; i < 12; i++) {
+                    const count = yCounts[i];
+                    const key = `${year}-${i}`;
+                    const isMonthActive = !!this.state.prevMonthExpanded[key];
+                    const cls = count > 0 ? (isMonthActive ? 'active' : 'has-entries') : 'empty';
+                    prevHtml += `<div class="month-cell ${cls}" onclick="app.togglePrevMonth(${year}, ${i})">
+                        ${MONTHS[i]}
+                        ${count > 0 ? `<span class="month-count">${count}</span>` : ''}
+                    </div>`;
+                }
+
+                prevHtml += `</div>`;   // end month-grid
+
+                // Expanded month entries within a previous year
+                for (let i = 0; i < 12; i++) {
+                    const key = `${year}-${i}`;
+                    if (!this.state.prevMonthExpanded[key]) continue;
+                    const meEntries = yEntries
+                        .filter(e => parseInt(e.date.split('-')[1]) - 1 === i)
+                        .sort((a, b) => a.date < b.date ? 1 : -1);
+                    if (meEntries.length === 0) continue;
+
+                    prevHtml += `
+                    <div class="month-expanded" style="margin:6px 0 2px;">
+                        <div class="month-expanded-title">${MONTH_NAMES[i]} ${year}</div>
+                        ${meEntries.map(e => `
+                            <div class="month-entry-item" onclick="app.selectEntry('${e.id}')">
+                                <div class="entry-date-small">${this.formatDate(e.date)}</div>
+                                <div class="entry-title-small">${this.escHtml(e.title)}</div>
+                            </div>`).join('')}
+                    </div>`;
+                }
+
+                prevHtml += `</div></div>`;  // end .prev-year-months and .prev-year-block
+            });
+
+            prevContainer.innerHTML = prevHtml;
+        },
+
+        // Toggle current-year month in the panel
+        toggleMonth(monthIndex) {
+            if (this.state.expandedMonth === monthIndex) {
+                this.state.expandedMonth = null;
+            } else {
+                this.state.expandedMonth = monthIndex;
+            }
+            this.renderYearOverview();
+        },
+
+        // Toggle a previous-year block open/closed
+        togglePrevYear(year) {
+            this.state.prevYearExpanded[year] = !this.state.prevYearExpanded[year];
+            this.renderYearOverview();
+        },
+
+        // Toggle a month within a previous year
+        togglePrevMonth(year, monthIndex) {
+            const key = `${year}-${monthIndex}`;
+            this.state.prevMonthExpanded[key] = !this.state.prevMonthExpanded[key];
+            this.renderYearOverview();
+        },
+
+        renderTagList() {
+            const allTags = {};
+            this.state.entries.forEach(e => {
+                (e.tags || []).forEach(t => {
+                    allTags[t] = (allTags[t] || 0) + 1;
+                });
+            });
+
+            const sorted = Object.entries(allTags).sort((a,b) => b[1]-a[1]).slice(0,20);
+            const container = document.getElementById('tag-list');
+            if (sorted.length === 0) {
+                container.innerHTML = '<span style="font-size:11px;color:var(--text-muted)">No tags yet</span>';
+                return;
+            }
+
+            container.innerHTML = sorted.map(([tag, count]) =>
+                `<span class="tag-pill ${this.state.selectedTag === tag ? 'active' : ''}" onclick="app.filterByTag('${tag}')">${tag} <span style="opacity:0.5">${count}</span></span>`
+            ).join('');
+        },
+
+        renderEntryList() {
+            const list = document.getElementById('entry-list');
+            let entries = [...this.state.entries];
+
+            // Filter
+            if (this.state.view === 'today') {
+                const today = new Date().toISOString().split('T')[0];
+                entries = entries.filter(e => e.date === today);
+            } else if (this.state.view === 'week') {
+                const weekAgo = new Date(Date.now() - 7*86400000).toISOString().split('T')[0];
+                entries = entries.filter(e => e.date >= weekAgo);
+            } else if (this.state.view === 'favorites') {
+                entries = entries.filter(e => e.favorite);
+            }
+
+            if (this.state.searchQuery) {
+                const q = this.state.searchQuery.toLowerCase();
+                entries = entries.filter(e =>
+                    (e.title || '').toLowerCase().includes(q) ||
+                    (e.content || '').toLowerCase().includes(q) ||
+                    (e.tags || []).some(t => t.toLowerCase().includes(q))
+                );
+            }
+
+            if (this.state.selectedTag) {
+                entries = entries.filter(e => (e.tags || []).includes(this.state.selectedTag));
+            }
+
+            // Sort
+            entries.sort((a, b) => {
+                let va = a[this.state.sortField] || '';
+                let vb = b[this.state.sortField] || '';
+                if (va < vb) return this.state.sortDir === 'asc' ? -1 : 1;
+                if (va > vb) return this.state.sortDir === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            if (entries.length === 0) {
+                list.innerHTML = `<div class="empty-state">
+                    <div class="empty-icon">📓</div>
+                    <div class="empty-text">No entries found</div>
+                </div>`;
+                return;
+            }
+
+            list.innerHTML = entries.map(e => this.renderEntryCard(e)).join('');
+        },
+
+        renderEntryCard(e) {
+            const preview = (e.content || '').slice(0, 120).replace(/\n/g, ' ');
+            const selected = this.state.selectedEntry && this.state.selectedEntry.id === e.id;
+            const tags = (e.tags || []).slice(0, 3);
+            let titleHtml = this.escHtml(e.title || 'Untitled');
+            let previewHtml = this.escHtml(preview);
+
+            if (this.state.searchQuery) {
+                titleHtml = this.highlightText(titleHtml, this.state.searchQuery);
+                previewHtml = this.highlightText(previewHtml, this.state.searchQuery);
+            }
+
+            return `<div class="entry-card ${selected ? 'selected' : ''}" onclick="app.selectEntry('${e.id}')">
+                ${e.mood ? `<span class="entry-mood">${e.mood}</span>` : ''}
+                <div class="entry-card-header">
+                    <div class="entry-card-title">${titleHtml} ${e.favorite ? '★' : ''}</div>
+                    <div class="entry-card-date">${this.formatDate(e.date)}</div>
+                </div>
+                <div class="entry-card-preview">${previewHtml}</div>
+                ${tags.length > 0 ? `<div class="entry-card-tags">${tags.map(t => `<span class="entry-tag">${t}</span>`).join('')}</div>` : ''}
+            </div>`;
+        },
+
+        // ── Entry Detail ───────────────────────────────────────
+        selectEntry(id) {
+            const entry = this.state.entries.find(e => e.id === id);
+            if (!entry) return;
+            this.state.selectedEntry = entry;
+
+            const panel = document.getElementById('right-panel');
+            const body = document.getElementById('right-panel-body');
+            panel.classList.remove('collapsed');
+
+            const tags = (entry.tags || []).map(t => `<span class="entry-tag" style="font-size:12px;padding:3px 8px">${t}</span>`).join('');
+            body.innerHTML = `
+                <div class="detail-title">${this.escHtml(entry.title || 'Untitled')}</div>
+                <div class="detail-meta">
+                    <span class="detail-date">${this.formatDate(entry.date)}</span>
+                    ${entry.mood ? `<span class="detail-mood">${entry.mood}</span>` : ''}
+                    ${entry.favorite ? '<span style="color:var(--accent-amber)">★ Favorite</span>' : ''}
+                    <div class="detail-tags">${tags}</div>
+                </div>
+                <div class="detail-body">${this.escHtml(entry.content || '')}</div>
+                <div class="detail-actions">
+                    <button class="btn btn-ghost" onclick="app.editEntry('${entry.id}')">✏ Edit</button>
+                    <button class="btn btn-danger" onclick="app.deleteEntry('${entry.id}')">✕ Delete</button>
+                </div>
+            `;
+
+            this.renderEntryList();
+        },
+
+        closeDetail() {
+            this.state.selectedEntry = null;
+            document.getElementById('right-panel').classList.add('collapsed');
+            this.renderEntryList();
+        },
+
+        // ── Editor ─────────────────────────────────────────────
+        openEditor(entry = null) {
+            this.state.editingId = entry ? entry.id : null;
+            this.state.selectedMood = entry ? entry.mood : null;
+
+            document.getElementById('editor-modal-title').textContent = entry ? 'Edit Entry' : 'New Entry';
+            document.getElementById('editor-title').value = entry ? entry.title : '';
+            document.getElementById('editor-content').value = entry ? entry.content : '';
+            document.getElementById('editor-date').value = entry ? entry.date : this.today();
+            document.getElementById('editor-tags').value = entry ? (entry.tags || []).join(', ') : '';
+            document.getElementById('editor-favorite').checked = entry ? !!entry.favorite : false;
+
+            this.renderMoodPicker();
+            document.getElementById('editor-overlay').style.display = 'flex';
+            document.getElementById('editor-title').focus();
+        },
+
+        closeEditor() {
+            document.getElementById('editor-overlay').style.display = 'none';
+            this.state.editingId = null;
+            this.state.selectedMood = null;
+        },
+
+        saveEntry() {
+            const title = document.getElementById('editor-title').value.trim();
+            const content = document.getElementById('editor-content').value.trim();
+            const date = document.getElementById('editor-date').value;
+            const tagsRaw = document.getElementById('editor-tags').value;
+            const favorite = document.getElementById('editor-favorite').checked;
+
+            if (!title) { this.toast('Title is required', 'error'); return; }
+            if (!date) { this.toast('Date is required', 'error'); return; }
+
+            const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+
+            if (this.state.editingId) {
+                const idx = this.state.entries.findIndex(e => e.id === this.state.editingId);
+                if (idx !== -1) {
+                    this.state.entries[idx] = {
+                        ...this.state.entries[idx],
+                        title, content, date, tags, favorite,
+                        mood: this.state.selectedMood,
+                        updatedAt: Date.now()
+                    };
+                    this.toast('Entry updated', 'success');
+                }
+            } else {
+                const entry = {
+                    id: 'e' + Date.now(),
+                    title, content, date, tags, favorite,
+                    mood: this.state.selectedMood,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now()
+                };
+                this.state.entries.unshift(entry);
+                this.toast('Entry saved', 'success');
+            }
+
+            this.saveData();
+            this.closeEditor();
+            this.render();
+        },
+
+        editEntry(id) {
+            const entry = this.state.entries.find(e => e.id === id);
+            if (entry) this.openEditor(entry);
+        },
+
+        deleteEntry(id) {
+            this.showConfirm(
+                'Delete Entry',
+                'Are you sure you want to delete this entry? This cannot be undone.',
+                () => {
+                    this.state.entries = this.state.entries.filter(e => e.id !== id);
+                    this.saveData();
+                    this.closeDetail();
+                    this.render();
+                    this.toast('Entry deleted', 'info');
+                }
+            );
+        },
+
+        // ── Mood Picker ────────────────────────────────────────
+        renderMoodPicker() {
+            const picker = document.getElementById('mood-picker');
+            picker.innerHTML = MOODS.map(m =>
+                `<button class="mood-btn ${this.state.selectedMood === m ? 'selected' : ''}" onclick="app.selectMood('${m}')">${m}</button>`
+            ).join('');
+        },
+
+        selectMood(mood) {
+            this.state.selectedMood = this.state.selectedMood === mood ? null : mood;
+            this.renderMoodPicker();
+        },
+
+        // ── Filtering / Sorting ────────────────────────────────
+        setView(view) {
+            this.state.view = view;
+            this.state.selectedTag = null;
+            this.state.searchQuery = '';
+            document.getElementById('search-input').value = '';
+
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const navEl = document.getElementById(`nav-${view}`);
+            if (navEl) navEl.classList.add('active');
+
+            const titles = { all: 'All Entries', today: 'Today', week: 'This Week', favorites: 'Favorites' };
+            document.getElementById('content-title').textContent = titles[view] || view;
+
+            this.render();
+        },
+
+        handleSearch(q) {
+            this.state.searchQuery = q;
+            this.state.selectedTag = null;
+            this.renderEntryList();
+        },
+
+        filterByTag(tag) {
+            this.state.selectedTag = this.state.selectedTag === tag ? null : tag;
+            this.state.view = 'all';
+            this.state.searchQuery = '';
+            document.getElementById('search-input').value = '';
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-all').classList.add('active');
+            this.render();
+        },
+
+        sortBy(field) {
+            if (this.state.sortField === field) {
+                this.state.sortDir = this.state.sortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+                this.state.sortField = field;
+                this.state.sortDir = 'desc';
+            }
+            this.renderEntryList();
+        },
+
+        // ── Stats ──────────────────────────────────────────────
+        updateStats() {
+            const total = this.state.entries.length;
+            const year = new Date().getFullYear();
+            const yearCount = this.state.entries.filter(e => e.date && e.date.startsWith(String(year))).length;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-year').textContent = yearCount;
+            document.getElementById('stat-streak').textContent = this.calcStreak() + ' days';
+
+            if (this.state.entries.length > 0) {
+                const latest = this.state.entries.reduce((a, b) => a.updatedAt > b.updatedAt ? a : b);
+                document.getElementById('stat-updated').textContent = this.formatDate(latest.updatedAt ? new Date(latest.updatedAt).toISOString().split('T')[0] : latest.date);
+            }
+        },
+
+        calcStreak() {
+            const dates = [...new Set(this.state.entries.map(e => e.date))].sort().reverse();
+            if (dates.length === 0) return 0;
+            let streak = 0;
+            let current = new Date();
+            current.setHours(0,0,0,0);
+            for (const d of dates) {
+                const entryDate = new Date(d + 'T00:00:00');
+                const diff = Math.round((current - entryDate) / 86400000);
+                if (diff <= 1) {
+                    streak++;
+                    current = entryDate;
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        },
+
+        // ── Import / Export ────────────────────────────────────
+        exportData() {
+            const data = {
+                version: 7,
+                exportedAt: new Date().toISOString(),
+                entries: this.state.entries
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `yearlog-export-${this.today()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            this.toast('Export downloaded', 'success');
+        },
+
+        triggerImport() {
+            document.getElementById('import-input').click();
+        },
+
+        handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    const entries = data.entries || data;  // handle both wrapped and raw array
+                    if (!Array.isArray(entries)) throw new Error('Invalid format');
+                    this.showConfirm(
+                        'Import Entries',
+                        `Import ${entries.length} entries? This will REPLACE all current entries.`,
+                        () => {
+                            this.state.entries = entries;
+                            this.saveData();
+                            this.render();
+                            this.toast(`Imported ${entries.length} entries`, 'success');
+                        }
+                    );
+                } catch(err) {
+                    this.toast('Invalid JSON file', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        },
+
+        // ── Confirm Dialog ─────────────────────────────────────
+        showConfirm(title, message, callback) {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = message;
+            this.state.confirmCallback = callback;
+            document.getElementById('confirm-overlay').style.display = 'flex';
+        },
+
+        confirmOk() {
+            document.getElementById('confirm-overlay').style.display = 'none';
+            if (this.state.confirmCallback) {
+                this.state.confirmCallback();
+                this.state.confirmCallback = null;
+            }
+        },
+
+        confirmCancel() {
+            document.getElementById('confirm-overlay').style.display = 'none';
+            this.state.confirmCallback = null;
+        },
+
+        // ── Toast ──────────────────────────────────────────────
+        toast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { success: '✓', error: '✕', info: 'ℹ' };
+            el.innerHTML = `<span>${icons[type] || ''}</span> ${message}`;
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 3000);
+        },
+
+        // ── Utilities ──────────────────────────────────────────
+        today() {
+            return new Date().toISOString().split('T')[0];
+        },
+
+        setDefaultDate() {
+            document.getElementById('editor-date').value = this.today();
+        },
+
+        formatDate(dateStr) {
+            if (!dateStr) return '';
+            try {
+                const d = new Date(dateStr + 'T00:00:00');
+                return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            } catch { return dateStr; }
+        },
+
+        escHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        },
+
+        highlightText(html, query) {
+            if (!query) return html;
+            const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return html.replace(new RegExp(`(${escaped})`, 'gi'), '<mark class="highlight">$1</mark>');
+        },
+
+        renderRecentEntries() {
+            // kept for compatibility — actual rendering is via renderEntryList
+        },
+
+    };
+
+    // Boot
+    document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
